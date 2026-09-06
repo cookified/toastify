@@ -1,0 +1,89 @@
+{
+  "name": "@cookified/toastify",
+  "version": "1.0.0",
+  "description": "A delightful React toast notification library with folder stack animations and tactile micro-bevels.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cookified/toastify.git"
+  },
+  "keywords": [
+    "react",
+    "toast",
+    "notifications",
+    "toastify",
+    "motion",
+    "framer-motion",
+    "animations",
+    "react-19"
+  ],
+  "author": "Cookified",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build:lib": "tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.lib.json --external react,react-dom,motion,lucide-react",
+    "build:site": "vite build --outDir dist-site",
+    "build": "npm run build:lib && npm run build:site",
+    "prepublishOnly": "rm -rf dist && npm run build:lib",
+    "lint": "eslint .",
+    "preview": "vite preview --outDir dist-site"
+  },
+  "peerDependencies": {
+    "lucide-react": "^1.41.0 || ^0.400.0",
+    "motion": "^12.0.0 || ^13.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "lucide-react": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.3.0",
+    "@fontsource/geist-sans": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "lucide-react": "^1.41.0",
+    "motion": "^13.2.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "eslint": "^10.9.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.4",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.67.0",
+    "vite": "^8.2.2"
+  }
+}

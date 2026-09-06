@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "description": "A delightful React toast notification library with folder stack animations and tactile micro-bevels.",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs"
     }
   },
   "files": [
-    "dist",
+    "lib",
     "README.md",
     "LICENSE"
   ],
@@ -40,12 +40,12 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build:lib": "tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.lib.json --external react,react-dom,motion,lucide-react",
-    "build:site": "vite build --outDir dist-site",
+    "build:lib": "tsup src/index.ts --format esm,cjs --dts --out-dir lib --tsconfig tsconfig.lib.json --external react,react-dom,motion,lucide-react",
+    "build:site": "vite build",
     "build": "npm run build:lib && npm run build:site",
-    "prepublishOnly": "rm -rf dist && npm run build:lib",
+    "prepublishOnly": "rm -rf lib && npm run build:lib",
     "lint": "eslint .",
-    "preview": "vite preview --outDir dist-site"
+    "preview": "vite preview"
   },
   "peerDependencies": {
     "lucide-react": "^1.41.0 || ^0.400.0",

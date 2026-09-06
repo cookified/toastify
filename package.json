@@ -1,6 +1,6 @@
 {
   "name": "@cookified/toastify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A delightful React toast notification library with folder stack animations and tactile micro-bevels.",
   "type": "module",
   "main": "./lib/index.cjs",
@@ -58,19 +58,12 @@
       "optional": true
     }
   },
-  "dependencies": {
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@fontsource/geist-mono": "^5.3.0",
     "@fontsource/geist-sans": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
-    "lucide-react": "^1.41.0",
-    "motion": "^13.2.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "tailwindcss": "^4.3.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
@@ -80,7 +73,12 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.4",
     "globals": "^17.11.0",
+    "lucide-react": "^1.41.0",
+    "motion": "^13.2.0",
     "prettier": "^3.9.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3",
     "tsup": "^8.5.1",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.67.0",

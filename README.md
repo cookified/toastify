@@ -30,16 +30,16 @@
 
 ```bash
 # pnpm
-pnpm add @cookified/toastify motion lucide-react
+pnpm add @cookified/toastify motion
 
 # npm
-npm install @cookified/toastify motion lucide-react
+npm install @cookified/toastify motion
 
 # bun
-bun add @cookified/toastify motion lucide-react
+bun add @cookified/toastify motion
 
 # yarn
-yarn add @cookified/toastify motion lucide-react
+yarn add @cookified/toastify motion
 ```
 
 ---

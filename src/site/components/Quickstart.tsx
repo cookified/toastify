@@ -5,9 +5,9 @@ import { CodeBlock } from "./CodeBlock";
 type PackageManager = "pnpm" | "npm" | "bun";
 
 const installCommands: Record<PackageManager, string> = {
-  pnpm: "pnpm add @cookified/toastify motion lucide-react",
-  npm: "npm i @cookified/toastify motion lucide-react",
-  bun: "bun add @cookified/toastify motion lucide-react",
+  pnpm: "pnpm add @cookified/toastify motion",
+  npm: "npm i @cookified/toastify motion",
+  bun: "bun add @cookified/toastify motion",
 };
 
 const nextjsSetupSnippet = `// app/layout.tsx (Next.js App Router)

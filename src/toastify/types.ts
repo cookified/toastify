@@ -79,6 +79,7 @@ export type ToasterProps = {
   animation?: AnimationPreset | ToastAnimationComponent;
   springConfig?: SpringConfig;
   icons?: Partial<Record<ToastType, ReactNode>>;
+  unstyled?: boolean;
   toastOptions?: {
     className?: string;
     style?: CSSProperties;

@@ -63,7 +63,7 @@ export function SlideAnimation({
           onDismiss();
         }
       }}
-      className="absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
+      className="toastify-item absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
       style={{
         [isTop ? "top" : "bottom"]: 0,
         left: 0,

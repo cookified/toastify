@@ -5,6 +5,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { Toast } from "./Toast";
 import { ToastAnimation } from "./animations";
 import { toastStore } from "./store";
+import { toastifyStyles } from "./styles";
 import type {
   AnimationPreset,
   SpringConfig,
@@ -16,12 +17,12 @@ import type {
 } from "./types";
 
 const positionClasses: Record<ToastPosition, string> = {
-  "top-left": "top-6 left-6",
-  "top-center": "top-6 left-0 right-0 mx-auto",
-  "top-right": "top-6 right-6",
-  "bottom-left": "bottom-6 left-6",
-  "bottom-center": "bottom-6 left-0 right-0 mx-auto",
-  "bottom-right": "bottom-6 right-6",
+  "top-left": "toastify-pos-top-left top-6 left-6",
+  "top-center": "toastify-pos-top-center top-6 left-0 right-0 mx-auto",
+  "top-right": "toastify-pos-top-right top-6 right-6",
+  "bottom-left": "toastify-pos-bottom-left bottom-6 left-6",
+  "bottom-center": "toastify-pos-bottom-center bottom-6 left-0 right-0 mx-auto",
+  "bottom-right": "toastify-pos-bottom-right bottom-6 right-6",
 };
 
 type ToasterItemProps = {
@@ -143,6 +144,7 @@ export function Toaster({
   animation = "stack",
   springConfig,
   icons,
+  unstyled = false,
   toastOptions,
 }: ToasterProps) {
   const [toasts, setToasts] = useState<ToastData[]>([]);
@@ -191,53 +193,62 @@ export function Toaster({
   }, []);
 
   return (
-    <motion.div
-      data-toastify-toaster="true"
-      role="region"
-      aria-label="Notifications"
-      aria-live="polite"
-      tabIndex={-1}
-      className={`toastify-toaster fixed z-50 w-[356px] max-w-[calc(100vw-32px)] ${hasToasts ? "pointer-events-auto" : "pointer-events-none"} ${positionClasses[position]} ${theme === "dark" ? "dark" : ""} ${className ?? ""}`}
-      style={style}
-      animate={{
-        height: containerHeight,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 220,
-        damping: 26,
-        mass: 1.0,
-        ...springConfig,
-      }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div
-        className={`relative w-full h-full flex ${isTop ? "flex-col" : "flex-col-reverse"}`}
+    <>
+      {!unstyled && (
+        <style
+          data-toastify-styles=""
+          dangerouslySetInnerHTML={{ __html: toastifyStyles }}
+        />
+      )}
+      <motion.div
+        data-toastify-toaster="true"
+        role="region"
+        aria-label="Notifications"
+        aria-live="polite"
+        tabIndex={-1}
+        className={`toastify-toaster fixed z-50 w-[356px] max-w-[calc(100vw-32px)] ${hasToasts ? "toastify-pointer-auto pointer-events-auto" : "toastify-pointer-none pointer-events-none"} ${positionClasses[position]} ${theme === "dark" ? "dark" : theme === "system" ? "system" : ""} ${className ?? ""}`}
+        style={style}
+        animate={{
+          height: containerHeight,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 220,
+          damping: 26,
+          mass: 1.0,
+          ...springConfig,
+        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <AnimatePresence>
-          {toasts.slice(0, visibleToasts).map((toastItem, index) => (
-            <ToasterItem
-              key={toastItem.id}
-              toast={toastItem}
-              index={index}
-              totalToasts={toasts.length}
-              isHovered={isHovered}
-              position={position}
-              duration={duration}
-              autoClose={autoClose}
-              closeOnClick={closeOnClick}
-              animation={animation}
-              springConfig={springConfig}
-              icons={icons}
-              toastOptions={toastOptions}
-              onDismiss={() => toastStore.remove(toastItem.id)}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-    </motion.div>
+        <div
+          className={`toastify-list relative w-full h-full flex ${isTop ? "toastify-list-col flex-col" : "toastify-list-col-reverse flex-col-reverse"}`}
+        >
+          <AnimatePresence>
+            {toasts.slice(0, visibleToasts).map((toastItem, index) => (
+              <ToasterItem
+                key={toastItem.id}
+                toast={toastItem}
+                index={index}
+                totalToasts={toasts.length}
+                isHovered={isHovered}
+                position={position}
+                duration={duration}
+                autoClose={autoClose}
+                closeOnClick={closeOnClick}
+                animation={animation}
+                springConfig={springConfig}
+                icons={icons}
+                toastOptions={toastOptions}
+                onDismiss={() => toastStore.remove(toastItem.id)}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </>
   );
 }
 
 export const ToastContainer = Toaster;
+

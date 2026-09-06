@@ -1,6 +1,6 @@
 {
   "name": "@cookified/toastify",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A delightful React toast notification library with folder stack animations and tactile micro-bevels.",
   "type": "module",
   "main": "./lib/index.cjs",
@@ -11,7 +11,9 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js",
       "require": "./lib/index.cjs"
-    }
+    },
+    "./index.css": "./lib/index.css",
+    "./styles.css": "./lib/styles.css"
   },
   "files": [
     "lib",
@@ -40,7 +42,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build:lib": "tsup src/index.ts --format esm,cjs --dts --out-dir lib --tsconfig tsconfig.lib.json --external react,react-dom,motion,lucide-react",
+    "build:lib": "tsup && node scripts/copy-css.js",
     "build:site": "vite build",
     "build": "npm run build:lib && npm run build:site",
     "prepublishOnly": "rm -rf lib && npm run build:lib",
@@ -48,15 +50,9 @@
     "preview": "vite preview"
   },
   "peerDependencies": {
-    "lucide-react": "^1.41.0 || ^0.400.0",
     "motion": "^12.0.0 || ^13.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
-  },
-  "peerDependenciesMeta": {
-    "lucide-react": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

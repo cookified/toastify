@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
-import { Toaster } from "../src/toastify/Toaster";
+import { Toaster, Toast, cn } from "../src/toastify";
 import { toast, toastStore } from "../src/toastify/store";
 
 describe("<Toaster /> and <Toast /> component", () => {
@@ -323,5 +323,57 @@ describe("<Toaster /> and <Toast /> component", () => {
 
     expect(screen.getByText("Pluggable Animation Notice")).toBeDefined();
     expect(screen.getByTestId("custom-animation-stage-0")).toBeDefined();
+  });
+
+  it("forwards ref and passes native HTML attributes to <Toaster />", () => {
+    const toasterRef = React.createRef<HTMLDivElement>();
+    render(
+      <Toaster
+        ref={toasterRef}
+        id="app-toaster"
+        data-testid="global-toaster"
+        aria-label="System Notifications"
+        unstyled
+      />,
+    );
+
+    expect(toasterRef.current).not.toBeNull();
+    expect(toasterRef.current?.id).toBe("app-toaster");
+    expect(toasterRef.current?.getAttribute("data-testid")).toBe("global-toaster");
+    expect(toasterRef.current?.getAttribute("aria-label")).toBe("System Notifications");
+  });
+
+  it("forwards ref and passes native HTML attributes to <Toast />", () => {
+    const toastRef = React.createRef<HTMLDivElement>();
+    const testToast = {
+      id: "toast-1",
+      title: "Ref Test Toast",
+      type: "default" as const,
+      createdAt: Date.now(),
+    };
+
+    render(
+      <Toast
+        ref={toastRef}
+        toast={testToast}
+        onDismiss={() => {}}
+        id="custom-toast-element"
+        data-testid="custom-toast-card"
+        data-variant="custom-v"
+      />,
+    );
+
+    expect(toastRef.current).not.toBeNull();
+    expect(toastRef.current?.id).toBe("custom-toast-element");
+    expect(toastRef.current?.getAttribute("data-testid")).toBe("custom-toast-card");
+    expect(toastRef.current?.getAttribute("data-variant")).toBe("custom-v");
+  });
+
+  it("cn() helper cleanly merges classes and filters falsy values", () => {
+    const isHidden = false;
+    expect(cn("base-class", isHidden ? "hidden" : undefined, null, undefined, "active-class")).toBe(
+      "base-class active-class",
+    );
+    expect(cn()).toBe("");
   });
 });

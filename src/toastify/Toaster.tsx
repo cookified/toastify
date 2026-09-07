@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
 import { Toast } from "./Toast";
@@ -15,6 +15,7 @@ import type {
   ToastType,
   ToasterProps,
 } from "./types";
+import { cn } from "./utils";
 
 const positionClasses: Record<ToastPosition, string> = {
   "top-left": "toastify-pos-top-left",
@@ -149,25 +150,29 @@ function ToasterItem({
   );
 }
 
-export function Toaster({
-  position = "bottom-right",
-  duration = 3500,
-  autoClose,
-  theme = "system",
-  className,
-  style,
-  visibleToasts = 5,
-  closeOnClick = false,
-  closeButton = true,
-  dismissOnEscape = true,
-  animation = "stack",
-  springConfig,
-  icons,
-  unstyled = false,
-  gap = 14,
-  offset = "24px",
-  toastOptions,
-}: ToasterProps) {
+export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(function Toaster(
+  {
+    position = "bottom-right",
+    duration = 3500,
+    autoClose,
+    theme = "system",
+    className,
+    style,
+    visibleToasts = 5,
+    closeOnClick = false,
+    closeButton = true,
+    dismissOnEscape = true,
+    animation = "stack",
+    springConfig,
+    icons,
+    unstyled = false,
+    gap = 14,
+    offset = "24px",
+    toastOptions,
+    ...restProps
+  }: ToasterProps,
+  ref,
+) {
   const [toasts, setToasts] = useState<ToastData[]>([]);
   const [isHovered, setIsHovered] = useState(false);
   const [hoverExpandedCount, setHoverExpandedCount] = useState<number | null>(null);
@@ -273,19 +278,19 @@ export function Toaster({
         />
       )}
       <motion.div
+        ref={ref}
         data-toastify-toaster="true"
         role="region"
         aria-label="Notifications"
         tabIndex={-1}
-        className={[
+        {...restProps}
+        className={cn(
           "toastify-toaster",
           hasToasts ? "toastify-pointer-auto" : "toastify-pointer-none",
           positionClasses[position],
           theme === "dark" ? "dark" : theme === "system" ? "system" : "",
           className,
-        ]
-          .filter(Boolean)
-          .join(" ")}
+        )}
         style={dynamicStyle}
         animate={{
           height: containerHeight,
@@ -328,7 +333,9 @@ export function Toaster({
       </motion.div>
     </>
   );
-}
+});
+
+Toaster.displayName = "Toaster";
 
 export const ToastContainer = Toaster;
 

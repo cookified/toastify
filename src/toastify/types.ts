@@ -141,7 +141,15 @@ export type ToastAnimationComponent = React.ComponentType<ToastAnimationProps>;
 export type AnimationPreset = "stack" | "slide" | "fade";
 
 /** Props for the root <Toaster /> component */
-export type ToasterProps = {
+export type ToasterProps = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  | "children"
+  | "animation"
+  | "onDrag"
+  | "onDragStart"
+  | "onDragEnd"
+  | "onAnimationStart"
+> & {
   /** Viewport anchor corner or edge. Default: "bottom-right" */
   position?: ToastPosition;
   /** Default auto-close duration in ms, or `false` to disable. Default: 3500 */

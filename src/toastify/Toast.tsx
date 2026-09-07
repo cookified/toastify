@@ -1,7 +1,12 @@
+import React, { forwardRef } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import type { ToastData, ToastType } from "./types";
+import { cn } from "./utils";
 
-export type ToastProps = {
+export type ToastProps = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "children"
+> & {
   toast: ToastData;
   onDismiss: () => void;
   closeOnClick?: boolean;
@@ -135,44 +140,55 @@ export function DefaultToastIcon({ type }: { type: ToastType }) {
   }
 }
 
-export function Toast({
-  toast,
-  onDismiss,
-  closeOnClick = false,
-  closeButton = true,
-  globalIcons,
-  globalOptions,
-}: ToastProps) {
-  if (toast.customRenderer) {
-    return <>{toast.customRenderer(toast.id)}</>;
-  }
+export const Toast = forwardRef<HTMLDivElement, ToastProps>(
+  function Toast(
+    {
+      toast,
+      onDismiss,
+      closeOnClick = false,
+      closeButton = true,
+      globalIcons,
+      globalOptions,
+      className,
+      style,
+      ...restProps
+    },
+    ref,
+  ) {
+    if (toast.customRenderer) {
+      return <>{toast.customRenderer(toast.id)}</>;
+    }
 
-  const icon =
-    toast.icon !== undefined
-      ? toast.icon
-      : (globalIcons?.[toast.type] ?? (
-          <DefaultToastIcon type={toast.type} />
-        ));
+    const icon =
+      toast.icon !== undefined
+        ? toast.icon
+        : (globalIcons?.[toast.type] ?? (
+            <DefaultToastIcon type={toast.type} />
+          ));
 
-  const showCloseButton =
-    toast.closeButton !== undefined
-      ? toast.closeButton
-      : (globalOptions?.closeButton ?? closeButton);
+    const showCloseButton =
+      toast.closeButton !== undefined
+        ? toast.closeButton
+        : (globalOptions?.closeButton ?? closeButton);
 
-  const combinedClassName = [
-    "toastify-toast",
-    globalOptions?.className,
-    toast.className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+    const combinedClassName = cn(
+      "toastify-toast",
+      globalOptions?.className,
+      toast.className,
+      className,
+    );
 
-  return (
-    <div
-      onClick={() => closeOnClick && onDismiss()}
-      className={combinedClassName}
-      style={{ ...globalOptions?.style, ...toast.style }}
-    >
+    return (
+      <div
+        ref={ref}
+        onClick={(event) => {
+          restProps.onClick?.(event);
+          if (closeOnClick) onDismiss();
+        }}
+        className={combinedClassName}
+        style={{ ...globalOptions?.style, ...toast.style, ...style }}
+        {...restProps}
+      >
       <div className="toastify-content">
         {icon}
 
@@ -268,4 +284,7 @@ export function Toast({
       </div>
     </div>
   );
-}
+});
+
+Toast.displayName = "Toast";
+

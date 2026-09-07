@@ -9,6 +9,7 @@ export {
 export { defaultSpring } from "./animations/constants";
 export { toast, toastStore, defineVariant } from "./store";
 export { toastifyStyles } from "./styles";
+export { cn } from "./utils";
 export type {
   AnimationPreset,
   SpringConfig,

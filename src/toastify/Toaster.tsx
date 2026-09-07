@@ -159,6 +159,7 @@ export function Toaster({
   visibleToasts = 5,
   closeOnClick = false,
   closeButton = true,
+  dismissOnEscape = true,
   animation = "stack",
   springConfig,
   icons,
@@ -173,6 +174,37 @@ export function Toaster({
   const leaveTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => toastStore.subscribe(setToasts), []);
+
+  useEffect(() => {
+    if (!dismissOnEscape || toasts.length === 0) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        const target = event.target;
+        const isElement = typeof Element !== "undefined" && target instanceof Element;
+        const isInsideToaster = Boolean(
+          isElement && target.closest('[data-toastify-toaster="true"]'),
+        );
+        const isInputField = Boolean(
+          isElement &&
+            (target.tagName === "INPUT" ||
+              target.tagName === "TEXTAREA" ||
+              target.tagName === "SELECT" ||
+              (target as HTMLElement).isContentEditable),
+        );
+
+        if (isInsideToaster || !isInputField) {
+          event.preventDefault();
+          toastStore.remove(toasts[0].id);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dismissOnEscape, toasts]);
 
   useEffect(() => {
     if (!isHovered && toasts.length > visibleToasts) {

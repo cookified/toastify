@@ -380,6 +380,7 @@ toast("Deployment Finished", {
 | `springConfig` | `SpringConfig` | `{ stiffness: 220, damping: 26, mass: 1.0 }` | Motion spring dynamics override |
 | `icons` | `Partial<Record<ToastType, ReactNode>>` | `undefined` | Global custom icon overrides by toast variant |
 | `closeButton` | `boolean` | `true` | Whether to render a dedicated keyboard-accessible dismiss button |
+| `dismissOnEscape` | `boolean` | `true` | Whether pressing the `Escape` key dismisses the front-most notification |
 | `gap` | `number` | `14` | Spacing in pixels between expanded cards |
 | `offset` | `number \| string` | `"24px"` | Viewport edge margin offset (e.g. `24` or `"24px"`) |
 | `toastOptions` | `{ className?, style?, duration?, closeButton? }` | `undefined` | Global toast card styling and defaults |

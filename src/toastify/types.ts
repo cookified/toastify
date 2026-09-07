@@ -160,6 +160,8 @@ export type ToasterProps = {
   closeOnClick?: boolean;
   /** Whether to render a dedicated keyboard-accessible manual close button. Default: true */
   closeButton?: boolean;
+  /** Whether pressing the Escape key dismisses the front-most active notification. Default: true */
+  dismissOnEscape?: boolean;
   /** Built-in preset name or custom pluggable Motion component. Default: "stack" */
   animation?: AnimationPreset | ToastAnimationComponent;
   /** Spring physics dynamics override */

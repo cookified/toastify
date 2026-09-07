@@ -125,6 +125,22 @@ export function ApiReference() {
               <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
                 <td className="px-4 py-3">
                   <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    dismissOnEscape
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  boolean
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-amber-600 dark:text-amber-300">
+                  true
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Dismiss front-most notification on Escape key press
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
                     gap
                   </code>
                 </td>

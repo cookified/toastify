@@ -42,21 +42,60 @@ describe("<Toaster /> and <Toast /> component", () => {
     expect(toastStore.getToasts().length).toBe(0);
   });
 
-  it("supports keyboard dismissal via Enter and Space keys on close button", () => {
+  it("supports keyboard dismissal via Enter key on close button", () => {
     render(<Toaster position="bottom-right" unstyled />);
 
     act(() => {
-      toast("Test Notification");
+      toast("Test Notification Enter");
     });
 
     const closeBtn = screen.getByRole("button", { name: "Dismiss notification" });
+    act(() => {
+      fireEvent.keyDown(closeBtn, { key: "Enter" });
+    });
+    expect(toastStore.getToasts().length).toBe(0);
+  });
+
+  it("supports keyboard dismissal via Space key on close button", () => {
+    render(<Toaster position="bottom-right" unstyled />);
 
     act(() => {
-      // Native buttons trigger click on Enter/Space key down/press
-      fireEvent.click(closeBtn);
+      toast("Test Notification Space");
     });
 
+    const closeBtn = screen.getByRole("button", { name: "Dismiss notification" });
+    act(() => {
+      fireEvent.keyDown(closeBtn, { key: " " });
+    });
     expect(toastStore.getToasts().length).toBe(0);
+  });
+
+  it("supports keyboard dismissal via Escape key", () => {
+    render(<Toaster position="bottom-right" unstyled />);
+
+    act(() => {
+      toast("Dismissible with Escape");
+    });
+    expect(toastStore.getToasts().length).toBe(1);
+
+    act(() => {
+      fireEvent.keyDown(window, { key: "Escape" });
+    });
+    expect(toastStore.getToasts().length).toBe(0);
+  });
+
+  it("respects dismissOnEscape=false to disable Escape key dismissal", () => {
+    render(<Toaster position="bottom-right" dismissOnEscape={false} unstyled />);
+
+    act(() => {
+      toast("Persistent on Escape");
+    });
+    expect(toastStore.getToasts().length).toBe(1);
+
+    act(() => {
+      fireEvent.keyDown(window, { key: "Escape" });
+    });
+    expect(toastStore.getToasts().length).toBe(1);
   });
 
   it("announces standard toasts with role='status' and errors with role='alert'", () => {

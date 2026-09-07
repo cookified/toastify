@@ -197,6 +197,18 @@ export function Toast({
               }
               onDismiss();
             }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                event.stopPropagation();
+                try {
+                  toast.cancel?.onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
+                } catch (err) {
+                  console.error("Toast cancel handler failed:", err);
+                }
+                onDismiss();
+              }
+            }}
             className="toastify-btn-cancel"
           >
             {toast.cancel.label}
@@ -215,6 +227,18 @@ export function Toast({
               }
               onDismiss();
             }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                event.stopPropagation();
+                try {
+                  toast.action?.onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
+                } catch (err) {
+                  console.error("Toast action handler failed:", err);
+                }
+                onDismiss();
+              }
+            }}
             className="toastify-btn-action"
           >
             {toast.action.label}
@@ -228,6 +252,13 @@ export function Toast({
             onClick={(event) => {
               event.stopPropagation();
               onDismiss();
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " " || event.key === "Escape") {
+                event.preventDefault();
+                event.stopPropagation();
+                onDismiss();
+              }
             }}
             className="toastify-btn-close"
           >

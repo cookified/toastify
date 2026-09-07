@@ -17,12 +17,12 @@ import type {
 } from "./types";
 
 const positionClasses: Record<ToastPosition, string> = {
-  "top-left": "toastify-pos-top-left top-6 left-6",
-  "top-center": "toastify-pos-top-center top-6 left-0 right-0 mx-auto",
-  "top-right": "toastify-pos-top-right top-6 right-6",
-  "bottom-left": "toastify-pos-bottom-left bottom-6 left-6",
-  "bottom-center": "toastify-pos-bottom-center bottom-6 left-0 right-0 mx-auto",
-  "bottom-right": "toastify-pos-bottom-right bottom-6 right-6",
+  "top-left": "toastify-pos-top-left",
+  "top-center": "toastify-pos-top-center",
+  "top-right": "toastify-pos-top-right",
+  "bottom-left": "toastify-pos-bottom-left",
+  "bottom-center": "toastify-pos-bottom-center",
+  "bottom-right": "toastify-pos-bottom-right",
 };
 
 type ToasterItemProps = {
@@ -34,13 +34,16 @@ type ToasterItemProps = {
   duration?: number | false;
   autoClose?: number | false;
   closeOnClick?: boolean;
+  closeButton?: boolean;
   animation?: AnimationPreset | ToastAnimationComponent;
   springConfig?: SpringConfig;
   icons?: Partial<Record<ToastType, ReactNode>>;
+  gap?: number;
   toastOptions?: {
     className?: string;
     style?: CSSProperties;
     duration?: number;
+    closeButton?: boolean;
   };
   onDismiss: () => void;
 };
@@ -54,9 +57,11 @@ function ToasterItem({
   duration = 3500,
   autoClose,
   closeOnClick = false,
+  closeButton = true,
   animation = "stack",
   springConfig,
   icons,
+  gap = 14,
   toastOptions,
   onDismiss,
 }: ToasterItemProps) {
@@ -109,6 +114,8 @@ function ToasterItem({
     };
   }, [isHovered, itemDuration]);
 
+  const effectivePosition = toast.position ?? position;
+
   return (
     <ToastAnimation
       animation={animation}
@@ -116,15 +123,17 @@ function ToasterItem({
       index={index}
       totalToasts={totalToasts}
       isHovered={isHovered}
-      position={position}
+      position={effectivePosition}
       isDismissing={isDismissing}
       onDismiss={handleDismiss}
       springConfig={springConfig}
+      gap={gap}
     >
       <Toast
         toast={toast}
         onDismiss={handleDismiss}
         closeOnClick={closeOnClick}
+        closeButton={closeButton}
         globalIcons={icons}
         globalOptions={toastOptions}
       />
@@ -136,15 +145,18 @@ export function Toaster({
   position = "bottom-right",
   duration = 3500,
   autoClose,
-  theme = "light",
+  theme = "system",
   className,
   style,
-  visibleToasts = 5,
+  visibleToasts = 3,
   closeOnClick = false,
+  closeButton = true,
   animation = "stack",
   springConfig,
   icons,
   unstyled = false,
+  gap = 14,
+  offset = "24px",
   toastOptions,
 }: ToasterProps) {
   const [toasts, setToasts] = useState<ToastData[]>([]);
@@ -165,7 +177,7 @@ export function Toaster({
 
   const containerHeight =
     hasToasts && isHovered && effectiveCount > 0
-      ? (effectiveCount - 1) * 66 + 56
+      ? (effectiveCount - 1) * (56 + gap) + 56
       : 56;
 
   const handleMouseEnter = () => {
@@ -192,6 +204,16 @@ export function Toaster({
     };
   }, []);
 
+  const dynamicStyle: CSSProperties = {
+    ...style,
+    ...(typeof offset === "number"
+      ? { "--toastify-offset": `${offset}px` }
+      : offset
+        ? { "--toastify-offset": offset }
+        : {}),
+    ...(typeof gap === "number" ? { "--toastify-gap": `${gap}px` } : {}),
+  } as CSSProperties;
+
   return (
     <>
       {!unstyled && (
@@ -204,18 +226,17 @@ export function Toaster({
         data-toastify-toaster="true"
         role="region"
         aria-label="Notifications"
-        aria-live="polite"
         tabIndex={-1}
-        className={`toastify-toaster fixed z-50 w-[356px] max-w-[calc(100vw-32px)] ${hasToasts ? "toastify-pointer-auto pointer-events-auto" : "toastify-pointer-none pointer-events-none"} ${positionClasses[position]} ${theme === "dark" ? "dark" : theme === "system" ? "system" : ""} ${className ?? ""}`}
-        style={style}
+        className={`toastify-toaster ${hasToasts ? "toastify-pointer-auto" : "toastify-pointer-none"} ${positionClasses[position]} ${theme === "dark" ? "dark" : theme === "system" ? "system" : ""} ${className ?? ""}`.trim()}
+        style={dynamicStyle}
         animate={{
           height: containerHeight,
         }}
         transition={{
           type: "spring",
-          stiffness: 220,
+          stiffness: 260,
           damping: 26,
-          mass: 1.0,
+          mass: 0.8,
           ...springConfig,
         }}
         onMouseEnter={handleMouseEnter}
@@ -236,9 +257,11 @@ export function Toaster({
                 duration={duration}
                 autoClose={autoClose}
                 closeOnClick={closeOnClick}
+                closeButton={closeButton}
                 animation={animation}
                 springConfig={springConfig}
                 icons={icons}
+                gap={gap}
                 toastOptions={toastOptions}
                 onDismiss={() => toastStore.remove(toastItem.id)}
               />

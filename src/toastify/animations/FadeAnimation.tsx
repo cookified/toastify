@@ -7,22 +7,26 @@ import { defaultSpring } from "./constants";
  * Minimalist in-place fade & scale animation.
  */
 export function FadeAnimation({
+  toast,
   index,
   position,
   isDismissing,
   onDismiss,
   springConfig = defaultSpring,
   children,
+  gap = 14,
 }: ToastAnimationProps) {
   const isTop = position.startsWith("top");
 
-  const stackStep = 66;
+  const stackStep = 56 + gap;
   const targetY = isTop ? index * stackStep : -index * stackStep;
+  const isError = toast.type === "error";
 
   return (
     <motion.article
-      role="status"
-      aria-live="polite"
+      role={isError ? "alert" : "status"}
+      aria-live={isError ? "assertive" : "polite"}
+      aria-atomic="true"
       initial={{
         opacity: 0,
         scale: 0.9,
@@ -58,7 +62,7 @@ export function FadeAnimation({
           onDismiss();
         }
       }}
-      className="toastify-item absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
+      className="toastify-item"
       style={{
         [isTop ? "top" : "bottom"]: 0,
         left: 0,

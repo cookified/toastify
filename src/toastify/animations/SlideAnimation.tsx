@@ -7,27 +7,31 @@ import { defaultSpring } from "./constants";
  * Classic horizontal edge-sliding animation.
  */
 export function SlideAnimation({
+  toast,
   index,
   position,
   isDismissing,
   onDismiss,
   springConfig = defaultSpring,
   children,
+  gap = 14,
 }: ToastAnimationProps) {
   const isTop = position.startsWith("top");
   const isCenter = position.endsWith("center");
   const isLeft = position.endsWith("left");
 
-  const stackStep = 66;
+  const stackStep = 56 + gap;
   const targetY = isTop ? index * stackStep : -index * stackStep;
   const entryX = isCenter ? 0 : isLeft ? -120 : 120;
   const exitX = isCenter ? 0 : isLeft ? -140 : 140;
   const initialY = isCenter ? (isTop ? targetY - 30 : targetY + 30) : targetY;
+  const isError = toast.type === "error";
 
   return (
     <motion.article
-      role="status"
-      aria-live="polite"
+      role={isError ? "alert" : "status"}
+      aria-live={isError ? "assertive" : "polite"}
+      aria-atomic="true"
       initial={{
         opacity: 0,
         x: entryX,
@@ -63,7 +67,7 @@ export function SlideAnimation({
           onDismiss();
         }
       }}
-      className="toastify-item absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
+      className="toastify-item"
       style={{
         [isTop ? "top" : "bottom"]: 0,
         left: 0,

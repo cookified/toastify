@@ -93,6 +93,8 @@ function create(
       className: options.className,
       style: options.style,
       duration,
+      closeButton: options.closeButton,
+      position: options.position,
     });
     return id;
   }
@@ -108,6 +110,8 @@ function create(
     className: options.className,
     style: options.style,
     duration,
+    closeButton: options.closeButton,
+    position: options.position,
     createdAt: Date.now(),
   };
 

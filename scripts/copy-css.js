@@ -10,6 +10,15 @@ if (!fs.existsSync(libDir)) {
   fs.mkdirSync(libDir, { recursive: true });
 }
 
+// 0. Auto-generate src/toastify/styles.ts from styles.css (single source of truth)
+const cssContent = fs.readFileSync(srcCss, "utf-8");
+const stylesTsPath = path.resolve(__dirname, "../src/toastify/styles.ts");
+const stylesTsContent = `// Auto-generated from styles.css during build. Do not edit directly.
+export const toastifyStyles = ${JSON.stringify(cssContent)};
+`;
+fs.writeFileSync(stylesTsPath, stylesTsContent, "utf-8");
+console.log("⚡️ Generated src/toastify/styles.ts from styles.css");
+
 // 1. Copy standalone CSS files
 fs.copyFileSync(srcCss, path.join(libDir, "styles.css"));
 fs.copyFileSync(srcCss, path.join(libDir, "index.css"));

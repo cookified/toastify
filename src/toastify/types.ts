@@ -24,6 +24,10 @@ export type ToastOptions = {
   autoClose?: number | false;
   className?: string;
   style?: CSSProperties;
+  /** Whether to render a dedicated close button. Default: inherited from Toaster (true) */
+  closeButton?: boolean;
+  /** Optional viewport position override for this toast */
+  position?: ToastPosition;
 };
 
 export type ToastPromiseOptions<T = unknown> = {
@@ -61,6 +65,7 @@ export type ToastAnimationProps = {
   onDismiss: () => void;
   springConfig?: SpringConfig;
   children: ReactNode;
+  gap?: number;
 };
 
 export type ToastAnimationComponent = React.ComponentType<ToastAnimationProps>;
@@ -76,14 +81,21 @@ export type ToasterProps = {
   style?: CSSProperties;
   visibleToasts?: number;
   closeOnClick?: boolean;
+  /** Whether to render a dedicated keyboard-accessible manual close button. Default: true */
+  closeButton?: boolean;
   animation?: AnimationPreset | ToastAnimationComponent;
   springConfig?: SpringConfig;
   icons?: Partial<Record<ToastType, ReactNode>>;
   unstyled?: boolean;
+  /** Vertical gap between expanded notifications in pixels. Default: 14 */
+  gap?: number;
+  /** Margin offset from viewport edges (e.g. 24 or "24px"). Default: "24px" */
+  offset?: number | string;
   toastOptions?: {
     className?: string;
     style?: CSSProperties;
     duration?: number;
+    closeButton?: boolean;
   };
 };
 
@@ -98,6 +110,8 @@ export type ToastData = {
   duration?: number | false;
   className?: string;
   style?: CSSProperties;
+  closeButton?: boolean;
+  position?: ToastPosition;
   customRenderer?: (id: string) => ReactNode;
   createdAt: number;
 };

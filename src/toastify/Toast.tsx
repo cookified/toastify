@@ -5,10 +5,12 @@ export type ToastProps = {
   toast: ToastData;
   onDismiss: () => void;
   closeOnClick?: boolean;
+  closeButton?: boolean;
   globalIcons?: Partial<Record<ToastType, ReactNode>>;
   globalOptions?: {
     className?: string;
     style?: CSSProperties;
+    closeButton?: boolean;
   };
 };
 
@@ -60,7 +62,7 @@ function LoaderIcon() {
       strokeWidth={2.5}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="toastify-spin animate-spin"
+      className="toastify-spin"
       aria-hidden="true"
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
@@ -69,31 +71,28 @@ function LoaderIcon() {
 }
 
 export function DefaultToastIcon({ type }: { type: ToastType }) {
-  const badgeClasses =
-    "toastify-badge flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white shadow-xs dark:bg-white dark:text-neutral-950";
-
   switch (type) {
     case "loading":
       return (
-        <span className={badgeClasses}>
+        <span className="toastify-badge">
           <LoaderIcon />
         </span>
       );
     case "success":
       return (
-        <span className={badgeClasses}>
+        <span className="toastify-badge">
           <CheckIcon />
         </span>
       );
     case "error":
       return (
-        <span className={badgeClasses}>
+        <span className="toastify-badge">
           <XIcon />
         </span>
       );
     case "warning":
       return (
-        <span className={badgeClasses}>
+        <span className="toastify-badge">
           <svg
             width="12"
             height="12"
@@ -114,7 +113,7 @@ export function DefaultToastIcon({ type }: { type: ToastType }) {
     case "neutral":
     default:
       return (
-        <span className={badgeClasses}>
+        <span className="toastify-badge">
           <svg
             width="12"
             height="12"
@@ -138,6 +137,7 @@ export function Toast({
   toast,
   onDismiss,
   closeOnClick = false,
+  closeButton = true,
   globalIcons,
   globalOptions,
 }: ToastProps) {
@@ -151,28 +151,33 @@ export function Toast({
       <DefaultToastIcon type={toast.type} />
     );
 
+  const showCloseButton =
+    toast.closeButton !== undefined
+      ? toast.closeButton
+      : (globalOptions?.closeButton ?? closeButton);
+
   return (
     <div
       onClick={() => closeOnClick && onDismiss()}
-      className={`toastify-toast flex h-14 w-full select-none items-center justify-between gap-3 rounded-md border border-neutral-200/90 bg-white px-3.5 shadow-md shadow-neutral-950/5 dark:border-neutral-800/90 dark:bg-neutral-900 dark:shadow-neutral-950/40 ${globalOptions?.className ?? ""} ${toast.className ?? ""}`}
+      className={`toastify-toast ${globalOptions?.className ?? ""} ${toast.className ?? ""}`}
       style={{ ...globalOptions?.style, ...toast.style }}
     >
-      <div className="toastify-content flex min-w-0 flex-1 items-center gap-3">
+      <div className="toastify-content">
         {icon}
 
-        <div className="toastify-text-group flex min-w-0 flex-col justify-center">
-          <div className="toastify-title truncate text-[13px] font-medium leading-4 text-neutral-900 dark:text-neutral-100">
+        <div className="toastify-text-group">
+          <div className="toastify-title">
             {toast.title}
           </div>
           {toast.description && (
-            <div className="toastify-description mt-0.5 truncate text-[12px] leading-4 text-neutral-500 dark:text-neutral-400">
+            <div className="toastify-description">
               {toast.description}
             </div>
           )}
         </div>
       </div>
 
-      <div className="toastify-actions flex shrink-0 items-center gap-2">
+      <div className="toastify-actions">
         {toast.cancel && (
           <button
             type="button"
@@ -185,7 +190,7 @@ export function Toast({
               }
               onDismiss();
             }}
-            className="toastify-btn-cancel cursor-pointer rounded px-2 py-1 text-xs font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+            className="toastify-btn-cancel"
           >
             {toast.cancel.label}
           </button>
@@ -203,9 +208,23 @@ export function Toast({
               }
               onDismiss();
             }}
-            className="toastify-btn-action cursor-pointer rounded px-2.5 py-1 text-xs font-medium bg-neutral-900 text-white transition-all hover:bg-neutral-800 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.5),0_1px_2px_rgba(0,0,0,0.08)] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)] dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200 dark:shadow-[inset_0_-2px_4px_rgba(0,0,0,0.22),0_1px_2px_rgba(0,0,0,0.15)] dark:active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]"
+            className="toastify-btn-action"
           >
             {toast.action.label}
+          </button>
+        )}
+
+        {showCloseButton && (
+          <button
+            type="button"
+            aria-label="Dismiss notification"
+            onClick={(event) => {
+              event.stopPropagation();
+              onDismiss();
+            }}
+            className="toastify-close-btn"
+          >
+            <XIcon />
           </button>
         )}
       </div>

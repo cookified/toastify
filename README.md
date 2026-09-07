@@ -236,9 +236,12 @@ You can customize the folder stack spring dynamics directly:
 | `animation` | `AnimationPreset \| ToastAnimationComponent` | `"stack"` | Animation preset string (`"stack" \| "slide" \| "fade"`) or custom React motion component |
 | `theme` | `"light" \| "dark" \| "system"` | `"system"` | Visual theme mode |
 | `duration` | `number \| false` | `3500` | Auto-close timeout in ms, or `false` to disable |
-| `springConfig` | `SpringConfig` | `{ stiffness: 220, damping: 26, mass: 1.0 }` | Motion spring dynamics override |
+| `springConfig` | `SpringConfig` | `{ stiffness: 260, damping: 26, mass: 0.8 }` | Motion spring dynamics override |
 | `icons` | `Partial<Record<ToastType, ReactNode>>` | `undefined` | Global custom icon overrides by toast variant |
-| `toastOptions` | `{ className?, style?, duration? }` | `undefined` | Global toast card styling and defaults |
+| `closeButton` | `boolean` | `true` | Whether to render a dedicated keyboard-accessible dismiss button |
+| `gap` | `number` | `14` | Spacing in pixels between expanded cards |
+| `offset` | `number \| string` | `"24px"` | Viewport edge margin offset (e.g. `24` or `"24px"`) |
+| `toastOptions` | `{ className?, style?, duration?, closeButton? }` | `undefined` | Global toast card styling and defaults |
 | `closeOnClick` | `boolean` | `false` | Whether clicking a toast card dismisses it |
 | `visibleToasts` | `number` | `3` | Maximum number of visible toasts in the folder stack |
 
@@ -274,6 +277,8 @@ type ToastOptions = {
   icon?: ReactNode;
   duration?: number | false;
   autoClose?: number | false;
+  closeButton?: boolean;
+  position?: ToastPosition;
   className?: string;
   style?: CSSProperties;
 };

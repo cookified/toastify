@@ -27,5 +27,6 @@ describe("Documentation & code synchronization", () => {
     expect(readme).toContain("`true`");
     expect(readme).toContain("`14`");
     expect(readme).toContain('`"24px"`');
+    expect(readme).toContain("`9999`");
   });
 });

@@ -176,6 +176,8 @@ export type ToasterProps = Omit<
   gap?: number;
   /** Distance in pixels or CSS units from viewport edges. Default: "24px" */
   offset?: number | string;
+  /** Stacking layer order for the toaster container. Default: 9999 (customizable via prop or --toastify-z-index) */
+  zIndex?: number | string;
   /** Global default options applied to all toasts */
   toastOptions?: {
     className?: string;

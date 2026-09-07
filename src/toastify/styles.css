@@ -14,7 +14,7 @@
 
 :where(.toastify-toaster) {
   position: fixed;
-  z-index: 9999;
+  z-index: var(--toastify-z-index, 9999);
   width: 356px;
   max-width: calc(100vw - 32px);
   box-sizing: border-box;

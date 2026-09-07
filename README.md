@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>Tactile, developer-first toast notifications for React & Next.js.</strong><br>
-  Folder stack spring physics, zero specificity baggage, pluggable motion presets, copy-paste or install via npm.
+  Built on Motion as a feature, not a peer-dep surprise. Folder stack spring physics, zero specificity baggage, pluggable motion presets, copy-paste or install via npm.
 </p>
 
 <p align="center">
@@ -12,6 +12,10 @@
   <a href="https://motion.dev/"><img src="https://img.shields.io/badge/motion-13.2+-ff0055.svg?style=flat-square" alt="Motion" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="MIT License" /></a>
 </p>
+
+> [!NOTE]
+> **Built on Motion as a first-class feature — not a peer-dep surprise.**
+> Toastify is intentionally engineered on top of [Motion](https://motion.dev/) (`motion` / `motion/react`) to deliver authentic spring physics, natural stack compression, interruptible gesture-based dismissal, and pluggable animation stages. We declare this plainly up top rather than springing it as an unexpected peer dependency: if your app already uses Motion (the modern standard for React animation), Toastify shares that existing engine with **zero redundant animation bytes**. If not, installing `motion` gives your notifications genuine 60fps spring physics that static CSS keyframe animations cannot replicate.
 
 ---
 
@@ -23,8 +27,9 @@ I wanted something closer to how engineers actually ship software today:
 1. **Find a component that feels good**, drop the file into your project (or install the tiny package), tweak the props, and move on.
 2. **Copy-paste or package**: Use it via `@cookified/toastify` or copy the self-contained component source directly into your codebase like shadcn/ui. No forced abstraction.
 3. **No provider wrappers**: No context providers wrapping your entire app tree, no theme configs to decode, no runtime surprises. Dispatch notifications from anywhere in your codebase—inside hooks, event handlers, server actions, or plain utility functions.
-4. **Zero CSS specificity collisions**: Every baseline style is isolated inside CSS `:where()` selectors and CSS custom properties. Your Tailwind classes and inline styles always win cleanly without needing `!important`.
-5. **No extra icon package**: Status icons are lightweight, self-contained SVG React components baked right in. No dependencies on Lucide, Heroicons, or FontAwesome, though you can pass your own icons anytime.
+4. **Built on Motion as a feature**: Most toast libraries use static CSS `@keyframes` that feel robotic, cannot track user swipe velocities, and break on interruptible gesture dismissal. Toastify relies on Motion's physical spring solver (`stiffness: 220, damping: 26, mass: 1.0`). We treat Motion as a core architectural advantage, declared transparently from line one.
+5. **Zero CSS specificity collisions**: Every baseline style is isolated inside CSS `:where()` selectors and CSS custom properties. Your Tailwind classes and inline styles always win cleanly without needing `!important`.
+6. **No extra icon package**: Status icons are lightweight, self-contained SVG React components baked right in. No dependencies on Lucide, Heroicons, or FontAwesome, though you can pass your own icons anytime.
 
 ---
 
@@ -163,6 +168,7 @@ toast("File deleted", {
 | `closeButton` | `boolean` | `true` | Whether to render a dedicated accessible dismiss button on each toast |
 | `gap` | `number` | `14` | Spacing in pixels between expanded cards |
 | `offset` | `number \| string` | `"24px"` | Viewport edge margin offset (e.g. `24` or `"24px"`) |
+| `zIndex` | `number \| string` | `9999` | Stacking order for the toaster container (also customizable via `--toastify-z-index`) |
 | `animation` | `AnimationPreset \| ToastAnimationComponent` | `"stack"` | Preset (`"stack" \| "slide" \| "fade"`) or custom React animation component |
 | `dismissOnEscape` | `boolean` | `true` | Whether pressing `Escape` dismisses the front-most notification |
 | `springConfig` | `SpringConfig` | `{ stiffness: 220, damping: 26, mass: 1.0 }` | Spring tension and damping override |

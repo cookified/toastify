@@ -35,6 +35,7 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
       unstyled = false,
       gap = 14,
       offset = "24px",
+      zIndex,
       toastOptions,
       ...restProps
     }: ToasterProps,
@@ -131,6 +132,9 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
 
     const dynamicStyle: CSSProperties = {
       ...style,
+      ...(typeof zIndex !== "undefined"
+        ? { "--toastify-z-index": String(zIndex), zIndex }
+        : {}),
       ...(typeof offset === "number"
         ? { "--toastify-offset": `${offset}px` }
         : offset

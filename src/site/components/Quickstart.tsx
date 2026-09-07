@@ -119,6 +119,14 @@ export function Quickstart() {
             <code>{installCommands[pm]}</code>
           </div>
         </div>
+        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+          Built on Motion as a feature: Toastify leverages Motion (
+          <code className="font-mono text-neutral-700 dark:text-neutral-300">
+            motion
+          </code>
+          ) for authentic spring physics, fluid stack compression, and gesture
+          dismissal without redundant animation runtimes.
+        </p>
       </div>
 
       {/* Step 2: Add Toaster to Root */}

@@ -71,6 +71,13 @@ const toasterProps: PropDefinition[] = [
     description: "Viewport edge margin distance",
   },
   {
+    name: "zIndex",
+    type: "number | string",
+    defaultVal: "9999",
+    description:
+      "Stacking layer order for the container (also customizable via --toastify-z-index)",
+  },
+  {
     name: "icons",
     type: "Partial<Record<ToastType, ReactNode>>",
     defaultVal: "undefined",

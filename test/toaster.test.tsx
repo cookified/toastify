@@ -417,4 +417,13 @@ describe("<Toaster /> and <Toast /> component", () => {
     ).toBe("base-class active-class");
     expect(cn()).toBe("");
   });
+
+  it("applies customizable zIndex prop and --toastify-z-index to toaster container", () => {
+    const { container } = render(<Toaster zIndex={10000} />);
+    const toasterEl = container.querySelector('[data-toastify-toaster="true"]') as HTMLElement;
+
+    expect(toasterEl).not.toBeNull();
+    expect(toasterEl.style.zIndex).toBe("10000");
+    expect(toasterEl.style.getPropertyValue("--toastify-z-index")).toBe("10000");
+  });
 });

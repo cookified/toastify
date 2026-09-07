@@ -6,11 +6,20 @@ type CodeBlockProps = {
   filename?: string;
 };
 
-function highlightCode(code: string) {
-  const lines = code.split("\n");
+const TOKEN_REGEX =
+  /(\/\/.*$)|(".*?"|'.*?'|`.*?`)|(\b(?:import|export|from|const|let|var|function|return|new|type|default|as|typeof|async|await)\b)|(\b(?:toast|Toaster|promise|custom|dismiss|setTimeout|console)\b)|(\b(?:description|action|cancel|label|onClick|position|animation|duration|loading|error|success|springConfig|visibleToasts|theme|stiffness|damping|className|style)\b(?=:))|(<[A-Za-z0-9_]+|<\/[A-Za-z0-9_]+|\/>|>)/g;
 
-  return lines.map((line, lineIndex) => {
-    // Check for comment line
+const TOKEN_CLASSES = [
+  "text-neutral-500 italic",
+  "text-emerald-400 font-mono",
+  "text-purple-400 font-medium",
+  "text-sky-400 font-medium",
+  "text-amber-300",
+  "text-rose-400 font-medium",
+];
+
+function highlightCode(code: string) {
+  return code.split("\n").map((line, lineIndex) => {
     if (line.trim().startsWith("//")) {
       return (
         <span key={lineIndex} className="text-neutral-500 italic">
@@ -20,93 +29,31 @@ function highlightCode(code: string) {
       );
     }
 
-    // Tokenize line with regex capturing strings, comments, keywords, functions, keys
-    const tokenRegex =
-      /(\/\/.*$)|(".*?"|'.*?'|`.*?`)|(\b(?:import|export|from|const|let|var|function|return|new|type|default|as|typeof|async|await)\b)|(\b(?:toast|Toaster|promise|custom|dismiss|setTimeout|console)\b)|(\b(?:description|action|cancel|label|onClick|position|animation|duration|loading|error|success|springConfig|visibleToasts|theme|stiffness|damping|className|style)\b(?=:))|(<[A-Za-z0-9_]+|<\/[A-Za-z0-9_]+|\/>|>)/g;
-
     const parts = [];
     let lastIndex = 0;
-    let match;
+    let match: RegExpExecArray | null;
+    const regex = new RegExp(TOKEN_REGEX);
 
-    while ((match = tokenRegex.exec(line)) !== null) {
+    while ((match = regex.exec(line)) !== null) {
       if (match.index > lastIndex) {
         parts.push(
-          <span
-            key={`${lineIndex}-text-${lastIndex}`}
-            className="text-neutral-300 dark:text-neutral-300"
-          >
+          <span key={`${lineIndex}-t-${lastIndex}`} className="text-neutral-300">
             {line.substring(lastIndex, match.index)}
           </span>,
         );
       }
-
-      const [, comment, str, keyword, fn, key, tag] = match;
-
-      if (comment) {
-        parts.push(
-          <span
-            key={`${lineIndex}-comm-${match.index}`}
-            className="text-neutral-500 italic"
-          >
-            {comment}
-          </span>,
-        );
-      } else if (str) {
-        parts.push(
-          <span
-            key={`${lineIndex}-str-${match.index}`}
-            className="text-emerald-400 font-mono"
-          >
-            {str}
-          </span>,
-        );
-      } else if (keyword) {
-        parts.push(
-          <span
-            key={`${lineIndex}-kw-${match.index}`}
-            className="text-purple-400 font-medium"
-          >
-            {keyword}
-          </span>,
-        );
-      } else if (fn) {
-        parts.push(
-          <span
-            key={`${lineIndex}-fn-${match.index}`}
-            className="text-sky-400 font-medium"
-          >
-            {fn}
-          </span>,
-        );
-      } else if (key) {
-        parts.push(
-          <span
-            key={`${lineIndex}-key-${match.index}`}
-            className="text-amber-300"
-          >
-            {key}
-          </span>,
-        );
-      } else if (tag) {
-        parts.push(
-          <span
-            key={`${lineIndex}-tag-${match.index}`}
-            className="text-rose-400 font-medium"
-          >
-            {tag}
-          </span>,
-        );
-      }
-
-      lastIndex = tokenRegex.lastIndex;
+      const tokenIdx = match.slice(1).findIndex(Boolean);
+      parts.push(
+        <span key={`${lineIndex}-m-${match.index}`} className={TOKEN_CLASSES[tokenIdx]}>
+          {match[0]}
+        </span>,
+      );
+      lastIndex = regex.lastIndex;
     }
 
     if (lastIndex < line.length) {
       parts.push(
-        <span
-          key={`${lineIndex}-rest-${lastIndex}`}
-          className="text-neutral-300 dark:text-neutral-300"
-        >
+        <span key={`${lineIndex}-r-${lastIndex}`} className="text-neutral-300">
           {line.substring(lastIndex)}
         </span>,
       );
@@ -129,8 +76,8 @@ export function CodeBlock({ code, filename }: CodeBlockProps) {
       await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
-    } catch (err) {
-      console.error("Clipboard copy failed", err);
+    } catch {
+      // ignore
     }
   };
 

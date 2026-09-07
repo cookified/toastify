@@ -135,43 +135,26 @@ export function Quickstart() {
           <div className="text-sm font-medium text-neutral-900 dark:text-white">
             2. Add Toaster to your application root:
           </div>
-
-          {/* Framework Tab Switcher */}
           <div className="flex gap-1 rounded-lg border border-neutral-200 bg-neutral-100 p-0.5 text-xs dark:border-neutral-800 dark:bg-neutral-900">
-            <button
-              type="button"
-              onClick={() => setActiveFrameworkTab("nextjs")}
-              className={`cursor-pointer rounded px-2.5 py-0.5 transition-colors ${
-                activeFrameworkTab === "nextjs"
-                  ? "bg-white font-medium text-neutral-950 shadow-xs dark:bg-[#1f1f23] dark:text-white"
-                  : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
-              }`}
-            >
-              Next.js
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveFrameworkTab("react")}
-              className={`cursor-pointer rounded px-2.5 py-0.5 transition-colors ${
-                activeFrameworkTab === "react"
-                  ? "bg-white font-medium text-neutral-950 shadow-xs dark:bg-[#1f1f23] dark:text-white"
-                  : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
-              }`}
-            >
-              React / Vite
-            </button>
+            {(["nextjs", "react"] as const).map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveFrameworkTab(tab)}
+                className={`cursor-pointer rounded px-2.5 py-0.5 transition-colors ${
+                  activeFrameworkTab === tab
+                    ? "bg-white font-medium text-neutral-950 shadow-xs dark:bg-[#1f1f23] dark:text-white"
+                    : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+                }`}
+              >
+                {tab === "nextjs" ? "Next.js" : "React / Vite"}
+              </button>
+            ))}
           </div>
         </div>
-
         <CodeBlock
-          code={
-            activeFrameworkTab === "nextjs"
-              ? nextjsSetupSnippet
-              : reactSetupSnippet
-          }
-          filename={
-            activeFrameworkTab === "nextjs" ? "app/layout.tsx" : "src/App.tsx"
-          }
+          code={activeFrameworkTab === "nextjs" ? nextjsSetupSnippet : reactSetupSnippet}
+          filename={activeFrameworkTab === "nextjs" ? "app/layout.tsx" : "src/App.tsx"}
         />
       </div>
 
@@ -183,13 +166,9 @@ export function Quickstart() {
         <CodeBlock
           code={`import { toast } from "@cookified/toastify";
 
-// Basic notification
 toast("Profile updated", {
   description: "Changes saved to your workspace",
-  action: {
-    label: "Undo",
-    onClick: () => revertProfile(),
-  },
+  action: { label: "Undo", onClick: () => revertProfile() },
 });`}
           filename="UserActions.tsx"
         />
@@ -201,21 +180,18 @@ toast("Profile updated", {
           4. Create custom states (optional):
         </div>
         <p className="text-xs text-neutral-600 dark:text-neutral-400">
-          Define reusable notification states once with your own icons, styling,
-          or duration:
+          Define reusable notification states once with your own icons, styling, or duration:
         </p>
         <CodeBlock
           code={`import { toast } from "@cookified/toastify";
-import { Sparkles } from "lucide-react"; // works with Lucide, Heroicons, or any custom SVG
+import { Sparkles } from "lucide-react";
 
-// Define a custom state once
 const toastAi = toast.variant({
   icon: <Sparkles className="w-4 h-4 text-amber-400" />,
   duration: 4000,
   className: "border-amber-500/30",
 });
 
-// Dispatch anywhere across your app
 toastAi("Model synthesized", {
   description: "Generated 12 UI variations",
 });`}
@@ -229,17 +205,11 @@ toastAi("Model synthesized", {
           5. Themes &amp; color customization:
         </div>
         <p className="text-xs text-neutral-600 dark:text-neutral-400">
-          Switch themes via the{" "}
-          <code className="font-mono text-neutral-800 dark:text-neutral-200">
-            theme
-          </code>{" "}
-          prop or style toast cards globally and per-toast:
+          Switch themes via the <code className="font-mono text-neutral-800 dark:text-neutral-200">theme</code> prop or style toast cards globally and per-toast:
         </p>
         <CodeBlock
-          code={`// 1. Theme switching on Toaster
-<Toaster theme="system" /> // "light" | "dark" | "system"
+          code={`<Toaster theme="system" /> // "light" | "dark" | "system"
 
-// 2. Global styling via toastOptions
 <Toaster
   toastOptions={{
     className: "bg-zinc-950 text-zinc-100 border-zinc-800",
@@ -247,7 +217,6 @@ toastAi("Model synthesized", {
   }}
 />
 
-// 3. Per-toast colors & styles
 toast("Deployment Finished", {
   className: "bg-emerald-950/80 text-emerald-100 border-emerald-800",
   style: { borderColor: "#10b981" },

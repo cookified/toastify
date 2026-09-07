@@ -17,120 +17,66 @@ import {
   type ToastPosition,
 } from "./toastify";
 
-const sectionTransition = {
-  type: "spring" as const,
-  stiffness: 180,
-  damping: 24,
+const DOCS_SECTIONS = ["docs", "overview", "playground", "quickstart", "animations", "api"];
+
+const sectionMotion = {
+  initial: { opacity: 0, y: 14 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-40px" },
+  transition: { type: "spring" as const, stiffness: 180, damping: 24 },
 };
 
 export function App() {
-  const [currentPage, setCurrentPage] = useState<"home" | "docs">(() => {
-    const hash = window.location.hash;
-    if (
-      hash === "#docs" ||
-      hash === "#overview" ||
-      hash === "#playground" ||
-      hash === "#quickstart" ||
-      hash === "#animations" ||
-      hash === "#api"
-    ) {
-      return "docs";
-    }
-    return "home";
-  });
-
+  const [currentPage, setCurrentPage] = useState<"home" | "docs">(() =>
+    DOCS_SECTIONS.includes(window.location.hash.replace("#", "")) ? "docs" : "home",
+  );
   const [isDark, setIsDark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
   const [animation, setAnimation] = useState<AnimationPreset>("stack");
-  const [selectedVariant, setSelectedVariant] =
-    useState<ToastVariant>("action");
+  const [selectedVariant, setSelectedVariant] = useState<ToastVariant>("action");
   const [activeToastsCount, setActiveToastsCount] = useState(0);
+  const [themeRipple, setThemeRipple] = useState<{ x: number; y: number; isDark: boolean } | null>(null);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-  }, [isDark]);
-
-  const [themeRipple, setThemeRipple] = useState<{
-    x: number;
-    y: number;
-    isDark: boolean;
-  } | null>(null);
+  useEffect(() => document.documentElement.classList.toggle("dark", isDark), [isDark]);
+  useEffect(() => toastStore.subscribe((toasts) => setActiveToastsCount(toasts.length)), []);
 
   const handleToggleTheme = (event?: React.MouseEvent<HTMLButtonElement>) => {
     const isGoingDark = !isDark;
     const x = event?.clientX ?? window.innerWidth - 48;
     const y = event?.clientY ?? 28;
-    const endRadius =
-      Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y),
-      ) + 40;
-
-    const doc = document as unknown as {
-      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
-    };
+    const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) + 40;
+    const doc = document as unknown as { startViewTransition?: (cb: () => void) => { ready: Promise<void> } };
 
     if (typeof doc.startViewTransition === "function") {
       const transition = doc.startViewTransition(() => {
         setIsDark(isGoingDark);
         document.documentElement.classList.toggle("dark", isGoingDark);
       });
-
       transition.ready.then(() => {
         document.documentElement.animate(
-          {
-            clipPath: [
-              `circle(0px at ${x}px ${y}px)`,
-              `circle(${endRadius}px at ${x}px ${y}px)`,
-            ],
-          },
-          {
-            duration: 600,
-            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-            pseudoElement: "::view-transition-new(root)",
-          },
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
+          { duration: 600, easing: "cubic-bezier(0.22, 1, 0.36, 1)", pseudoElement: "::view-transition-new(root)" },
         );
       });
       return;
     }
 
-    // Fallback circular spread animation for browsers without startViewTransition
     setThemeRipple({ x, y, isDark: isGoingDark });
     setIsDark(isGoingDark);
     document.documentElement.classList.toggle("dark", isGoingDark);
   };
 
   useEffect(() => {
-    return toastStore.subscribe((toasts) => {
-      setActiveToastsCount(toasts.length);
-    });
-  }, []);
-
-  // Synchronize hash changes and smooth scroll
-  useEffect(() => {
     const handleHash = () => {
-      const hash = window.location.hash;
-      if (
-        hash === "#docs" ||
-        hash === "#overview" ||
-        hash === "#playground" ||
-        hash === "#quickstart" ||
-        hash === "#animations" ||
-        hash === "#api"
-      ) {
+      const hash = window.location.hash.replace("#", "");
+      if (DOCS_SECTIONS.includes(hash)) {
         setCurrentPage("docs");
-        if (hash !== "#docs") {
-          const targetId = hash.replace("#", "");
-          setTimeout(() => {
-            document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
-          }, 80);
-        }
-      } else if (hash === "#home" || hash === "") {
+        if (hash !== "docs") setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 80);
+      } else if (hash === "home" || !hash) {
         setCurrentPage("home");
       }
     };
-
     window.addEventListener("hashchange", handleHash);
     return () => window.removeEventListener("hashchange", handleHash);
   }, []);
@@ -138,25 +84,15 @@ export function App() {
   const handleNavigate = (page: "home" | "docs", sectionId?: string) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
-
     if (page === "home") {
       window.location.hash = "#home";
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      if (sectionId) {
-        const hash = sectionId.startsWith("#") ? sectionId : `#${sectionId}`;
-        window.location.hash = hash;
-        const targetId = hash.replace("#", "");
-        setTimeout(() => {
-          const el = document.getElementById(targetId);
-          if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-          } else {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-        }, 80);
+      const targetId = sectionId ? sectionId.replace("#", "") : "docs";
+      window.location.hash = `#${targetId}`;
+      if (targetId !== "docs") {
+        setTimeout(() => (document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" }) ?? window.scrollTo({ top: 0, behavior: "smooth" })), 80);
       } else {
-        window.location.hash = "#docs";
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
@@ -233,13 +169,7 @@ export function App() {
               </motion.section>
 
               {/* Interactive Stage Playground */}
-              <motion.section
-                id="playground"
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={sectionTransition}
-              >
+              <motion.section id="playground" {...sectionMotion}>
                 <Playground
                   selectedVariant={selectedVariant}
                   onSelectVariant={setSelectedVariant}
@@ -253,24 +183,12 @@ export function App() {
               </motion.section>
 
               {/* Quickstart Setup */}
-              <motion.section
-                id="quickstart"
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={sectionTransition}
-              >
+              <motion.section id="quickstart" {...sectionMotion}>
                 <Quickstart />
               </motion.section>
 
               {/* Animations Studio */}
-              <motion.section
-                id="animations"
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={sectionTransition}
-              >
+              <motion.section id="animations" {...sectionMotion}>
                 <AnimationsDoc
                   activeAnimation={animation}
                   onChangeAnimation={setAnimation}
@@ -278,13 +196,7 @@ export function App() {
               </motion.section>
 
               {/* API Reference */}
-              <motion.section
-                id="api"
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={sectionTransition}
-              >
+              <motion.section id="api" {...sectionMotion}>
                 <ApiReference />
               </motion.section>
             </main>

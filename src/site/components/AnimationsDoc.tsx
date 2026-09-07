@@ -19,27 +19,20 @@ const presetDetails: Record<AnimationPreset | "custom", PresetDetail> = {
   stack: {
     id: "stack",
     name: "Folder Stack",
-    summary:
-      "Cards compress with spring mass and scale reduction. Hovering expands the stack effortlessly.",
+    summary: "Cards compress with spring mass and scale reduction. Hovering expands the stack effortlessly.",
     stiffness: 220,
     damping: 26,
     exitDuration: "240ms",
     filename: "FolderStackExample.tsx",
     codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
 
-// Mount toaster with custom spring physics & auto-dismiss timing:
 <Toaster
   animation="stack"
   position="bottom-right"
-  duration={3500} // Auto-dismiss delay in ms (or false to stay indefinitely)
-  springConfig={{
-    stiffness: 220, // Spring tension: higher = snappier entrance
-    damping: 26,    // Friction resistance: lower = springier
-    mass: 1.0,      // Inertial mass during card fan-out
-  }}
+  duration={3500}
+  springConfig={{ stiffness: 220, damping: 26, mass: 1.0 }}
 />
 
-// Trigger notification (with optional per-toast duration override):
 toast("Folder Stack", {
   description: "Cards compress with spring mass. Hover to fan open.",
   duration: 4000,
@@ -48,26 +41,20 @@ toast("Folder Stack", {
   slide: {
     id: "slide",
     name: "Slide Preset",
-    summary:
-      "Lateral edge entrance with velocity damping and interactive swipe-to-dismiss gesture.",
+    summary: "Lateral edge entrance with velocity damping and interactive swipe-to-dismiss gesture.",
     stiffness: 320,
     damping: 28,
     exitDuration: "220ms",
     filename: "SlideExample.tsx",
     codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
 
-// Mount toaster with Slide preset & velocity dynamics:
 <Toaster
   animation="slide"
   position="bottom-right"
   duration={3500}
-  springConfig={{
-    stiffness: 320, // Slide entry velocity
-    damping: 28,    // Slide deceleration settling
-  }}
+  springConfig={{ stiffness: 320, damping: 28 }}
 />
 
-// Trigger notification with per-toast duration:
 toast("Slide Preset", {
   description: "Directional entrance with swipe gesture and unstacked layout.",
   duration: 3000,
@@ -76,26 +63,20 @@ toast("Slide Preset", {
   fade: {
     id: "fade",
     name: "Fade Preset",
-    summary:
-      "In-place gentle dissolve with subtle blur-to-focus and micro scale transitions.",
+    summary: "In-place gentle dissolve with subtle blur-to-focus and micro scale transitions.",
     stiffness: 280,
     damping: 26,
     exitDuration: "220ms",
     filename: "FadeExample.tsx",
     codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
 
-// Mount toaster with Fade preset & dissolve timing:
 <Toaster
   animation="fade"
   position="bottom-right"
   duration={3000}
-  springConfig={{
-    stiffness: 280,
-    damping: 26,
-  }}
+  springConfig={{ stiffness: 280, damping: 26 }}
 />
 
-// Trigger notification:
 toast("Fade Preset", {
   description: "In-place gentle dissolve with soft blur transition.",
 });`,
@@ -103,8 +84,7 @@ toast("Fade Preset", {
   custom: {
     id: "custom",
     name: "Custom Component",
-    summary:
-      "Drop any custom Motion component straight into <Toaster animation={CustomComponent} />.",
+    summary: "Drop any custom Motion component straight into <Toaster animation={CustomComponent} />.",
     stiffness: 350,
     damping: 22,
     exitDuration: "Configurable",
@@ -112,12 +92,7 @@ toast("Fade Preset", {
     codeSnippet: `import { motion } from "motion/react";
 import type { ToastAnimationProps } from "@cookified/toastify";
 
-// Define custom Motion wrapper with tailored entrance & exit timings:
-export function CustomScaleAnimation({
-  children,
-  index,
-  isDismissing,
-}: ToastAnimationProps) {
+export function CustomScaleAnimation({ children, index, isDismissing }: ToastAnimationProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.85, y: 20 }}
@@ -126,26 +101,14 @@ export function CustomScaleAnimation({
         scale: isDismissing ? 0.85 : 1 - index * 0.05,
         y: isDismissing ? 30 : index * 8,
       }}
-      transition={{
-        type: "spring",
-        stiffness: 350,
-        damping: 22,
-      }}
-      exit={{
-        opacity: 0,
-        scale: 0.85,
-        transition: {
-          duration: 0.25,
-          ease: [0.16, 1, 0.3, 1],
-        },
-      }}
+      transition={{ type: "spring", stiffness: 350, damping: 22 }}
+      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.25 } }}
     >
       {children}
     </motion.div>
   );
 }
 
-// Pass directly to Toaster with custom auto-dismiss duration:
 <Toaster animation={CustomScaleAnimation} duration={4000} />`,
   },
 };
@@ -276,83 +239,32 @@ export function AnimationsDoc({
             onClick={firePreviewToast}
           >
             <div className="relative h-24 w-64 sm:w-72">
-              {/* Card 2 (Back) */}
-              <motion.div
-                animate={
-                  selectedTab === "stack"
-                    ? {
-                        y: isVisualizerHovered ? -24 : -12,
-                        scale: isVisualizerHovered ? 1 : 0.9,
-                        opacity: isVisualizerHovered ? 1 : 0.6,
-                      }
-                    : selectedTab === "slide"
-                      ? {
-                          x: isVisualizerHovered ? 0 : 20,
-                          y: -28,
-                          opacity: 0.8,
-                          scale: 0.98,
-                        }
-                      : selectedTab === "fade"
-                        ? {
-                            y: -26,
-                            opacity: isVisualizerHovered ? 0.9 : 0.5,
-                            scale: 0.96,
-                          }
-                        : {
-                            scale: isVisualizerHovered ? 1.05 : 0.92,
-                            y: -16,
-                            opacity: 0.7,
-                          }
-                }
-                transition={{ type: "spring", stiffness: 350, damping: 24 }}
-                className="absolute inset-0 rounded-lg border border-neutral-300 bg-white/70 p-2 shadow-xs dark:border-neutral-700 dark:bg-[#1a1a1e]/80"
-              >
-                <div className="h-2 w-16 rounded bg-neutral-200 dark:bg-neutral-700" />
-              </motion.div>
-
-              {/* Card 1 (Middle) */}
-              <motion.div
-                animate={
-                  selectedTab === "stack"
-                    ? {
-                        y: isVisualizerHovered ? -12 : -6,
-                        scale: isVisualizerHovered ? 1 : 0.95,
-                        opacity: isVisualizerHovered ? 1 : 0.85,
-                      }
-                    : selectedTab === "slide"
-                      ? {
-                          x: isVisualizerHovered ? 0 : 10,
-                          y: -14,
-                          opacity: 0.9,
-                          scale: 0.99,
-                        }
-                      : selectedTab === "fade"
-                        ? {
-                            y: -13,
-                            opacity: isVisualizerHovered ? 0.95 : 0.75,
-                            scale: 0.98,
-                          }
-                        : {
-                            scale: isVisualizerHovered ? 1.02 : 0.96,
-                            y: -8,
-                            opacity: 0.85,
-                          }
-                }
-                transition={{ type: "spring", stiffness: 350, damping: 24 }}
-                className="absolute inset-0 rounded-lg border border-neutral-300 bg-white/90 p-2 shadow-sm dark:border-neutral-700 dark:bg-[#1e1e22]"
-              >
-                <div className="h-2 w-24 rounded bg-neutral-200 dark:bg-neutral-700" />
-              </motion.div>
+              {[2, 1].map((depth) => (
+                <motion.div
+                  key={depth}
+                  animate={
+                    selectedTab === "stack"
+                      ? { y: isVisualizerHovered ? -12 * depth : -6 * depth, scale: isVisualizerHovered ? 1 : 1 - 0.05 * depth, opacity: isVisualizerHovered ? 1 : 1 - 0.15 * depth }
+                      : selectedTab === "slide"
+                        ? { x: isVisualizerHovered ? 0 : 10 * depth, y: -14 * depth, opacity: 1 - 0.1 * depth, scale: 1 - 0.01 * depth }
+                        : selectedTab === "fade"
+                          ? { y: -13 * depth, opacity: isVisualizerHovered ? 1 - 0.05 * depth : 1 - 0.25 * depth, scale: 1 - 0.02 * depth }
+                          : { scale: isVisualizerHovered ? 1 + 0.02 * (3 - depth) : 1 - 0.04 * depth, y: -8 * depth, opacity: 1 - 0.15 * depth }
+                  }
+                  transition={{ type: "spring", stiffness: 350, damping: 24 }}
+                  className={`absolute inset-0 rounded-lg border border-neutral-300 p-2 ${
+                    depth === 2
+                      ? "bg-white/70 shadow-xs dark:border-neutral-700 dark:bg-[#1a1a1e]/80"
+                      : "bg-white/90 shadow-sm dark:border-neutral-700 dark:bg-[#1e1e22]"
+                  }`}
+                >
+                  <div className={`h-2 rounded bg-neutral-200 dark:bg-neutral-700 ${depth === 2 ? "w-16" : "w-24"}`} />
+                </motion.div>
+              ))}
 
               {/* Card 0 (Front) */}
               <motion.div
-                animate={
-                  selectedTab === "stack"
-                    ? { y: 0, scale: 1, opacity: 1 }
-                    : selectedTab === "slide"
-                      ? { x: 0, y: 0, scale: 1, opacity: 1 }
-                      : { y: 0, scale: 1, opacity: 1 }
-                }
+                animate={selectedTab === "slide" ? { x: 0, y: 0, scale: 1, opacity: 1 } : { y: 0, scale: 1, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 350, damping: 24 }}
                 className="absolute inset-0 flex items-center justify-between rounded-lg border border-neutral-300 bg-white p-3 shadow-md dark:border-neutral-600 dark:bg-[#222228]"
               >

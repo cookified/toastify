@@ -14,6 +14,14 @@ type SidebarProps = {
   className?: string;
 };
 
+const triggerButtons = [
+  { id: "action" as const, label: "Action", badge: "active" },
+  { id: "promise" as const, label: "Promise", badge: "async" },
+  { id: "success" as const, label: "Success", badge: "status" },
+  { id: "tailwind" as const, label: "Tailwind", badge: "style" },
+  { id: "variant" as const, label: "Dynamic", badge: "state" },
+];
+
 export function Sidebar({
   mobileMenuOpen = false,
   onCloseMobileMenu,
@@ -22,14 +30,6 @@ export function Sidebar({
   className = "",
 }: SidebarProps) {
   const [hoveredTrigger, setHoveredTrigger] = useState<string | null>(null);
-
-  const triggerButtons = [
-    { id: "action", label: "Action", badge: "active" },
-    { id: "promise", label: "Promise", badge: "async" },
-    { id: "success", label: "Success", badge: "status" },
-    { id: "tailwind", label: "Tailwind", badge: "style" },
-    { id: "variant", label: "Dynamic", badge: "state" },
-  ];
 
   return (
     <>
@@ -51,9 +51,7 @@ export function Sidebar({
         <div className="flex items-center justify-between pb-3 border-b border-neutral-200/80 dark:border-neutral-800/80 lg:hidden">
           <div className="flex items-center gap-2">
             <CloverLogo size={20} />
-            <span className="text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">
-              Toastify
-            </span>
+            <span className="text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">Toastify</span>
           </div>
           <button
             type="button"
@@ -68,9 +66,7 @@ export function Sidebar({
         <div className="flex-1 space-y-6 overflow-y-auto pr-2 text-sm mt-3 lg:mt-0">
           {/* Navigation Section */}
           <div>
-            <div className="px-2.5 text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">
-              Documentation
-            </div>
+            <div className="px-2.5 text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">Documentation</div>
             <nav className="mt-2 space-y-0.5">
               {siteNavLinks.map((item) => (
                 <MotionNavItem
@@ -88,9 +84,7 @@ export function Sidebar({
 
           {/* Quick Examples */}
           <div>
-            <div className="px-2.5 text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">
-              Examples
-            </div>
+            <div className="px-2.5 text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">Examples</div>
             <div className="mt-2 space-y-0.5">
               {triggerButtons.map((btn) => (
                 <button
@@ -127,11 +121,7 @@ export function Sidebar({
                         initial={{ opacity: 0, x: -3, scaleY: 0.4 }}
                         animate={{ opacity: 1, x: 0, scaleY: 1 }}
                         exit={{ opacity: 0, x: 3, scaleY: 0.4 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 26,
-                        }}
+                        transition={{ type: "spring", stiffness: 380, damping: 26 }}
                         className="absolute right-0 h-4 w-1 rounded-l-full rounded-r-md bg-gradient-to-b from-emerald-500 to-amber-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       />
                     )}

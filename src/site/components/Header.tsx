@@ -5,18 +5,8 @@ import { CloverLogo } from "./CloverLogo";
 
 function GithubIcon({ size = 14 }: { size?: number }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-      />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
     </svg>
   );
 }
@@ -38,21 +28,12 @@ export function Header({
   currentPage,
   onNavigate,
 }: HeaderProps) {
-  // Motion scroll progress animation
   const { scrollY, scrollYProgress } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    return scrollY.on("change", (latest) => {
-      setIsScrolled(latest > 12);
-    });
-  }, [scrollY]);
+  useEffect(() => scrollY.on("change", (latest) => setIsScrolled(latest > 12)), [scrollY]);
 
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 140,
-    damping: 30,
-    restDelta: 0.001,
-  });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 });
 
   return (
     <header
@@ -70,60 +51,39 @@ export function Header({
       />
 
       <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-3.5 sm:px-4 lg:px-6">
-        {/* Left: Brand Identity - Rock-solid & Stable on all viewports */}
+        {/* Left: Brand Identity */}
         <button
           type="button"
           onClick={() => onNavigate("home")}
           className="group flex cursor-pointer items-center gap-2.5 transition-opacity hover:opacity-90 shrink-0"
         >
-          <CloverLogo
-            size={22}
-            className="transition-transform duration-300 group-hover:scale-105 group-hover:rotate-6"
-          />
-          <span className="text-[16px] font-semibold tracking-tight text-neutral-950 dark:text-white">
-            Toastify
-          </span>
+          <CloverLogo size={22} className="transition-transform duration-300 group-hover:scale-105 group-hover:rotate-6" />
+          <span className="text-[16px] font-semibold tracking-tight text-neutral-950 dark:text-white">Toastify</span>
         </button>
 
-        {/* Center: Navigation Page Switcher (Desktop: md+ only) */}
+        {/* Center: Navigation Switcher (Desktop md+) */}
         <nav className="hidden md:flex items-center gap-1 rounded-xl border border-neutral-200/90 bg-neutral-100/90 p-1 text-xs font-medium dark:border-neutral-800 dark:bg-[#141418]">
-          <button
-            type="button"
-            onClick={() => onNavigate("home")}
-            className={`relative cursor-pointer rounded-lg px-3.5 py-1 transition-colors ${
-              currentPage === "home"
-                ? "text-neutral-950 dark:text-white"
-                : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
-            }`}
-          >
-            {currentPage === "home" && (
-              <motion.div
-                layoutId="header-nav-pill"
-                className="absolute inset-0 rounded-lg bg-white shadow-2xs dark:bg-[#222228]"
-                transition={{ type: "spring", stiffness: 450, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">Home</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate("docs")}
-            className={`relative cursor-pointer rounded-lg px-3.5 py-1 transition-colors ${
-              currentPage === "docs"
-                ? "text-neutral-950 dark:text-white"
-                : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
-            }`}
-          >
-            {currentPage === "docs" && (
-              <motion.div
-                layoutId="header-nav-pill"
-                className="absolute inset-0 rounded-lg bg-white shadow-2xs dark:bg-[#222228]"
-                transition={{ type: "spring", stiffness: 450, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">Documentation</span>
-          </button>
+          {(["home", "docs"] as const).map((page) => (
+            <button
+              key={page}
+              type="button"
+              onClick={() => onNavigate(page)}
+              className={`relative cursor-pointer rounded-lg px-3.5 py-1 transition-colors ${
+                currentPage === page
+                  ? "text-neutral-950 dark:text-white"
+                  : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
+              }`}
+            >
+              {currentPage === page && (
+                <motion.div
+                  layoutId="header-nav-pill"
+                  className="absolute inset-0 rounded-lg bg-white shadow-2xs dark:bg-[#222228]"
+                  transition={{ type: "spring", stiffness: 450, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10">{page === "home" ? "Home" : "Documentation"}</span>
+            </button>
+          ))}
         </nav>
 
         {/* Right: GitHub, Theme Toggle & Mobile Menu Toggle */}

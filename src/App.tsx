@@ -150,14 +150,6 @@ export function App() {
                 transition={sectionTransition}
                 className="space-y-2"
               >
-                <div className="flex items-center gap-2 text-xs font-mono text-neutral-500 dark:text-neutral-400">
-                  <span>Cookified</span>
-                  <span>/</span>
-                  <span className="text-neutral-900 dark:text-white font-medium">
-                    Toastify
-                  </span>
-                </div>
-
                 <h1 className="text-2xl font-medium tracking-tight text-neutral-950 sm:text-3xl dark:text-white">
                   A delightful toast component for React.
                 </h1>

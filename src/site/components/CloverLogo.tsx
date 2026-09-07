@@ -29,14 +29,6 @@ export function CloverLogo({ size = 20, className = "" }: CloverLogoProps) {
           <stop offset="100%" stopColor="#d97706" />
         </linearGradient>
 
-        {/* Diagonal Cut Specular Gleam */}
-        <linearGradient id="cloverGleam" x1="4" y1="28" x2="28" y2="4" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#34d399" stopOpacity="0.8" />
-          <stop offset="45%" stopColor="#ffffff" stopOpacity="0.95" />
-          <stop offset="55%" stopColor="#fef3c7" stopOpacity="0.95" />
-          <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.8" />
-        </linearGradient>
-
         <clipPath id="cloverCutTopLeft"><polygon points="-4,-4 36,-4 -4,36" /></clipPath>
         <clipPath id="cloverCutBottomRight"><polygon points="36,36 -4,36 36,-4" /></clipPath>
 
@@ -50,8 +42,6 @@ export function CloverLogo({ size = 20, className = "" }: CloverLogoProps) {
       <use href="#cloverShape" clipPath="url(#cloverCutTopLeft)" transform="translate(-0.8, -0.8)" fill="url(#cloverEmerald)" />
       <use href="#cloverShape" clipPath="url(#cloverCutBottomRight)" transform="translate(0.8, 0.8)" fill="url(#cloverAmber)" />
 
-      {/* Radiant Specular Edge Gleam */}
-      <line x1="5" y1="27" x2="27" y2="5" stroke="url(#cloverGleam)" strokeWidth="0.85" strokeLinecap="round" />
       <circle cx="16" cy="16" r="1.5" fill="#ffffff" opacity="0.9" />
     </svg>
   );

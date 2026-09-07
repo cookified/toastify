@@ -1,6 +1,6 @@
 {
   "name": "@cookified/toastify",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A delightful React toast notification library with folder stack animations and tactile micro-bevels.",
   "type": "module",
   "main": "./lib/index.cjs",

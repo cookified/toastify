@@ -43,12 +43,46 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
   ) {
     const [toasts, setToasts] = useState<ToastData[]>([]);
     const [isHovered, setIsHovered] = useState(false);
-    const [hoverExpandedCount, setHoverExpandedCount] = useState<number | null>(
-      null,
-    );
+    const [hoverExpandedCount, setHoverExpandedCount] = useState<number | null>(null);
     const leaveTimeoutRef = useRef<number | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const prevFirstIdRef = useRef<string | undefined>(undefined);
+
+    const setMergedRef = (node: HTMLDivElement | null) => {
+      containerRef.current = node;
+      if (typeof ref === "function") {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    };
 
     useEffect(() => toastStore.subscribe(setToasts), []);
+
+    // Auto-collapse stack when a new toast is pushed, when cleared, or when only 1 remains
+    useEffect(() => {
+      const currentFirstId = toasts[0]?.id;
+      if (toasts.length <= 1 || (currentFirstId && prevFirstIdRef.current && currentFirstId !== prevFirstIdRef.current)) {
+        setIsHovered(false);
+        setHoverExpandedCount(null);
+      }
+      prevFirstIdRef.current = currentFirstId;
+    }, [toasts]);
+
+    // Collapse on mobile / outside tap or click
+    useEffect(() => {
+      if (!isHovered) return;
+
+      const handlePointerDownOutside = (event: PointerEvent) => {
+        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+          setIsHovered(false);
+          setHoverExpandedCount(null);
+        }
+      };
+
+      document.addEventListener("pointerdown", handlePointerDownOutside);
+      return () => document.removeEventListener("pointerdown", handlePointerDownOutside);
+    }, [isHovered]);
 
     useEffect(() => {
       if (!dismissOnEscape || toasts.length === 0) return;
@@ -56,17 +90,11 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
           const target = event.target;
-          const isElement =
-            typeof Element !== "undefined" && target instanceof Element;
-          const isInsideToaster = Boolean(
-            isElement && target.closest('[data-toastify-toaster="true"]'),
-          );
+          const isElement = typeof Element !== "undefined" && target instanceof Element;
+          const isInsideToaster = Boolean(isElement && target.closest('[data-toastify-toaster="true"]'));
           const isInputField = Boolean(
             isElement &&
-            (target.tagName === "INPUT" ||
-              target.tagName === "TEXTAREA" ||
-              target.tagName === "SELECT" ||
-              (target as HTMLElement).isContentEditable),
+            (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || (target as HTMLElement).isContentEditable),
           );
 
           if (isInsideToaster || !isInputField) {
@@ -77,17 +105,12 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
       };
 
       window.addEventListener("keydown", handleKeyDown);
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
+      return () => window.removeEventListener("keydown", handleKeyDown);
     }, [dismissOnEscape, toasts]);
 
     useEffect(() => {
       if (!isHovered && toasts.length > visibleToasts) {
-        const excess = toasts.slice(visibleToasts);
-        excess.forEach((t) => {
-          toastStore.remove(t.id);
-        });
+        toasts.slice(visibleToasts).forEach((t) => toastStore.remove(t.id));
       }
     }, [toasts, visibleToasts, isHovered]);
 
@@ -96,23 +119,21 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
     const activeCount = Math.min(toasts.length, visibleToasts);
 
     const effectiveCount =
-      isHovered && hoverExpandedCount !== null
-        ? Math.max(activeCount, hoverExpandedCount)
-        : activeCount;
+      isHovered && hoverExpandedCount !== null ? Math.max(activeCount, hoverExpandedCount) : activeCount;
 
     const stackStep = 56 + gap;
     const containerHeight =
-      hasToasts && isHovered && effectiveCount > 0
-        ? (effectiveCount - 1) * stackStep + 56
-        : 56;
+      hasToasts && isHovered && effectiveCount > 0 ? (effectiveCount - 1) * stackStep + 56 : 56;
 
     const handleMouseEnter = () => {
       if (leaveTimeoutRef.current) {
         window.clearTimeout(leaveTimeoutRef.current);
         leaveTimeoutRef.current = null;
       }
-      setHoverExpandedCount((prev) => Math.max(prev ?? 0, activeCount));
-      setIsHovered(true);
+      if (activeCount > 1) {
+        setHoverExpandedCount((prev) => Math.max(prev ?? 0, activeCount));
+        setIsHovered(true);
+      }
     };
 
     const handleMouseLeave = () => {
@@ -122,24 +143,14 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
       }, 140);
     };
 
-    useEffect(() => {
-      return () => {
-        if (leaveTimeoutRef.current) {
-          window.clearTimeout(leaveTimeoutRef.current);
-        }
-      };
+    useEffect(() => () => {
+      if (leaveTimeoutRef.current) window.clearTimeout(leaveTimeoutRef.current);
     }, []);
 
     const dynamicStyle: CSSProperties = {
       ...style,
-      ...(typeof zIndex !== "undefined"
-        ? { "--toastify-z-index": String(zIndex), zIndex }
-        : {}),
-      ...(typeof offset === "number"
-        ? { "--toastify-offset": `${offset}px` }
-        : offset
-          ? { "--toastify-offset": offset }
-          : {}),
+      ...(zIndex !== undefined ? { "--toastify-z-index": String(zIndex), zIndex } : {}),
+      ...(offset !== undefined ? { "--toastify-offset": typeof offset === "number" ? `${offset}px` : offset } : {}),
       ...(typeof gap === "number" ? { "--toastify-gap": `${gap}px` } : {}),
     } as CSSProperties;
 
@@ -152,7 +163,7 @@ export const Toaster = forwardRef<HTMLDivElement, ToasterProps>(
           />
         )}
         <motion.div
-          ref={ref}
+          ref={setMergedRef}
           data-toastify-toaster="true"
           role="region"
           aria-label="Notifications"

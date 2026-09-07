@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { Toast } from "./Toast";
 import { ToastAnimation } from "./animations";
@@ -52,69 +52,44 @@ export function ToasterItem({
   const itemDuration =
     toast.type === "loading"
       ? false
-      : toast.duration !== undefined
-        ? toast.duration
-        : toastOptions?.duration !== undefined
-          ? toastOptions.duration
-          : (autoClose ?? duration);
+      : (toast.duration ?? toastOptions?.duration ?? autoClose ?? duration);
 
+  const [isDismissing, setIsDismissing] = useState(false);
   const onDismissRef = useRef(onDismiss);
   useEffect(() => {
     onDismissRef.current = onDismiss;
   }, [onDismiss]);
 
-  const [isDismissing, setIsDismissing] = useState(false);
-
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     setIsDismissing(true);
     onDismissRef.current();
-  };
+  }, []);
 
   const remainingTimeRef = useRef<number | false>(itemDuration);
-
   useEffect(() => {
     remainingTimeRef.current = itemDuration;
   }, [itemDuration]);
 
   useEffect(() => {
-    if (itemDuration === false || isHovered) {
-      return;
-    }
+    if (itemDuration === false || isHovered) return;
 
-    const elapsedSinceCreation = toast.createdAt
-      ? Date.now() - toast.createdAt
-      : 0;
-    const initialRemaining =
-      typeof itemDuration === "number"
-        ? Math.max(50, itemDuration - elapsedSinceCreation)
-        : itemDuration;
-
+    const elapsed = toast.createdAt ? Date.now() - toast.createdAt : 0;
+    const initial = typeof itemDuration === "number" ? Math.max(50, itemDuration - elapsed) : itemDuration;
     const startTime = Date.now();
-    const currentRemaining =
-      remainingTimeRef.current === false
-        ? initialRemaining
-        : Math.min(
-            typeof remainingTimeRef.current === "number"
-              ? remainingTimeRef.current
-              : Infinity,
-            typeof initialRemaining === "number" ? initialRemaining : Infinity,
-          );
+    const remaining =
+      typeof remainingTimeRef.current === "number" && typeof initial === "number"
+        ? Math.min(remainingTimeRef.current, initial)
+        : initial;
 
-    const timer = window.setTimeout(() => {
-      handleDismiss();
-    }, currentRemaining);
+    const timer = window.setTimeout(handleDismiss, remaining as number);
 
     return () => {
       window.clearTimeout(timer);
-      if (remainingTimeRef.current !== false) {
-        const elapsed = Date.now() - startTime;
-        remainingTimeRef.current = Math.max(
-          0,
-          remainingTimeRef.current - elapsed,
-        );
+      if (typeof remainingTimeRef.current === "number") {
+        remainingTimeRef.current = Math.max(0, remainingTimeRef.current - (Date.now() - startTime));
       }
     };
-  }, [isHovered, itemDuration, toast.createdAt]);
+  }, [isHovered, itemDuration, toast.createdAt, handleDismiss]);
 
   return (
     <ToastAnimation

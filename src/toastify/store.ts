@@ -126,76 +126,45 @@ function create(type: ToastType, title: ReactNode, options: ToastOptions = {}) {
   return id;
 }
 
+function resolveMsg<T, R>(val: R | ((arg: T) => R) | undefined, arg: T, fallback?: R): R | undefined {
+  try {
+    return typeof val === "function" ? (val as (arg: T) => R)(arg) : (val ?? fallback);
+  } catch {
+    return fallback;
+  }
+}
+
 function promise<T>(
   promiseOrFn: Promise<T> | (() => Promise<T>),
   options: ToastPromiseOptions<T>,
 ): Promise<T> {
-  const id = create("loading", options.loading, {
-    duration: false,
-  });
-
+  const id = create("loading", options.loading, { duration: false });
   const p = typeof promiseOrFn === "function" ? promiseOrFn() : promiseOrFn;
 
   const promiseChain = p
     .then((data) => {
-      let successTitle: ReactNode;
-      try {
-        successTitle =
-          typeof options.success === "function"
-            ? options.success(data)
-            : options.success;
-      } catch {
-        successTitle = "Completed successfully";
-      }
-
-      let description: ReactNode;
-      if (options.description) {
-        try {
-          description =
-            typeof options.description === "function"
-              ? options.description(data)
-              : options.description;
-        } catch {
-          description = undefined;
-        }
-      }
-
       update(id, {
         type: "success",
-        title: successTitle,
-        description,
+        title: resolveMsg(options.success, data, "Completed successfully"),
+        description: resolveMsg(options.description, data, undefined),
         action: options.action,
         cancel: options.cancel,
         duration: 3500,
       });
-
       return data;
     })
     .catch((err) => {
-      let errorTitle: ReactNode;
-      try {
-        errorTitle =
-          typeof options.error === "function"
-            ? options.error(err)
-            : options.error;
-      } catch {
-        errorTitle = "An error occurred";
-      }
-
       update(id, {
         type: "error",
-        title: errorTitle,
+        title: resolveMsg(options.error, err, "An error occurred"),
         action: options.action,
         cancel: options.cancel,
         duration: 4000,
       });
-
       return Promise.reject(err);
     });
 
-  // Attach a noop listener so that unawaited toast.promise() calls do not trigger uncaught console errors
   promiseChain.catch(() => {});
-
   return promiseChain;
 }
 
@@ -206,34 +175,16 @@ export const toastStore = {
   getToasts: () => [...toasts],
 };
 
-function toastFn(title: ReactNode, options?: ToastOptions) {
-  return create("neutral", title, options);
-}
+const dispatch = (type: ToastType, extra?: Partial<ToastOptions>) =>
+  (title: ReactNode, options?: ToastOptions) => create(type, title, { ...options, ...extra });
 
-export const toast = Object.assign(toastFn, {
-  show(title: ReactNode, options?: ToastOptions) {
-    return create("neutral", title, options);
-  },
-
-  success(title: ReactNode, options?: ToastOptions) {
-    return create("success", title, options);
-  },
-
-  error(title: ReactNode, options?: ToastOptions) {
-    return create("error", title, options);
-  },
-
-  warning(title: ReactNode, options?: ToastOptions) {
-    return create("warning", title, options);
-  },
-
-  info(title: ReactNode, options?: ToastOptions) {
-    return create("info", title, options);
-  },
-
-  loading(title: ReactNode, options?: ToastOptions) {
-    return create("loading", title, { ...options, duration: false });
-  },
+export const toast = Object.assign(dispatch("neutral"), {
+  show: dispatch("neutral"),
+  success: dispatch("success"),
+  error: dispatch("error"),
+  warning: dispatch("warning"),
+  info: dispatch("info"),
+  loading: dispatch("loading", { duration: false }),
 
   custom(renderer: (id: string) => ReactNode, options: ToastOptions = {}) {
     const id = options.id ?? generateId();
@@ -256,19 +207,10 @@ export const toast = Object.assign(toastFn, {
   },
 
   promise,
-
   variant: defineVariant,
-
   defineState: defineVariant,
-
-  dismiss(id?: string) {
-    remove(id);
-  },
-
-  update(
-    id: string,
-    options: Partial<ToastOptions> & { title?: ReactNode; type?: ToastType },
-  ) {
+  dismiss: (id?: string) => remove(id),
+  update: (id: string, options: Partial<ToastOptions> & { title?: ReactNode; type?: ToastType }) => {
     update(id, options);
   },
 });

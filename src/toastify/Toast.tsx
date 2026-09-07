@@ -57,33 +57,25 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
     className,
   );
 
-  const handleAction = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    try {
-      toast.action?.onClick(event);
-    } catch (err) {
-      console.error("Toast action handler failed:", err);
-    }
-    onDismiss();
-  };
+  const handleBtn = (action?: { onClick: (e: React.MouseEvent<HTMLButtonElement>) => void }) =>
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      try { action?.onClick(e); } catch (err) { console.error("Toast action failed:", err); }
+      onDismiss();
+    };
 
-  const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    try {
-      toast.cancel?.onClick(event);
-    } catch (err) {
-      console.error("Toast cancel handler failed:", err);
+  const handleKey = (cb: () => void, allowEsc = false) => (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " " || (allowEsc && e.key === "Escape")) {
+      e.preventDefault();
+      e.stopPropagation();
+      cb();
     }
-    onDismiss();
   };
 
   return (
     <div
       ref={ref}
-      onClick={(event) => {
-        restProps.onClick?.(event);
-        if (closeOnClick) onDismiss();
-      }}
+      onClick={(e) => { restProps.onClick?.(e); if (closeOnClick) onDismiss(); }}
       className={combinedClassName}
       style={{ ...globalOptions?.style, ...toast.style, ...style }}
       {...restProps}
@@ -92,9 +84,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
         {icon}
         <div className="toastify-text-group">
           <div className="toastify-title">{toast.title}</div>
-          {toast.description && (
-            <div className="toastify-description">{toast.description}</div>
-          )}
+          {toast.description && <div className="toastify-description">{toast.description}</div>}
         </div>
       </div>
 
@@ -102,58 +92,29 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
         {toast.cancel && (
           <button
             type="button"
-            onClick={handleCancel}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                handleCancel(
-                  event as unknown as React.MouseEvent<HTMLButtonElement>,
-                );
-              }
-            }}
+            onClick={handleBtn(toast.cancel)}
+            onKeyDown={handleKey(() => toast.cancel?.onClick({} as React.MouseEvent<HTMLButtonElement>))}
             className="toastify-btn-cancel"
           >
             {toast.cancel.label}
           </button>
         )}
-
         {toast.action && (
           <button
             type="button"
-            onClick={handleAction}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                handleAction(
-                  event as unknown as React.MouseEvent<HTMLButtonElement>,
-                );
-              }
-            }}
+            onClick={handleBtn(toast.action)}
+            onKeyDown={handleKey(() => toast.action?.onClick({} as React.MouseEvent<HTMLButtonElement>))}
             className="toastify-btn-action"
           >
             {toast.action.label}
           </button>
         )}
-
         {showCloseButton && (
           <button
             type="button"
             aria-label="Dismiss notification"
-            onClick={(event) => {
-              event.stopPropagation();
-              onDismiss();
-            }}
-            onKeyDown={(event) => {
-              if (
-                event.key === "Enter" ||
-                event.key === " " ||
-                event.key === "Escape"
-              ) {
-                event.preventDefault();
-                event.stopPropagation();
-                onDismiss();
-              }
-            }}
+            onClick={(e) => { e.stopPropagation(); onDismiss(); }}
+            onKeyDown={handleKey(onDismiss, true)}
             className="toastify-btn-close"
           >
             <XIcon />

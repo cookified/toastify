@@ -243,7 +243,7 @@ export function Toaster({
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className={`toastify-list relative w-full h-full flex ${isTop ? "toastify-list-col flex-col" : "toastify-list-col-reverse flex-col-reverse"}`}
+          className={`toastify-list ${isTop ? "toastify-list-col" : "toastify-list-col-reverse"}`}
         >
           <AnimatePresence>
             {toasts.slice(0, visibleToasts).map((toastItem, index) => (

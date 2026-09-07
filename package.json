@@ -13,7 +13,8 @@
       "require": "./lib/index.cjs"
     },
     "./index.css": "./lib/index.css",
-    "./styles.css": "./lib/styles.css"
+    "./styles.css": "./lib/styles.css",
+    "./shadcn-theme.css": "./lib/shadcn-theme.css"
   },
   "files": [
     "lib",
@@ -42,10 +43,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build:lib": "tsup && node scripts/copy-css.js",
+    "build:lib": "node scripts/prebuild.js && tsup && node scripts/postbuild.js",
     "build:site": "vite build",
     "build": "npm run build:lib && npm run build:site",
-    "prepublishOnly": "rm -rf lib && npm run build:lib",
+    "prepublishOnly": "rm -rf lib && npm run build:lib && npm test",
+    "test": "vitest run",
     "lint": "eslint .",
     "preview": "vite preview"
   },

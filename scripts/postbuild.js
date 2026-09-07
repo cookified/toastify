@@ -4,25 +4,20 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const srcCss = path.resolve(__dirname, "../src/toastify/styles.css");
+const srcShadcn = path.resolve(__dirname, "../src/toastify/shadcn-theme.css");
 const libDir = path.resolve(__dirname, "../lib");
 
 if (!fs.existsSync(libDir)) {
   fs.mkdirSync(libDir, { recursive: true });
 }
 
-// 0. Auto-generate src/toastify/styles.ts from styles.css (single source of truth)
-const cssContent = fs.readFileSync(srcCss, "utf-8");
-const stylesTsPath = path.resolve(__dirname, "../src/toastify/styles.ts");
-const stylesTsContent = `// Auto-generated from styles.css during build. Do not edit directly.
-export const toastifyStyles = ${JSON.stringify(cssContent)};
-`;
-fs.writeFileSync(stylesTsPath, stylesTsContent, "utf-8");
-console.log("⚡️ Generated src/toastify/styles.ts from styles.css");
-
 // 1. Copy standalone CSS files
 fs.copyFileSync(srcCss, path.join(libDir, "styles.css"));
 fs.copyFileSync(srcCss, path.join(libDir, "index.css"));
-console.log("⚡️ CSS copied to lib/styles.css and lib/index.css");
+if (fs.existsSync(srcShadcn)) {
+  fs.copyFileSync(srcShadcn, path.join(libDir, "shadcn-theme.css"));
+}
+console.log("⚡️ Postbuild: CSS copied to lib/styles.css, lib/index.css, and lib/shadcn-theme.css");
 
 // 2. Ensure "use client"; directive at top of bundles for Next.js App Router
 const banner = '"use client";\n';

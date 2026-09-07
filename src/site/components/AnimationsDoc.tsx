@@ -250,7 +250,7 @@ export function AnimationsDoc({
           <button
             type="button"
             onClick={firePreviewToast}
-            className="flex cursor-pointer items-center gap-1.5 rounded-xl bg-neutral-950 px-3.5 py-1.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-95 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+            className="flex cursor-pointer items-center gap-1.5 rounded-xl bg-neutral-950 px-3.5 py-1.5 text-xs font-medium text-white shadow-sm transition-all duration-200 hover:bg-neutral-800 hover:shadow-[0_0_16px_rgba(16,185,129,0.25)] active:scale-95 active:shadow-[0_0_20px_rgba(245,158,11,0.3)] dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 dark:hover:shadow-[0_0_16px_rgba(245,158,11,0.25)]"
           >
             <Play size={12} className="fill-current" />
             <span>Test In Toaster</span>

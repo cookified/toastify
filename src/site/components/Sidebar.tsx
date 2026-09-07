@@ -73,20 +73,20 @@ export function Sidebar({
                   onClick={() => onTriggerToast(btn.id)}
                   onMouseEnter={() => setHoveredTrigger(btn.id)}
                   onMouseLeave={() => setHoveredTrigger(null)}
-                  className="group relative flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-sm text-neutral-600 transition-colors hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white"
+                  className="group relative flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-sm text-neutral-600 transition-all duration-200 hover:text-neutral-950 active:scale-[0.98] dark:text-neutral-400 dark:hover:text-white"
                 >
                   <span className="flex items-center gap-2">
                     <span
-                      className={`h-1.5 w-1.5 rounded-full transition-transform ${
+                      className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
                         hoveredTrigger === btn.id
-                          ? "scale-125 bg-neutral-900 dark:bg-white"
+                          ? "scale-125 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]"
                           : "bg-neutral-300 dark:bg-neutral-700"
                       }`}
                     />
                     <span>{btn.label}</span>
                   </span>
 
-                  <span className="rounded bg-neutral-100 px-2 py-0.5 font-mono text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                  <span className="rounded bg-neutral-100 px-2 py-0.5 font-mono text-xs text-neutral-600 transition-colors group-hover:bg-neutral-200/70 dark:bg-neutral-800 dark:text-neutral-300 dark:group-hover:bg-neutral-700/60">
                     {btn.badge}
                   </span>
 
@@ -103,7 +103,7 @@ export function Sidebar({
                           stiffness: 380,
                           damping: 26,
                         }}
-                        className="absolute right-0 h-4 w-1 rounded-l-full rounded-r-md bg-neutral-900 shadow-[0_0_8px_rgba(0,0,0,0.25)] dark:bg-white dark:shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                        className="absolute right-0 h-4 w-1 rounded-l-full rounded-r-md bg-gradient-to-b from-emerald-500 to-amber-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       />
                     )}
                   </AnimatePresence>

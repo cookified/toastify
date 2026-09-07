@@ -117,7 +117,13 @@ export function App() {
 
   return (
     <div className={isDark ? "dark" : ""}>
-      <div className="min-h-screen bg-[#fafafa] text-neutral-900 antialiased selection:bg-neutral-900 selection:text-white dark:bg-[#09090b] dark:text-[#f4f4f5] dark:selection:bg-white dark:selection:text-black font-sans">
+      <div className="relative min-h-screen bg-[#fafafa] text-neutral-900 antialiased selection:bg-neutral-900 selection:text-white dark:bg-[#09090b] dark:text-[#f4f4f5] dark:selection:bg-white dark:selection:text-black font-sans">
+        {/* Subtle macOS Ambient Chromatic Glow (Infused Emerald to Amber) */}
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <div className="absolute -top-32 right-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-emerald-500/[0.035] via-teal-500/[0.015] to-transparent blur-[140px] dark:from-emerald-500/[0.06] dark:via-teal-500/[0.025]" />
+          <div className="absolute top-1/2 -left-32 h-[450px] w-[450px] rounded-full bg-gradient-to-tr from-amber-500/[0.03] via-yellow-500/[0.015] to-transparent blur-[130px] dark:from-amber-500/[0.055] dark:via-yellow-500/[0.02]" />
+        </div>
+
         {/* Sticky Header with Navigation Switcher */}
         <Header
           isDark={isDark}

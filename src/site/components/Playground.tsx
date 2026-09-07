@@ -210,7 +210,7 @@ function CustomDropdown<T extends string>({
             animate={{ opacity: 1, y: 2, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 450, damping: 28 }}
-            className="absolute right-0 z-50 mt-1 min-w-[150px] overflow-hidden rounded-xl border border-neutral-200 bg-white/95 p-1 shadow-xl backdrop-blur-md dark:border-neutral-800 dark:bg-[#18181b]/95"
+            className="absolute right-0 z-50 mt-1 min-w-[150px] overflow-hidden rounded-xl border border-neutral-200/80 bg-white/90 p-1 shadow-2xl backdrop-blur-xl backdrop-saturate-180 dark:border-neutral-800/80 dark:bg-[#18181b]/90"
           >
             {options.map((opt) => (
               <button
@@ -280,22 +280,26 @@ export function Playground({
       {/* Interactive Preview Canvas */}
       <div className="canvas-grid relative flex h-[350px] w-full flex-col items-center justify-center rounded-2xl border border-neutral-200/90 bg-white p-6 shadow-xs transition-all hover:border-neutral-300 dark:border-neutral-800/90 dark:bg-[#111113] dark:hover:border-neutral-700">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          <button
-            type="button"
-            onClick={() => onFireToast(selectedVariant)}
-            className="group relative flex h-20 w-20 cursor-pointer items-center justify-center rounded-2xl border border-neutral-300 bg-neutral-900 text-white shadow-xl transition-all hover:scale-105 active:scale-95 dark:border-neutral-700 dark:bg-[#18181b] dark:text-white dark:hover:bg-[#222226]"
-            aria-label="Trigger toast notification"
-          >
-            <Bell
-              size={28}
-              className="transition-transform group-hover:rotate-12"
-            />
-            {activeCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-semibold text-neutral-950 shadow-md dark:bg-white dark:text-neutral-950">
-                {activeCount}
-              </span>
-            )}
-          </button>
+          {/* Bell Trigger with macOS Infused Interaction Blur */}
+          <div className="group relative">
+            <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-tr from-emerald-500/0 via-teal-500/0 to-amber-500/0 blur-lg opacity-0 transition-all duration-300 group-hover:from-emerald-500/35 group-hover:via-teal-500/20 group-hover:to-amber-500/35 group-hover:opacity-100 group-active:from-emerald-500/60 group-active:to-amber-500/60 group-active:opacity-100 group-active:blur-xl" />
+            <button
+              type="button"
+              onClick={() => onFireToast(selectedVariant)}
+              className="relative flex h-20 w-20 cursor-pointer items-center justify-center rounded-2xl border border-neutral-300/80 bg-neutral-900 text-white shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 active:shadow-[0_0_30px_rgba(16,185,129,0.35)] dark:border-neutral-700/80 dark:bg-[#18181b] dark:text-white dark:hover:bg-[#222226] dark:active:shadow-[0_0_30px_rgba(245,158,11,0.35)]"
+              aria-label="Trigger toast notification"
+            >
+              <Bell
+                size={28}
+                className="transition-transform duration-200 group-hover:rotate-12"
+              />
+              {activeCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-semibold text-neutral-950 shadow-md dark:bg-white dark:text-neutral-950">
+                  {activeCount}
+                </span>
+              )}
+            </button>
+          </div>
 
           <div className="space-y-1">
             <div className="text-sm font-medium text-neutral-900 dark:text-white">
@@ -322,10 +326,10 @@ export function Playground({
                     onSelectVariant(v.id);
                     onFireToast(v.id);
                   }}
-                  className={`cursor-pointer rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all ${
+                  className={`cursor-pointer rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all duration-200 active:scale-95 ${
                     isSelected
-                      ? "bg-neutral-950 text-white shadow-md ring-2 ring-neutral-950/25 dark:bg-white dark:text-neutral-950 dark:ring-white/30"
-                      : "border border-neutral-300/80 bg-neutral-100/90 text-neutral-800 hover:bg-neutral-200/80 hover:text-black dark:border-neutral-800 dark:bg-[#18181b] dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-[#222226] dark:hover:text-white"
+                      ? "bg-neutral-950 text-white shadow-[0_0_16px_rgba(16,185,129,0.22)] ring-1 ring-emerald-500/40 dark:bg-white dark:text-neutral-950 dark:shadow-[0_0_16px_rgba(245,158,11,0.25)] dark:ring-amber-500/40"
+                      : "border border-neutral-300/80 bg-neutral-100/90 text-neutral-800 hover:border-emerald-500/30 hover:bg-neutral-200/80 hover:text-black hover:shadow-[0_0_12px_rgba(16,185,129,0.1)] dark:border-neutral-800 dark:bg-[#18181b] dark:text-neutral-300 dark:hover:border-emerald-500/30 dark:hover:bg-[#222226] dark:hover:text-white dark:hover:shadow-[0_0_12px_rgba(16,185,129,0.15)]"
                   }`}
                 >
                   {v.label}

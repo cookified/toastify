@@ -1,6 +1,7 @@
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
-import type { MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
+import { CloverLogo } from "./CloverLogo";
 
 function GithubIcon({ size = 14 }: { size?: number }) {
   return (
@@ -38,7 +39,15 @@ export function Header({
   onNavigate,
 }: HeaderProps) {
   // Motion scroll progress animation
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    return scrollY.on("change", (latest) => {
+      setIsScrolled(latest > 12);
+    });
+  }, [scrollY]);
+
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 140,
     damping: 30,
@@ -46,7 +55,20 @@ export function Header({
   });
 
   return (
-    <header className="sticky top-0 z-40 h-14 border-b border-neutral-200/80 bg-white/85 backdrop-blur-md dark:border-neutral-800/80 dark:bg-[#09090b]/85">
+    <header
+      className={`sticky top-0 z-40 h-14 border-b transition-all duration-300 ${
+        isScrolled
+          ? "border-neutral-200/80 bg-white/80 backdrop-blur-xl backdrop-saturate-180 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:border-white/[0.08] dark:bg-[#09090b]/80 dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+          : "border-neutral-200/60 bg-white/60 backdrop-blur-md dark:border-white/[0.04] dark:bg-[#09090b]/60"
+      }`}
+    >
+      {/* Minute Infused Gradient Shimmer Layer (macOS glass feel) */}
+      <div
+        className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-emerald-500/[0.04] via-teal-500/[0.02] to-amber-500/[0.04] dark:from-emerald-500/[0.08] dark:via-teal-500/[0.03] dark:to-amber-500/[0.08] transition-opacity duration-500 ${
+          isScrolled ? "opacity-100" : "opacity-40"
+        }`}
+      />
+
       <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 lg:px-6">
         {/* Left: Brand Identity & Mobile Hamburger */}
         <div className="flex items-center gap-3">
@@ -64,8 +86,12 @@ export function Header({
           <button
             type="button"
             onClick={() => onNavigate("home")}
-            className="flex cursor-pointer items-center transition-opacity hover:opacity-80"
+            className="group flex cursor-pointer items-center gap-2.5 transition-opacity hover:opacity-90"
           >
+            <CloverLogo
+              size={22}
+              className="transition-transform duration-300 group-hover:scale-105 group-hover:rotate-6"
+            />
             <span className="text-[16px] font-semibold tracking-tight text-neutral-950 dark:text-white">
               Toastify
             </span>
@@ -122,7 +148,7 @@ export function Header({
             href="https://github.com/cookified/toastify"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200/90 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 shadow-2xs transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="group relative inline-flex items-center gap-1.5 rounded-lg border border-neutral-200/90 bg-white/90 px-2.5 py-1.5 text-xs font-medium text-neutral-700 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-emerald-500/30 hover:bg-neutral-50 hover:shadow-[0_0_16px_rgba(16,185,129,0.12)] active:scale-95 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-emerald-500/40 dark:hover:bg-neutral-800 dark:hover:shadow-[0_0_20px_rgba(16,185,129,0.18)]"
           >
             <GithubIcon size={14} />
             <span className="hidden sm:inline">GitHub</span>
@@ -131,7 +157,7 @@ export function Header({
           <button
             type="button"
             onClick={(e) => onToggleTheme(e)}
-            className="relative inline-flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-neutral-200 bg-white text-neutral-600 transition-colors hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="group relative inline-flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-neutral-200 bg-white/90 text-neutral-600 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-amber-500/30 hover:bg-neutral-100 hover:text-neutral-950 hover:shadow-[0_0_16px_rgba(245,158,11,0.15)] active:scale-90 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-amber-500/40 dark:hover:bg-neutral-800 dark:hover:text-white dark:hover:shadow-[0_0_20px_rgba(245,158,11,0.22)]"
             aria-label="Toggle visual theme"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -153,7 +179,7 @@ export function Header({
       {/* Motion-Powered Spring Scroll Progress Bar (Only visible on Documentation page) */}
       {currentPage === "docs" && (
         <motion.div
-          className="h-[2px] w-full origin-left bg-neutral-900 dark:bg-white"
+          className="h-[2px] w-full origin-left bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
           style={{ scaleX }}
         />
       )}

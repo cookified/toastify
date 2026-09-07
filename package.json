@@ -1,6 +1,6 @@
 {
   "name": "@cookified/toastify",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A delightful React toast notification library with folder stack animations and tactile micro-bevels.",
   "type": "module",
   "main": "./lib/index.cjs",
@@ -14,7 +14,8 @@
     },
     "./index.css": "./lib/index.css",
     "./styles.css": "./lib/styles.css",
-    "./shadcn-theme.css": "./lib/shadcn-theme.css"
+    "./shadcn-theme.css": "./lib/shadcn-theme.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "lib",
@@ -24,7 +25,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css",
+    "./lib/*.css"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cookified/toastify.git"

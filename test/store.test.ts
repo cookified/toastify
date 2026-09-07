@@ -136,4 +136,52 @@ describe("toastStore & toast API", () => {
     toast.dismiss();
     expect(toastStore.getToasts().length).toBe(0);
   });
+
+  it("creates isolated, non-colliding custom variant dispatchers with toast.variant", () => {
+    const syncToast = toast.variant({
+      icon: "SYNC_ICON",
+      className: "toastify-sync",
+      duration: 3000,
+    });
+
+    const secureToast = toast.variant({
+      icon: "SHIELD_ICON",
+      className: "toastify-shield",
+      duration: 5000,
+    });
+
+    syncToast("Syncing branch", { description: "2 commits pushed" });
+    secureToast("Session locked", { className: "extra-class" });
+
+    const current = toastStore.getToasts();
+    expect(current.length).toBe(2);
+
+    // secureToast is the latest (index 0)
+    const secureItem = current[0];
+    expect(secureItem.title).toBe("Session locked");
+    expect(secureItem.icon).toBe("SHIELD_ICON");
+    expect(secureItem.className).toBe("toastify-shield extra-class");
+    expect(secureItem.duration).toBe(5000);
+
+    // syncToast is index 1
+    const syncItem = current[1];
+    expect(syncItem.title).toBe("Syncing branch");
+    expect(syncItem.description).toBe("2 commits pushed");
+    expect(syncItem.icon).toBe("SYNC_ICON");
+    expect(syncItem.className).toBe("toastify-sync");
+    expect(syncItem.duration).toBe(3000);
+  });
+
+  it("suppresses variant icon when icon: null is explicitly passed to the dispatcher", () => {
+    const iconVariant = toast.variant({
+      icon: "DEFAULT_VARIANT_ICON",
+    });
+
+    iconVariant("With suppressed icon", { icon: null });
+    const current = toastStore.getToasts();
+    expect(current.length).toBe(1);
+    expect(current[0].icon).toBeNull();
+  });
 });
+
+

@@ -14,13 +14,12 @@ export function FadeAnimation({
   onDismiss,
   springConfig = defaultSpring,
   children,
-  gap = 14,
 }: ToastAnimationProps) {
   const isTop = position.startsWith("top");
 
-  const stackStep = 56 + gap;
+  const stackStep = 66;
   const targetY = isTop ? index * stackStep : -index * stackStep;
-  const isError = toast.type === "error";
+  const isError = toast?.type === "error";
 
   return (
     <motion.article
@@ -62,7 +61,7 @@ export function FadeAnimation({
           onDismiss();
         }
       }}
-      className="toastify-item"
+      className="toastify-item absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
       style={{
         [isTop ? "top" : "bottom"]: 0,
         left: 0,

@@ -1,17 +1,30 @@
 /* shadcn/ui CSS variable token bridge for @cookified/toastify */
 :root {
   --toastify-bg: hsl(var(--card, 0 0% 100%));
-  --toastify-fg: hsl(var(--card-foreground, 240 10% 3.9%));
+  --toastify-color: hsl(var(--card-foreground, 240 10% 3.9%));
+  --toastify-title-color: hsl(var(--card-foreground, 240 10% 3.9%));
+  --toastify-desc-color: hsl(var(--muted-foreground, 240 3.8% 46.1%));
   --toastify-border: hsl(var(--border, 240 5.9% 90%));
-  --toastify-muted: hsl(var(--muted-foreground, 240 3.8% 46.1%));
-  --toastify-radius: var(--radius, 0.5rem);
-  --toastify-btn-cancel-hover: hsl(var(--muted, 240 4.8% 95.9%));
+  --toastify-badge-bg: hsl(var(--primary, 240 5.9% 10%));
+  --toastify-badge-color: hsl(var(--primary-foreground, 0 0% 98%));
+  --toastify-btn-cancel-color: hsl(var(--muted-foreground, 240 3.8% 46.1%));
+  --toastify-btn-cancel-hover-bg: hsl(var(--muted, 240 4.8% 95.9%));
+  --toastify-btn-action-bg: hsl(var(--primary, 240 5.9% 10%));
+  --toastify-btn-action-color: hsl(var(--primary-foreground, 0 0% 98%));
+  --toastify-btn-close-color: hsl(var(--muted-foreground, 240 3.8% 46.1%));
 }
 
 .dark, [data-theme="dark"], .toastify-toaster.dark {
   --toastify-bg: hsl(var(--card, 240 10% 3.9%));
-  --toastify-fg: hsl(var(--card-foreground, 0 0% 98%));
+  --toastify-color: hsl(var(--card-foreground, 0 0% 98%));
+  --toastify-title-color: hsl(var(--card-foreground, 0 0% 98%));
+  --toastify-desc-color: hsl(var(--muted-foreground, 240 5% 64.9%));
   --toastify-border: hsl(var(--border, 240 3.7% 15.9%));
-  --toastify-muted: hsl(var(--muted-foreground, 240 5% 64.9%));
-  --toastify-btn-cancel-hover: hsl(var(--muted, 240 3.7% 15.9%));
+  --toastify-badge-bg: hsl(var(--primary, 0 0% 98%));
+  --toastify-badge-color: hsl(var(--primary-foreground, 240 5.9% 10%));
+  --toastify-btn-cancel-color: hsl(var(--muted-foreground, 240 5% 64.9%));
+  --toastify-btn-cancel-hover-bg: hsl(var(--muted, 240 3.7% 15.9%));
+  --toastify-btn-action-bg: hsl(var(--primary, 0 0% 98%));
+  --toastify-btn-action-color: hsl(var(--primary-foreground, 240 5.9% 10%));
+  --toastify-btn-close-color: hsl(var(--muted-foreground, 240 5% 64.9%));
 }

@@ -14,18 +14,17 @@ export function SlideAnimation({
   onDismiss,
   springConfig = defaultSpring,
   children,
-  gap = 14,
 }: ToastAnimationProps) {
   const isTop = position.startsWith("top");
   const isCenter = position.endsWith("center");
   const isLeft = position.endsWith("left");
 
-  const stackStep = 56 + gap;
+  const stackStep = 66;
   const targetY = isTop ? index * stackStep : -index * stackStep;
   const entryX = isCenter ? 0 : isLeft ? -120 : 120;
   const exitX = isCenter ? 0 : isLeft ? -140 : 140;
   const initialY = isCenter ? (isTop ? targetY - 30 : targetY + 30) : targetY;
-  const isError = toast.type === "error";
+  const isError = toast?.type === "error";
 
   return (
     <motion.article
@@ -67,7 +66,7 @@ export function SlideAnimation({
           onDismiss();
         }
       }}
-      className="toastify-item"
+      className="toastify-item absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
       style={{
         [isTop ? "top" : "bottom"]: 0,
         left: 0,

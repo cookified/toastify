@@ -15,7 +15,6 @@ export function FolderStackAnimation({
   onDismiss,
   springConfig = defaultSpring,
   children,
-  gap = 14,
 }: ToastAnimationProps) {
   const isTop = position.startsWith("top");
   const isCenter = position.endsWith("center");
@@ -24,7 +23,7 @@ export function FolderStackAnimation({
   const collapsed = !isHovered;
   const isVisible = !collapsed || index < 3;
 
-  const stackStep = 56 + gap;
+  const stackStep = 66;
   const offset = collapsed ? index * 10 : index * stackStep;
   const targetY = isTop ? offset : -offset;
   const targetScale = collapsed ? Math.max(0.88, 1 - index * 0.05) : 1;
@@ -39,7 +38,7 @@ export function FolderStackAnimation({
       : 1;
 
   const exitX = isCenter ? 0 : isLeft ? -36 : 36;
-  const isError = toast.type === "error";
+  const isError = toast?.type === "error";
 
   return (
     <motion.article
@@ -81,7 +80,7 @@ export function FolderStackAnimation({
           onDismiss();
         }
       }}
-      className="toastify-item"
+      className="toastify-item absolute h-14 w-full select-none cursor-grab active:cursor-grabbing"
       style={{
         [isTop ? "top" : "bottom"]: 0,
         left: 0,

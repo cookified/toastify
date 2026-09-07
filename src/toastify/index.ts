@@ -7,7 +7,7 @@ export {
   FadeAnimation,
 } from "./animations";
 export { defaultSpring } from "./animations/constants";
-export { toast, toastStore } from "./store";
+export { toast, toastStore, defineVariant } from "./store";
 export { toastifyStyles } from "./styles";
 export type {
   AnimationPreset,
@@ -21,6 +21,8 @@ export type {
   ToastPromiseOptions,
   ToastTheme,
   ToastType,
+  ToastVariantDefinition,
+  ToastVariantDispatcher,
   ToasterProps,
 } from "./types";
 export type { ToastProps } from "./Toast";

@@ -6,7 +6,7 @@ export default defineConfig({
   dts: true,
   outDir: "lib",
   tsconfig: "tsconfig.lib.json",
-  external: ["react", "react-dom", "motion"],
+  external: ["react", "react-dom", "motion", /^motion\/.*/],
   treeshake: true,
   sourcemap: false,
 });

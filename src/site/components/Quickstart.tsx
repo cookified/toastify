@@ -179,6 +179,62 @@ toast("Profile updated", {
           filename="UserActions.tsx"
         />
       </div>
+
+      {/* Step 4: Create custom states */}
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-neutral-900 dark:text-white">
+          4. Create custom states (optional):
+        </div>
+        <p className="text-xs text-neutral-600 dark:text-neutral-400">
+          Define reusable notification states once with your own icons, styling, or duration:
+        </p>
+        <CodeBlock
+          code={`import { toast } from "@cookified/toastify";
+import { Sparkles } from "lucide-react"; // works with Lucide, Heroicons, or any custom SVG
+
+// Define a custom state once
+const toastAi = toast.variant({
+  icon: <Sparkles className="w-4 h-4 text-amber-400" />,
+  duration: 4000,
+  className: "border-amber-500/30",
+});
+
+// Dispatch anywhere across your app
+toastAi("Model synthesized", {
+  description: "Generated 12 UI variations",
+});`}
+          filename="notifications.ts"
+        />
+      </div>
+
+      {/* Step 5: Customizing Theme and Colors */}
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-neutral-900 dark:text-white">
+          5. Themes &amp; color customization:
+        </div>
+        <p className="text-xs text-neutral-600 dark:text-neutral-400">
+          Switch themes via the <code className="font-mono text-neutral-800 dark:text-neutral-200">theme</code> prop or style toast cards globally and per-toast:
+        </p>
+        <CodeBlock
+          code={`// 1. Theme switching on Toaster
+<Toaster theme="system" /> // "light" | "dark" | "system"
+
+// 2. Global styling via toastOptions
+<Toaster
+  toastOptions={{
+    className: "bg-zinc-950 text-zinc-100 border-zinc-800",
+    style: { backgroundColor: "#09090b" },
+  }}
+/>
+
+// 3. Per-toast colors & styles
+toast("Deployment Finished", {
+  className: "bg-emerald-950/80 text-emerald-100 border-emerald-800",
+  style: { borderColor: "#10b981" },
+});`}
+          filename="ThemeExample.tsx"
+        />
+      </div>
     </div>
   );
 }

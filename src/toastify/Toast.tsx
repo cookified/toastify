@@ -62,7 +62,7 @@ function LoaderIcon() {
       strokeWidth={2.5}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="toastify-spin"
+      className="toastify-spin animate-spin"
       aria-hidden="true"
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
@@ -71,28 +71,30 @@ function LoaderIcon() {
 }
 
 export function DefaultToastIcon({ type }: { type: ToastType }) {
+  const badgeClasses = "toastify-badge";
+
   switch (type) {
     case "loading":
       return (
-        <span className="toastify-badge">
+        <span className={badgeClasses}>
           <LoaderIcon />
         </span>
       );
     case "success":
       return (
-        <span className="toastify-badge">
+        <span className={badgeClasses}>
           <CheckIcon />
         </span>
       );
     case "error":
       return (
-        <span className="toastify-badge">
+        <span className={badgeClasses}>
           <XIcon />
         </span>
       );
     case "warning":
       return (
-        <span className="toastify-badge">
+        <span className={badgeClasses}>
           <svg
             width="12"
             height="12"
@@ -113,7 +115,7 @@ export function DefaultToastIcon({ type }: { type: ToastType }) {
     case "neutral":
     default:
       return (
-        <span className="toastify-badge">
+        <span className={badgeClasses}>
           <svg
             width="12"
             height="12"
@@ -146,33 +148,38 @@ export function Toast({
   }
 
   const icon =
-    toast.icon ??
-    globalIcons?.[toast.type] ?? (
-      <DefaultToastIcon type={toast.type} />
-    );
+    toast.icon !== undefined
+      ? toast.icon
+      : (globalIcons?.[toast.type] ?? (
+          <DefaultToastIcon type={toast.type} />
+        ));
 
   const showCloseButton =
     toast.closeButton !== undefined
       ? toast.closeButton
       : (globalOptions?.closeButton ?? closeButton);
 
+  const combinedClassName = [
+    "toastify-toast",
+    globalOptions?.className,
+    toast.className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div
       onClick={() => closeOnClick && onDismiss()}
-      className={`toastify-toast ${globalOptions?.className ?? ""} ${toast.className ?? ""}`}
+      className={combinedClassName}
       style={{ ...globalOptions?.style, ...toast.style }}
     >
       <div className="toastify-content">
         {icon}
 
         <div className="toastify-text-group">
-          <div className="toastify-title">
-            {toast.title}
-          </div>
+          <div className="toastify-title">{toast.title}</div>
           {toast.description && (
-            <div className="toastify-description">
-              {toast.description}
-            </div>
+            <div className="toastify-description">{toast.description}</div>
           )}
         </div>
       </div>
@@ -222,7 +229,7 @@ export function Toast({
               event.stopPropagation();
               onDismiss();
             }}
-            className="toastify-close-btn"
+            className="toastify-btn-close"
           >
             <XIcon />
           </button>

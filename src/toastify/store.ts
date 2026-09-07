@@ -4,6 +4,8 @@ import type {
   ToastOptions,
   ToastPromiseOptions,
   ToastType,
+  ToastVariantDefinition,
+  ToastVariantDispatcher,
 } from "./types";
 
 type Listener = (toasts: ToastData[]) => void;
@@ -257,6 +259,10 @@ export const toast = Object.assign(toastFn, {
 
   promise,
 
+  variant: defineVariant,
+
+  defineState: defineVariant,
+
   dismiss(id?: string) {
     remove(id);
   },
@@ -268,3 +274,25 @@ export const toast = Object.assign(toastFn, {
     update(id, options);
   },
 });
+
+/**
+ * Creates a reusable custom toast state dispatcher.
+ * Predefine icons, durations, and styles once to avoid repetitive options.
+ */
+export function defineVariant(
+  definition: ToastVariantDefinition,
+): ToastVariantDispatcher {
+  return (title: ReactNode, options: ToastOptions = {}) => {
+    const mergedOptions: ToastOptions = {
+      ...definition,
+      ...options,
+      icon: options.icon !== undefined ? options.icon : definition.icon,
+      className:
+        [definition.className, options.className].filter(Boolean).join(" ") ||
+        undefined,
+      style: { ...definition.style, ...options.style },
+    };
+
+    return create(definition.type ?? "custom", title, mergedOptions);
+  };
+}

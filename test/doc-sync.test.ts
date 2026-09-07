@@ -13,7 +13,7 @@ describe("Documentation & code synchronization", () => {
     // Match code defaults
     expect(toasterCode).toMatch(/position\s*=\s*["']bottom-right["']/);
     expect(toasterCode).toMatch(/duration\s*=\s*3500/);
-    expect(toasterCode).toMatch(/visibleToasts\s*=\s*3/);
+    expect(toasterCode).toMatch(/visibleToasts\s*=\s*5/);
     expect(toasterCode).toMatch(/theme\s*=\s*["']system["']/);
     expect(toasterCode).toMatch(/closeButton\s*=\s*true/);
     expect(toasterCode).toMatch(/gap\s*=\s*14/);
@@ -22,7 +22,7 @@ describe("Documentation & code synchronization", () => {
     // Match README table defaults
     expect(readme).toContain('`"bottom-right"`');
     expect(readme).toContain('`3500`');
-    expect(readme).toContain('`3`');
+    expect(readme).toContain('`5`');
     expect(readme).toContain('`"system"`');
     expect(readme).toContain('`true`');
     expect(readme).toContain('`14`');

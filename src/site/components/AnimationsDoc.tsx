@@ -15,6 +15,7 @@ type PresetDetail = {
   summary: string;
   stiffness: number;
   damping: number;
+  exitDuration: string;
   filename: string;
   codeSnippet: string;
 };
@@ -24,18 +25,28 @@ const presetDetails: Record<AnimationPreset | "custom", PresetDetail> = {
     id: "stack",
     name: "Folder Stack",
     summary: "Cards compress with spring mass and scale reduction. Hovering expands the stack effortlessly.",
-    stiffness: 260,
-    damping: 24,
+    stiffness: 220,
+    damping: 26,
+    exitDuration: "240ms",
     filename: "FolderStackExample.tsx",
-    codeSnippet: `// Using built-in Folder Stack preset
-import { Toaster, toast } from "@cookified/toastify";
+    codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
 
-// Mount the toaster:
-<Toaster animation="stack" position="bottom-right" />
+// Mount toaster with custom spring physics & auto-dismiss timing:
+<Toaster
+  animation="stack"
+  position="bottom-right"
+  duration={3500} // Auto-dismiss delay in ms (or false to stay indefinitely)
+  springConfig={{
+    stiffness: 220, // Spring tension: higher = snappier entrance
+    damping: 26,    // Friction resistance: lower = springier
+    mass: 1.0,      // Inertial mass during card fan-out
+  }}
+/>
 
-// Trigger notification:
+// Trigger notification (with optional per-toast duration override):
 toast("Folder Stack", {
   description: "Cards compress with spring mass. Hover to fan open.",
+  duration: 4000, // Custom duration for this toast (or false to keep pinned)
 });`,
   },
   slide: {
@@ -44,16 +55,25 @@ toast("Folder Stack", {
     summary: "Lateral edge entrance with velocity damping and interactive swipe-to-dismiss gesture.",
     stiffness: 320,
     damping: 28,
+    exitDuration: "220ms",
     filename: "SlideExample.tsx",
-    codeSnippet: `// Using Slide preset
-import { Toaster, toast } from "@cookified/toastify";
+    codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
 
-// Mount the toaster:
-<Toaster animation="slide" position="bottom-right" />
+// Mount toaster with Slide preset & velocity dynamics:
+<Toaster
+  animation="slide"
+  position="bottom-right"
+  duration={3500} // Auto-dismiss interval (exit transition: 220ms)
+  springConfig={{
+    stiffness: 320, // Slide entry velocity
+    damping: 28,    // Slide deceleration settling
+  }}
+/>
 
-// Trigger notification:
+// Trigger notification with per-toast duration:
 toast("Slide Preset", {
   description: "Directional entrance with swipe gesture and unstacked layout.",
+  duration: 3000, // Modify duration per-toast
 });`,
   },
   fade: {
@@ -62,12 +82,20 @@ toast("Slide Preset", {
     summary: "In-place gentle dissolve with subtle blur-to-focus and micro scale transitions.",
     stiffness: 280,
     damping: 26,
+    exitDuration: "220ms",
     filename: "FadeExample.tsx",
-    codeSnippet: `// Using Fade preset
-import { Toaster, toast } from "@cookified/toastify";
+    codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
 
-// Mount the toaster:
-<Toaster animation="fade" position="bottom-right" />
+// Mount toaster with Fade preset & dissolve timing:
+<Toaster
+  animation="fade"
+  position="bottom-right"
+  duration={3000} // Auto-dismiss interval (exit transition: 220ms easeOut)
+  springConfig={{
+    stiffness: 280, // In-place blur & scale transition speed
+    damping: 26,
+  }}
+/>
 
 // Trigger notification:
 toast("Fade Preset", {
@@ -80,10 +108,12 @@ toast("Fade Preset", {
     summary: "Drop any custom Motion component straight into <Toaster animation={CustomComponent} />.",
     stiffness: 350,
     damping: 22,
+    exitDuration: "Configurable",
     filename: "CustomScaleAnimation.tsx",
     codeSnippet: `import { motion } from "motion/react";
 import type { ToastAnimationProps } from "@cookified/toastify";
 
+// Define custom Motion wrapper with tailored entrance & exit timings:
 export function CustomScaleAnimation({
   children,
   index,
@@ -97,15 +127,29 @@ export function CustomScaleAnimation({
         scale: isDismissing ? 0.85 : 1 - index * 0.05,
         y: isDismissing ? 30 : index * 8,
       }}
-      transition={{ type: "spring", stiffness: 350, damping: 22 }}
+      // Modify entrance transition & spring physics:
+      transition={{
+        type: "spring",
+        stiffness: 350, // Entrance velocity
+        damping: 22,    // Bounce settling
+      }}
+      // Modify exit transition duration & easing curve:
+      exit={{
+        opacity: 0,
+        scale: 0.85,
+        transition: {
+          duration: 0.25, // Exit duration: 250ms
+          ease: [0.16, 1, 0.3, 1], // Smooth deceleration curve
+        },
+      }}
     >
       {children}
     </motion.div>
   );
 }
 
-// Pass directly to Toaster:
-<Toaster animation={CustomScaleAnimation} />`,
+// Pass directly to Toaster with custom auto-dismiss duration:
+<Toaster animation={CustomScaleAnimation} duration={4000} />`,
   },
 };
 
@@ -343,6 +387,7 @@ export function AnimationsDoc({
             <div className="flex items-center gap-4 font-mono text-xs">
               <span>Stiffness: <strong className="text-neutral-900 dark:text-white">{current.stiffness}</strong></span>
               <span>Damping: <strong className="text-neutral-900 dark:text-white">{current.damping}</strong></span>
+              <span>Exit Duration: <strong className="text-neutral-900 dark:text-white">{current.exitDuration}</strong></span>
             </div>
             <span className="text-xs">Click canvas to test in toaster</span>
           </div>

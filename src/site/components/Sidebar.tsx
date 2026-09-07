@@ -27,8 +27,9 @@ export function Sidebar({
   const triggerButtons = [
     { id: "action", label: "Action", badge: "active" },
     { id: "promise", label: "Promise", badge: "async" },
-    { id: "success", label: "Success", badge: "badge" },
-    { id: "error", label: "Error", badge: "badge" },
+    { id: "success", label: "Success", badge: "status" },
+    { id: "tailwind", label: "Tailwind", badge: "style" },
+    { id: "variant", label: "Dynamic", badge: "state" },
   ];
 
   return (

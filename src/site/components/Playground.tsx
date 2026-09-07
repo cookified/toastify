@@ -8,8 +8,9 @@ export type ToastVariant =
   | "action"
   | "promise"
   | "success"
-  | "error"
-  | "neutral"
+  | "custom-icon"
+  | "tailwind"
+  | "variant"
   | "headless";
 
 type PlaygroundProps = {
@@ -172,26 +173,58 @@ toast.promise(saveDocument(), {
 toast.success("Payment confirmed", {
   description: "Receipt #4092 emailed to your account",
 });`,
-  error: `import { toast } from "@cookified/toastify";
+  "custom-icon": `import { toast } from "@cookified/toastify";
+import { Sparkles } from "lucide-react"; // or any custom SVG
 
-toast.error("Deployment failed", {
-  description: "Missing environment variable API_SECRET",
+toast("AI Model Ready", {
+  description: "Synthesized 12 variations in 0.4s",
+  icon: <Sparkles className="h-4 w-4 text-amber-400" />,
   action: {
-    label: "Retry",
-    onClick: () => retryBuild(),
+    label: "Inspect",
+    onClick: () => openInspector(),
   },
 });`,
-  neutral: `import { toast } from "@cookified/toastify";
+  tailwind: `import { toast } from "@cookified/toastify";
 
-toast("File archived", {
-  description: "Moved to trash folder. You can restore it anytime.",
+// Tailwind utility classes override default styles with 0 specificity conflict
+toast("Invoice Paid", {
+  description: "Transferred $1,420 to Stripe account",
+  className: "bg-emerald-950 text-emerald-100 border-emerald-800",
+  action: {
+    label: "Receipt",
+    onClick: () => viewReceipt(),
+  },
+});`,
+  variant: `import { toast } from "@cookified/toastify";
+import { Flame } from "lucide-react";
+
+// 1. Define reusable state dispatcher once
+const toastStreak = toast.variant({
+  icon: <Flame className="h-4 w-4 text-orange-500" />,
+  className: "border-orange-500/30",
+  duration: 4000,
+});
+
+// 2. Dispatch anywhere dynamically
+toastStreak("7-Day Streak!", {
+  description: "Keep up the momentum today",
 });`,
   headless: `import { toast } from "@cookified/toastify";
 
 toast.custom((id) => (
-  <div className="flex h-14 w-full items-center justify-between rounded-md border border-neutral-700 bg-neutral-900 px-4 text-xs text-white shadow-xl">
-    <span>Custom Headless JSX Notification</span>
-    <button onClick={() => toast.dismiss(id)}>✕</button>
+  <div className="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-neutral-700 bg-neutral-900 px-4 text-xs font-medium text-white shadow-xl">
+    <div className="flex items-center gap-2">
+      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-600 font-bold text-[10px]">
+        ★
+      </span>
+      <span>Custom Headless JSX Notification</span>
+    </div>
+    <button
+      onClick={() => toast.dismiss(id)}
+      className="cursor-pointer rounded px-2 py-0.5 text-neutral-400 hover:text-white"
+    >
+      Close
+    </button>
   </div>
 ));`,
 };
@@ -210,8 +243,9 @@ export function Playground({
     { id: "action", label: "Action" },
     { id: "promise", label: "Promise" },
     { id: "success", label: "Success" },
-    { id: "error", label: "Error" },
-    { id: "neutral", label: "Neutral" },
+    { id: "custom-icon", label: "External Icon" },
+    { id: "tailwind", label: "Tailwind Classes" },
+    { id: "variant", label: "Dynamic Variant" },
     { id: "headless", label: "Custom JSX" },
   ];
 

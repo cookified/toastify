@@ -60,6 +60,34 @@ export type ToastPromiseOptions<T = unknown> = {
   cancel?: ToastAction;
 };
 
+/** Options for defining a reusable custom toast state */
+export type ToastVariantDefinition = {
+  /** Optional base variant role (defaults to "custom") */
+  type?: ToastType;
+  /** Custom icon or ReactNode */
+  icon?: ReactNode;
+  /** Default auto-dismiss duration in ms, or `false` to persist */
+  duration?: number | false;
+  /** Scoped CSS class names applied to the toast card */
+  className?: string;
+  /** Inline CSS style overrides */
+  style?: CSSProperties;
+  /** Whether to render dedicated close button */
+  closeButton?: boolean;
+  /** Optional viewport position override */
+  position?: ToastPosition;
+  /** Default primary action button */
+  action?: ToastAction;
+  /** Default secondary cancel button */
+  cancel?: ToastAction;
+};
+
+/** Reusable dispatcher created by toast.variant() or toast.defineState() */
+export type ToastVariantDispatcher = (
+  title: ReactNode,
+  options?: ToastOptions,
+) => string;
+
 /** Screen corner or edge where notifications anchor */
 export type ToastPosition =
   | "top-left"
@@ -126,7 +154,7 @@ export type ToasterProps = {
   className?: string;
   /** Inline CSS style overrides applied to the container */
   style?: CSSProperties;
-  /** Maximum number of cards visible before collapsing. Default: 3 */
+  /** Maximum number of cards visible in the stack. Default: 5 */
   visibleToasts?: number;
   /** Whether clicking anywhere on a toast card dismisses it. Default: false */
   closeOnClick?: boolean;
@@ -148,7 +176,7 @@ export type ToasterProps = {
   toastOptions?: {
     className?: string;
     style?: CSSProperties;
-    duration?: number;
+    duration?: number | false;
     closeButton?: boolean;
   };
 };

@@ -1,38 +1,4 @@
-/* Toastify CSS Variables & Theme Foundation */
-:root {
-  --toastify-bg: #ffffff;
-  --toastify-fg: #0a0a0a;
-  --toastify-border: rgba(228, 228, 231, 0.9);
-  --toastify-radius: 10px;
-  --toastify-z-index: 9999;
-  --toastify-offset: 24px;
-  --toastify-gap: 14px;
-  --toastify-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  --toastify-muted: #71717a;
-  --toastify-btn-cancel-hover: rgba(0, 0, 0, 0.05);
-  --toastify-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
-}
-
-.dark, [data-theme="dark"], .toastify-toaster.dark {
-  --toastify-bg: #121215;
-  --toastify-fg: #fafafa;
-  --toastify-border: rgba(39, 39, 42, 0.9);
-  --toastify-muted: #a1a1aa;
-  --toastify-btn-cancel-hover: rgba(255, 255, 255, 0.08);
-  --toastify-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.35);
-}
-
-@media (prefers-color-scheme: dark) {
-  .toastify-toaster.system {
-    --toastify-bg: #121215;
-    --toastify-fg: #fafafa;
-    --toastify-border: rgba(39, 39, 42, 0.9);
-    --toastify-muted: #a1a1aa;
-    --toastify-btn-cancel-hover: rgba(255, 255, 255, 0.08);
-    --toastify-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.35);
-  }
-}
-
+/* Toastify Standalone CSS */
 @keyframes toastify-spin {
   from {
     transform: rotate(0deg);
@@ -42,94 +8,156 @@
   }
 }
 
-.toastify-spin {
+:where(.toastify-spin) {
   animation: toastify-spin 1s linear infinite;
 }
 
-.toastify-toaster {
+:where(.toastify-toaster) {
   position: fixed;
-  z-index: var(--toastify-z-index, 9999);
+  z-index: 9999;
   width: 356px;
   max-width: calc(100vw - 32px);
   box-sizing: border-box;
-  font-family: var(--toastify-font-family);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: 0;
   padding: 0;
 }
 
-.toastify-toaster *,
-.toastify-toaster *::before,
-.toastify-toaster *::after {
+:where(.toastify-toaster) *,
+:where(.toastify-toaster) *::before,
+:where(.toastify-toaster) *::after {
   box-sizing: border-box;
 }
 
-/* Positions with dynamic offset support */
-.toastify-pos-top-left {
+/* Placements */
+:where(.toastify-pos-top-left) {
   top: var(--toastify-offset, 24px);
   left: var(--toastify-offset, 24px);
 }
-.toastify-pos-top-center {
+:where(.toastify-pos-top-center) {
   top: var(--toastify-offset, 24px);
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
 }
-.toastify-pos-top-right {
+:where(.toastify-pos-top-right) {
   top: var(--toastify-offset, 24px);
   right: var(--toastify-offset, 24px);
 }
-.toastify-pos-bottom-left {
+:where(.toastify-pos-bottom-left) {
   bottom: var(--toastify-offset, 24px);
   left: var(--toastify-offset, 24px);
 }
-.toastify-pos-bottom-center {
+:where(.toastify-pos-bottom-center) {
   bottom: var(--toastify-offset, 24px);
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
 }
-.toastify-pos-bottom-right {
+:where(.toastify-pos-bottom-right) {
   bottom: var(--toastify-offset, 24px);
   right: var(--toastify-offset, 24px);
 }
 
-.toastify-pointer-auto {
+:where(.toastify-pointer-auto) {
   pointer-events: auto;
 }
-.toastify-pointer-none {
+:where(.toastify-pointer-none) {
   pointer-events: none;
 }
 
 /* Toast List Container */
-.toastify-list {
+:where(.toastify-list) {
   position: relative;
   width: 100%;
   height: 100%;
   display: flex;
 }
-.toastify-list-col {
+:where(.toastify-list-col) {
   flex-direction: column;
 }
-.toastify-list-col-reverse {
+:where(.toastify-list-col-reverse) {
   flex-direction: column-reverse;
 }
 
 /* Individual Toast Item wrapper */
-.toastify-item {
+:where(.toastify-item) {
   position: absolute;
   height: 56px;
   width: 100%;
   user-select: none;
   cursor: grab;
 }
-.toastify-item:active {
+:where(.toastify-item):active {
   cursor: grabbing;
 }
 
-/* Toast Card with Tactile Micro-bevels */
-.toastify-toast {
+/* Design Tokens & CSS Variables */
+:root {
+  --toastify-bg: #ffffff;
+  --toastify-color: #111827;
+  --toastify-title-color: #171717;
+  --toastify-desc-color: #737373;
+  --toastify-border: rgba(229, 231, 235, 0.9);
+  --toastify-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --toastify-badge-bg: #171717;
+  --toastify-badge-color: #ffffff;
+  --toastify-btn-cancel-color: #525252;
+  --toastify-btn-cancel-hover-bg: #f5f5f5;
+  --toastify-btn-cancel-hover-color: #171717;
+  --toastify-btn-action-bg: #171717;
+  --toastify-btn-action-color: #ffffff;
+  --toastify-btn-action-hover-bg: #262626;
+  --toastify-btn-close-color: #a3a3a3;
+  --toastify-btn-close-hover-color: #171717;
+}
+
+.toastify-toaster.dark,
+[data-theme="dark"],
+.dark {
+  --toastify-bg: #171717;
+  --toastify-color: #f5f5f5;
+  --toastify-title-color: #f5f5f5;
+  --toastify-desc-color: #a3a3a3;
+  --toastify-border: rgba(38, 38, 38, 0.9);
+  --toastify-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
+  --toastify-badge-bg: #ffffff;
+  --toastify-badge-color: #0a0a0a;
+  --toastify-btn-cancel-color: #a3a3a3;
+  --toastify-btn-cancel-hover-bg: #262626;
+  --toastify-btn-cancel-hover-color: #f5f5f5;
+  --toastify-btn-action-bg: #f5f5f5;
+  --toastify-btn-action-color: #171717;
+  --toastify-btn-action-hover-bg: #e5e5e5;
+  --toastify-btn-close-color: #737373;
+  --toastify-btn-close-hover-color: #f5f5f5;
+}
+
+@media (prefers-color-scheme: dark) {
+  .toastify-toaster.system {
+    --toastify-bg: #171717;
+    --toastify-color: #f5f5f5;
+    --toastify-title-color: #f5f5f5;
+    --toastify-desc-color: #a3a3a3;
+    --toastify-border: rgba(38, 38, 38, 0.9);
+    --toastify-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
+    --toastify-badge-bg: #ffffff;
+    --toastify-badge-color: #0a0a0a;
+    --toastify-btn-cancel-color: #a3a3a3;
+    --toastify-btn-cancel-hover-bg: #262626;
+    --toastify-btn-cancel-hover-color: #f5f5f5;
+    --toastify-btn-action-bg: #f5f5f5;
+    --toastify-btn-action-color: #171717;
+    --toastify-btn-action-hover-bg: #e5e5e5;
+    --toastify-btn-close-color: #737373;
+    --toastify-btn-close-hover-color: #f5f5f5;
+  }
+}
+
+/* Toast Card with Tactile Micro-bevels (0 specificity via :where()) */
+:where(.toastify-toast) {
   display: flex;
   height: 56px;
   width: 100%;
@@ -137,21 +165,21 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-radius: var(--toastify-radius, 10px);
+  border-radius: 8px;
   padding: 0 14px;
   box-sizing: border-box;
-  background-color: var(--toastify-bg);
-  border: 1px solid var(--toastify-border);
-  color: var(--toastify-fg);
-  box-shadow: var(--toastify-shadow);
   transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--toastify-bg, #ffffff);
+  border: 1px solid var(--toastify-border, rgba(229, 231, 235, 0.9));
+  color: var(--toastify-color, #111827);
+  box-shadow: var(--toastify-shadow);
 }
 
 /* Badge Icon Wrapper */
-.toastify-badge {
+:where(.toastify-badge) {
   display: flex;
   height: 20px;
   width: 20px;
@@ -159,13 +187,13 @@
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  background-color: var(--toastify-fg);
-  color: var(--toastify-bg);
+  background-color: var(--toastify-badge-bg, #171717);
+  color: var(--toastify-badge-color, #ffffff);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* Content Area */
-.toastify-content {
+:where(.toastify-content) {
   display: flex;
   min-width: 0;
   flex: 1 1 0%;
@@ -173,42 +201,43 @@
   gap: 12px;
 }
 
-.toastify-text-group {
+:where(.toastify-text-group) {
   display: flex;
   min-width: 0;
   flex-direction: column;
   justify-content: center;
 }
 
-.toastify-title {
+:where(.toastify-title) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 13px;
   font-weight: 500;
   line-height: 16px;
-  color: var(--toastify-fg);
+  color: var(--toastify-title-color, inherit);
 }
 
-.toastify-description {
+:where(.toastify-description) {
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 12px;
   line-height: 16px;
-  color: var(--toastify-muted);
+  color: var(--toastify-desc-color, inherit);
+  opacity: 0.75;
 }
 
 /* Action Area */
-.toastify-actions {
+:where(.toastify-actions) {
   display: flex;
   flex-shrink: 0;
   align-items: center;
   gap: 8px;
 }
 
-.toastify-btn-cancel {
+:where(.toastify-btn-cancel) {
   cursor: pointer;
   border: none;
   background: transparent;
@@ -216,59 +245,64 @@
   padding: 4px 8px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--toastify-muted);
-  transition: background-color 0.15s, color 0.15s;
+  color: var(--toastify-btn-cancel-color, inherit);
+  opacity: 0.8;
+  transition: background-color 0.15s, color 0.15s, opacity 0.15s;
 }
 
-.toastify-btn-cancel:hover {
-  background-color: var(--toastify-btn-cancel-hover);
-  color: var(--toastify-fg);
+:where(.toastify-btn-cancel):hover {
+  background-color: var(--toastify-btn-cancel-hover-bg, rgba(125, 125, 125, 0.15));
+  color: var(--toastify-btn-cancel-hover-color, inherit);
+  opacity: 1;
 }
 
-.toastify-btn-action {
+:where(.toastify-btn-action) {
   cursor: pointer;
   border: none;
   border-radius: 4px;
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 500;
-  background-color: var(--toastify-fg);
-  color: var(--toastify-bg);
+  background-color: var(--toastify-btn-action-bg, #171717);
+  color: var(--toastify-btn-action-color, #ffffff);
   transition: background-color 0.15s, box-shadow 0.15s;
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-.toastify-btn-action:hover {
-  opacity: 0.92;
+:where(.toastify-btn-action):hover {
+  background-color: var(--toastify-btn-action-hover-bg, #262626);
 }
 
-.toastify-btn-action:active {
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+:where(.toastify-btn-action):active {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* Accessible Manual Close Button */
-.toastify-close-btn {
+:where(.toastify-btn-close) {
   display: flex;
+  height: 20px;
+  width: 20px;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  padding: 0;
+  cursor: pointer;
   border: none;
   background: transparent;
-  color: var(--toastify-muted);
   border-radius: 4px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  padding: 0;
+  color: var(--toastify-btn-close-color, inherit);
+  opacity: 0.6;
+  transition: opacity 0.15s, color 0.15s;
 }
 
-.toastify-close-btn:hover {
-  color: var(--toastify-fg);
-  background-color: var(--toastify-btn-cancel-hover);
+:where(.toastify-btn-close):hover {
+  opacity: 1;
+  color: var(--toastify-btn-close-hover-color, inherit);
 }
 
-.toastify-close-btn:focus-visible {
-  outline: 2px solid var(--toastify-fg);
-  outline-offset: 1px;
+:where(.toastify-btn-cancel):focus-visible,
+:where(.toastify-btn-action):focus-visible,
+:where(.toastify-btn-close):focus-visible {
+  outline: 2px solid var(--toastify-color, #111827);
+  outline-offset: 2px;
 }
+

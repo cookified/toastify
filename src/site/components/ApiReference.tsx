@@ -84,10 +84,10 @@ export function ApiReference() {
                   number
                 </td>
                 <td className="px-4 py-3 font-mono text-xs text-amber-600 dark:text-amber-300">
-                  3
+                  5
                 </td>
                 <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
-                  Max visible cards before collapsing
+                  Max visible cards in stack (top 3 visible when collapsed, up to 5 on hover)
                 </td>
               </tr>
               <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
@@ -154,6 +154,54 @@ export function ApiReference() {
                   Viewport edge margin distance
                 </td>
               </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    icons
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  Partial&lt;Record&lt;ToastType, ReactNode&gt;&gt;
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-amber-600 dark:text-amber-300">
+                  undefined
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Custom default icons for status variants (success, error, warning, info, loading)
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    springConfig
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  SpringConfig
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-amber-600 dark:text-amber-300">
+                  &#123; stiffness: 220, damping: 26, mass: 1.0 &#125;
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Fine-tune entrance and stack expansion spring dynamics (stiffness, damping, mass)
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    toastOptions
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ToastOptions
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-amber-600 dark:text-amber-300">
+                  undefined
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Global toast styling and color options (className, style, duration, closeButton)
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -216,6 +264,45 @@ export function ApiReference() {
               <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
                 <td className="px-4 py-3">
                   <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-amber-700 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-amber-400">
+                    toast.warning(title, opts?)
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ReactNode, ToastOptions
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Warning toast with warning icon
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-sky-700 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-400">
+                    toast.info(title, opts?)
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ReactNode, ToastOptions
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Info toast with info icon
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-700 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-neutral-300">
+                    toast.loading(title, opts?)
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ReactNode, ToastOptions
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Loading toast with animated spinner (persists until updated or dismissed)
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-amber-700 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-amber-400">
                     toast.promise(promise, opts)
                   </code>
                 </td>
@@ -241,6 +328,19 @@ export function ApiReference() {
               </tr>
               <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
                 <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-sky-700 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    toast.variant(definition)
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ToastVariantDefinition
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Creates a reusable custom state dispatcher with predefined options
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
                   <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-700 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-neutral-300">
                     toast.dismiss(id?)
                   </code>
@@ -250,6 +350,215 @@ export function ApiReference() {
                 </td>
                 <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
                   Dismiss single toast or clear all
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ToastOptions & Variant Definition Table */}
+      <div className="overflow-hidden rounded-xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800/90 dark:bg-[#121215]">
+        <div className="border-b border-neutral-200/80 bg-neutral-50 px-4 py-2.5 text-xs font-medium uppercase tracking-wider text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900/50 dark:text-white">
+          ToastOptions &amp; Variant Definition
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="border-b border-neutral-200/80 font-mono text-[11px] text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+              <tr>
+                <th className="px-4 py-2.5 font-medium">Property</th>
+                <th className="px-4 py-2.5 font-medium">Type</th>
+                <th className="px-4 py-2.5 font-medium">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-neutral-200/60 text-xs text-neutral-700 dark:divide-neutral-800/60 dark:text-neutral-300">
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    icon
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ReactNode
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Custom icon element to render inside the toast
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    description
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ReactNode
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Secondary descriptive text rendered below title
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    action / cancel
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ToastAction: &#123; label, onClick &#125;
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Interactive call-to-action or dismiss action buttons
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    duration
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  number | false
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Per-toast auto dismiss duration, or false to persist
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    className / style
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  string / CSSProperties
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Scoped classes or styles for isolated custom state styling
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ToastAnimationProps Table for Custom Animations */}
+      <div className="overflow-hidden rounded-xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800/90 dark:bg-[#121215]">
+        <div className="border-b border-neutral-200/80 bg-neutral-50 px-4 py-2.5 text-xs font-medium uppercase tracking-wider text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900/50 dark:text-white">
+          ToastAnimationProps (Custom Animation Components)
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="border-b border-neutral-200/80 font-mono text-[11px] text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+              <tr>
+                <th className="px-4 py-2.5 font-medium">Prop</th>
+                <th className="px-4 py-2.5 font-medium">Type</th>
+                <th className="px-4 py-2.5 font-medium">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-neutral-200/60 text-xs text-neutral-700 dark:divide-neutral-800/60 dark:text-neutral-300">
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    children
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ReactNode
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  The rendered toast card element to wrap in motion
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    index
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  number
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  0-based visual index in the active stack (0 = newest / front card)
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    totalToasts
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  number
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Total count of active notifications in the stack
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    isHovered
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  boolean
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Whether the user is currently hovering over the notification stack
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    isDismissing
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  boolean
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Whether the notification is currently animating out
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    position
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  ToastPosition
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Active viewport anchor placement (e.g. "bottom-right")
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    gap
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  number
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Configured vertical gap in pixels between expanded cards
+                </td>
+              </tr>
+              <tr className="transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-900/40">
+                <td className="px-4 py-3">
+                  <code className="inline-block rounded-md border border-neutral-200/80 bg-neutral-100 px-2 py-0.5 font-mono text-xs font-semibold text-neutral-900 shadow-2xs dark:border-neutral-800 dark:bg-[#18181b] dark:text-sky-300">
+                    springConfig
+                  </code>
+                </td>
+                <td className="px-4 py-3 font-mono text-xs text-purple-600 dark:text-purple-300">
+                  SpringConfig
+                </td>
+                <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400">
+                  Optional physics parameters: &#123; stiffness, damping, mass &#125;
                 </td>
               </tr>
             </tbody>

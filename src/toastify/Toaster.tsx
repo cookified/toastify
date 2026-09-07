@@ -38,11 +38,10 @@ type ToasterItemProps = {
   animation?: AnimationPreset | ToastAnimationComponent;
   springConfig?: SpringConfig;
   icons?: Partial<Record<ToastType, ReactNode>>;
-  gap?: number;
   toastOptions?: {
     className?: string;
     style?: CSSProperties;
-    duration?: number;
+    duration?: number | false;
     closeButton?: boolean;
   };
   onDismiss: () => void;
@@ -61,7 +60,6 @@ function ToasterItem({
   animation = "stack",
   springConfig,
   icons,
-  gap = 14,
   toastOptions,
   onDismiss,
 }: ToasterItemProps) {
@@ -97,9 +95,22 @@ function ToasterItem({
       return;
     }
 
+    const elapsedSinceCreation = toast.createdAt ? Date.now() - toast.createdAt : 0;
+    const initialRemaining =
+      typeof itemDuration === "number"
+        ? Math.max(50, itemDuration - elapsedSinceCreation)
+        : itemDuration;
+
     const startTime = Date.now();
     const currentRemaining =
-      remainingTimeRef.current === false ? itemDuration : remainingTimeRef.current;
+      remainingTimeRef.current === false
+        ? initialRemaining
+        : Math.min(
+            typeof remainingTimeRef.current === "number"
+              ? remainingTimeRef.current
+              : Infinity,
+            typeof initialRemaining === "number" ? initialRemaining : Infinity,
+          );
 
     const timer = window.setTimeout(() => {
       handleDismiss();
@@ -112,9 +123,7 @@ function ToasterItem({
         remainingTimeRef.current = Math.max(0, remainingTimeRef.current - elapsed);
       }
     };
-  }, [isHovered, itemDuration]);
-
-  const effectivePosition = toast.position ?? position;
+  }, [isHovered, itemDuration, toast.createdAt]);
 
   return (
     <ToastAnimation
@@ -123,11 +132,10 @@ function ToasterItem({
       index={index}
       totalToasts={totalToasts}
       isHovered={isHovered}
-      position={effectivePosition}
+      position={position}
       isDismissing={isDismissing}
       onDismiss={handleDismiss}
       springConfig={springConfig}
-      gap={gap}
     >
       <Toast
         toast={toast}
@@ -148,7 +156,7 @@ export function Toaster({
   theme = "system",
   className,
   style,
-  visibleToasts = 3,
+  visibleToasts = 5,
   closeOnClick = false,
   closeButton = true,
   animation = "stack",
@@ -166,6 +174,15 @@ export function Toaster({
 
   useEffect(() => toastStore.subscribe(setToasts), []);
 
+  useEffect(() => {
+    if (!isHovered && toasts.length > visibleToasts) {
+      const excess = toasts.slice(visibleToasts);
+      excess.forEach((t) => {
+        toastStore.remove(t.id);
+      });
+    }
+  }, [toasts, visibleToasts, isHovered]);
+
   const isTop = position.startsWith("top");
   const hasToasts = toasts.length > 0;
   const activeCount = Math.min(toasts.length, visibleToasts);
@@ -175,9 +192,10 @@ export function Toaster({
       ? Math.max(activeCount, hoverExpandedCount)
       : activeCount;
 
+  const stackStep = 56 + gap;
   const containerHeight =
     hasToasts && isHovered && effectiveCount > 0
-      ? (effectiveCount - 1) * (56 + gap) + 56
+      ? (effectiveCount - 1) * stackStep + 56
       : 56;
 
   const handleMouseEnter = () => {
@@ -227,16 +245,24 @@ export function Toaster({
         role="region"
         aria-label="Notifications"
         tabIndex={-1}
-        className={`toastify-toaster ${hasToasts ? "toastify-pointer-auto" : "toastify-pointer-none"} ${positionClasses[position]} ${theme === "dark" ? "dark" : theme === "system" ? "system" : ""} ${className ?? ""}`.trim()}
+        className={[
+          "toastify-toaster",
+          hasToasts ? "toastify-pointer-auto" : "toastify-pointer-none",
+          positionClasses[position],
+          theme === "dark" ? "dark" : theme === "system" ? "system" : "",
+          className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
         style={dynamicStyle}
         animate={{
           height: containerHeight,
         }}
         transition={{
           type: "spring",
-          stiffness: 260,
+          stiffness: 220,
           damping: 26,
-          mass: 0.8,
+          mass: 1.0,
           ...springConfig,
         }}
         onMouseEnter={handleMouseEnter}
@@ -261,7 +287,6 @@ export function Toaster({
                 animation={animation}
                 springConfig={springConfig}
                 icons={icons}
-                gap={gap}
                 toastOptions={toastOptions}
                 onDismiss={() => toastStore.remove(toastItem.id)}
               />

@@ -9,9 +9,9 @@ import { Playground, type ToastVariant } from "./site/components/Playground";
 import { Quickstart } from "./site/components/Quickstart";
 import { Sidebar } from "./site/components/Sidebar";
 import { TableOfContents } from "./site/components/TableOfContents";
+import { triggerDemoToast } from "./site/data/demo-toasts";
 import {
   Toaster,
-  toast,
   toastStore,
   type AnimationPreset,
   type ToastPosition,
@@ -43,7 +43,8 @@ export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
   const [animation, setAnimation] = useState<AnimationPreset>("stack");
-  const [selectedVariant, setSelectedVariant] = useState<ToastVariant>("action");
+  const [selectedVariant, setSelectedVariant] =
+    useState<ToastVariant>("action");
   const [activeToastsCount, setActiveToastsCount] = useState(0);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export function App() {
     const endRadius =
       Math.hypot(
         Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
+        Math.max(y, window.innerHeight - y),
       ) + 40;
 
     const doc = document as unknown as {
@@ -88,7 +89,7 @@ export function App() {
             duration: 600,
             easing: "cubic-bezier(0.22, 1, 0.36, 1)",
             pseudoElement: "::view-transition-new(root)",
-          }
+          },
         );
       });
       return;
@@ -114,144 +115,6 @@ export function App() {
     }
   };
 
-  const triggerToast = (variant: string) => {
-    switch (variant) {
-      case "action":
-        toast("Event scheduled", {
-          description: "Monday, January at 4:00 PM",
-          action: {
-            label: "Undo",
-            onClick: () => toast("Event restored"),
-          },
-          cancel: {
-            label: "Dismiss",
-            onClick: () => console.log("Dismissed"),
-          },
-        });
-        break;
-      case "promise":
-        toast
-          .promise(
-            new Promise<{ id: string }>((resolve, reject) => {
-              setTimeout(() => {
-                if (Math.random() > 0.3) {
-                  resolve({ id: "DOC-8921" });
-                } else {
-                  reject(new Error("Upload timed out"));
-                }
-              }, 1800);
-            }),
-            {
-              loading: "Uploading document...",
-              success: "Uploaded successfully",
-              error: "Failed to upload document",
-              action: {
-                label: "View",
-                onClick: () => console.log("Viewing upload"),
-              },
-            },
-          )
-          .catch(() => {});
-        break;
-      case "success":
-        toast.success("Payment confirmed", {
-          description: "Receipt #4092 emailed to your account",
-        });
-        break;
-      case "custom-icon":
-        toast("AI Model Ready", {
-          description: "Synthesized 12 variations in 0.4s",
-          icon: (
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#f59e0b"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-            </svg>
-          ),
-          action: {
-            label: "Inspect",
-            onClick: () => toast("AI Inspector opened"),
-          },
-        });
-        break;
-      case "tailwind":
-        toast("Invoice Paid", {
-          description: "Transferred $1,420 to Stripe account",
-          className: "bg-emerald-950 text-emerald-100 border-emerald-800",
-          action: {
-            label: "Receipt",
-            onClick: () => toast("Receipt #9102 ready"),
-          },
-        });
-        break;
-      case "variant": {
-        const streakToast = toast.variant({
-          duration: 4000,
-          className: "border-orange-500/30",
-          icon: (
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#f97316"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-            </svg>
-          ),
-        });
-        streakToast("7-Day Streak!", {
-          description: "Keep up the momentum today",
-        });
-        break;
-      }
-      case "error":
-        toast.error("Deployment failed", {
-          description: "Missing environment variable API_SECRET",
-          action: {
-            label: "Retry",
-            onClick: () => triggerToast("error"),
-          },
-        });
-        break;
-      case "headless":
-        toast.custom((id) => (
-          <div className="flex h-14 w-full items-center justify-between gap-3 rounded-xl border border-neutral-700 bg-neutral-900 px-4 text-xs font-medium text-white shadow-xl">
-            <div className="flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-600 text-white font-bold text-[10px]">
-                ★
-              </span>
-              <span>Custom Headless JSX Notification</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => toast.dismiss(id)}
-              className="cursor-pointer rounded px-2 py-0.5 text-neutral-400 hover:text-white"
-            >
-              Close
-            </button>
-          </div>
-        ));
-        break;
-      case "neutral":
-      default:
-        toast("File archived", {
-          description: "Moved to trash folder. You can restore it anytime.",
-        });
-        break;
-    }
-  };
-
   return (
     <div className={isDark ? "dark" : ""}>
       <div className="min-h-screen bg-[#fafafa] text-neutral-900 antialiased selection:bg-neutral-900 selection:text-white dark:bg-[#09090b] dark:text-[#f4f4f5] dark:selection:bg-white dark:selection:text-black font-sans">
@@ -269,16 +132,16 @@ export function App() {
         {currentPage === "home" ? (
           <LandingPage
             onNavigateDocs={() => handleNavigate("docs")}
-            onFireToast={triggerToast}
+            onFireToast={triggerDemoToast}
           />
         ) : (
-          /* View 2: 3-Column Separable Documentation Workspace */
+          /* View 2: 3-Column Documentation Workspace */
           <div className="mx-auto flex max-w-[1440px] px-0 lg:px-4">
             {/* Column 1: Left Sidebar */}
             <Sidebar
               mobileMenuOpen={mobileMenuOpen}
               onCloseMobileMenu={() => setMobileMenuOpen(false)}
-              onTriggerToast={triggerToast}
+              onTriggerToast={triggerDemoToast}
             />
 
             {/* Column 2: Main Documentation Content */}
@@ -294,7 +157,9 @@ export function App() {
                 <div className="flex items-center gap-2 text-xs font-mono text-neutral-500 dark:text-neutral-400">
                   <span>Cookified</span>
                   <span>/</span>
-                  <span className="text-neutral-900 dark:text-white font-medium">Toastify</span>
+                  <span className="text-neutral-900 dark:text-white font-medium">
+                    Toastify
+                  </span>
                 </div>
 
                 <h1 className="text-2xl font-medium tracking-tight text-neutral-950 sm:text-3xl dark:text-white">
@@ -302,7 +167,8 @@ export function App() {
                 </h1>
 
                 <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                  An extensible toast notification system with stack transitions and modular animations.
+                  An extensible toast notification system with stack transitions
+                  and modular animations.
                 </p>
               </motion.section>
 
@@ -322,7 +188,7 @@ export function App() {
                   animation={animation}
                   onChangeAnimation={setAnimation}
                   activeCount={activeToastsCount}
-                  onFireToast={triggerToast}
+                  onFireToast={triggerDemoToast}
                 />
               </motion.section>
 
@@ -368,7 +234,7 @@ export function App() {
           </div>
         )}
 
-        {/* Circular Theme Ripple Overlay (Bulletproof Fallback) */}
+        {/* Circular Theme Ripple Overlay */}
         {themeRipple && (
           <motion.div
             key={`${themeRipple.x}-${themeRipple.y}-${themeRipple.isDark}`}
@@ -380,7 +246,7 @@ export function App() {
               clipPath: `circle(${
                 Math.hypot(
                   Math.max(themeRipple.x, window.innerWidth - themeRipple.x),
-                  Math.max(themeRipple.y, window.innerHeight - themeRipple.y)
+                  Math.max(themeRipple.y, window.innerHeight - themeRipple.y),
                 ) + 60
               }px at ${themeRipple.x}px ${themeRipple.y}px)`,
               opacity: 0,
@@ -397,7 +263,7 @@ export function App() {
           />
         )}
 
-        {/* Runtime Toaster (always mounted and responsive to current animation & position) */}
+        {/* Runtime Toaster */}
         <Toaster
           position={position}
           animation={animation}

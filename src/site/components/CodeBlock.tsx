@@ -31,7 +31,10 @@ function highlightCode(code: string) {
     while ((match = tokenRegex.exec(line)) !== null) {
       if (match.index > lastIndex) {
         parts.push(
-          <span key={`${lineIndex}-text-${lastIndex}`} className="text-neutral-300 dark:text-neutral-300">
+          <span
+            key={`${lineIndex}-text-${lastIndex}`}
+            className="text-neutral-300 dark:text-neutral-300"
+          >
             {line.substring(lastIndex, match.index)}
           </span>,
         );
@@ -41,37 +44,55 @@ function highlightCode(code: string) {
 
       if (comment) {
         parts.push(
-          <span key={`${lineIndex}-comm-${match.index}`} className="text-neutral-500 italic">
+          <span
+            key={`${lineIndex}-comm-${match.index}`}
+            className="text-neutral-500 italic"
+          >
             {comment}
           </span>,
         );
       } else if (str) {
         parts.push(
-          <span key={`${lineIndex}-str-${match.index}`} className="text-emerald-400 font-mono">
+          <span
+            key={`${lineIndex}-str-${match.index}`}
+            className="text-emerald-400 font-mono"
+          >
             {str}
           </span>,
         );
       } else if (keyword) {
         parts.push(
-          <span key={`${lineIndex}-kw-${match.index}`} className="text-purple-400 font-medium">
+          <span
+            key={`${lineIndex}-kw-${match.index}`}
+            className="text-purple-400 font-medium"
+          >
             {keyword}
           </span>,
         );
       } else if (fn) {
         parts.push(
-          <span key={`${lineIndex}-fn-${match.index}`} className="text-sky-400 font-medium">
+          <span
+            key={`${lineIndex}-fn-${match.index}`}
+            className="text-sky-400 font-medium"
+          >
             {fn}
           </span>,
         );
       } else if (key) {
         parts.push(
-          <span key={`${lineIndex}-key-${match.index}`} className="text-amber-300">
+          <span
+            key={`${lineIndex}-key-${match.index}`}
+            className="text-amber-300"
+          >
             {key}
           </span>,
         );
       } else if (tag) {
         parts.push(
-          <span key={`${lineIndex}-tag-${match.index}`} className="text-rose-400 font-medium">
+          <span
+            key={`${lineIndex}-tag-${match.index}`}
+            className="text-rose-400 font-medium"
+          >
             {tag}
           </span>,
         );
@@ -82,7 +103,10 @@ function highlightCode(code: string) {
 
     if (lastIndex < line.length) {
       parts.push(
-        <span key={`${lineIndex}-rest-${lastIndex}`} className="text-neutral-300 dark:text-neutral-300">
+        <span
+          key={`${lineIndex}-rest-${lastIndex}`}
+          className="text-neutral-300 dark:text-neutral-300"
+        >
           {line.substring(lastIndex)}
         </span>,
       );

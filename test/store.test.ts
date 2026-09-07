@@ -183,5 +183,3 @@ describe("toastStore & toast API", () => {
     expect(current[0].icon).toBeNull();
   });
 });
-
-

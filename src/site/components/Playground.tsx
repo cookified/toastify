@@ -2,6 +2,7 @@ import { Bell, Check, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { AnimationPreset, ToastPosition } from "../../toastify";
+import { playgroundCodeSnippets } from "../data/playground-snippets";
 import { CodeBlock } from "./CodeBlock";
 
 export type ToastVariant =
@@ -37,6 +38,16 @@ const animationOptions: { value: AnimationPreset; label: string }[] = [
   { value: "stack", label: "Folder Stack" },
   { value: "slide", label: "Slide Preset" },
   { value: "fade", label: "Fade Preset" },
+];
+
+const variantItems: { id: ToastVariant; label: string }[] = [
+  { id: "action", label: "Action" },
+  { id: "promise", label: "Promise" },
+  { id: "success", label: "Success" },
+  { id: "custom-icon", label: "External Icon" },
+  { id: "tailwind", label: "Tailwind Classes" },
+  { id: "variant", label: "Dynamic Variant" },
+  { id: "headless", label: "Custom JSX" },
 ];
 
 function CustomDropdown<T extends string>({
@@ -132,7 +143,10 @@ function CustomDropdown<T extends string>({
               >
                 <span>{opt.label}</span>
                 {opt.value === value && (
-                  <Check size={12} className="text-neutral-900 dark:text-white" />
+                  <Check
+                    size={12}
+                    className="text-neutral-900 dark:text-white"
+                  />
                 )}
               </button>
             ))}
@@ -142,92 +156,6 @@ function CustomDropdown<T extends string>({
     </div>
   );
 }
-
-const codeSnippets: Record<ToastVariant, string> = {
-  action: `import { toast } from "@cookified/toastify";
-
-toast("Event scheduled", {
-  description: "Monday, January at 4:00 PM",
-  action: {
-    label: "Undo",
-    onClick: () => handleUndo(),
-  },
-  cancel: {
-    label: "Dismiss",
-    onClick: () => handleDismiss(),
-  },
-});`,
-  promise: `import { toast } from "@cookified/toastify";
-
-toast.promise(saveDocument(), {
-  loading: "Uploading document...",
-  success: "Uploaded successfully",
-  error: "Failed to upload document",
-  action: {
-    label: "View",
-    onClick: () => openDoc(),
-  },
-});`,
-  success: `import { toast } from "@cookified/toastify";
-
-toast.success("Payment confirmed", {
-  description: "Receipt #4092 emailed to your account",
-});`,
-  "custom-icon": `import { toast } from "@cookified/toastify";
-import { Sparkles } from "lucide-react"; // or any custom SVG
-
-toast("AI Model Ready", {
-  description: "Synthesized 12 variations in 0.4s",
-  icon: <Sparkles className="h-4 w-4 text-amber-400" />,
-  action: {
-    label: "Inspect",
-    onClick: () => openInspector(),
-  },
-});`,
-  tailwind: `import { toast } from "@cookified/toastify";
-
-// Tailwind utility classes override default styles with 0 specificity conflict
-toast("Invoice Paid", {
-  description: "Transferred $1,420 to Stripe account",
-  className: "bg-emerald-950 text-emerald-100 border-emerald-800",
-  action: {
-    label: "Receipt",
-    onClick: () => viewReceipt(),
-  },
-});`,
-  variant: `import { toast } from "@cookified/toastify";
-import { Flame } from "lucide-react";
-
-// 1. Define reusable state dispatcher once
-const toastStreak = toast.variant({
-  icon: <Flame className="h-4 w-4 text-orange-500" />,
-  className: "border-orange-500/30",
-  duration: 4000,
-});
-
-// 2. Dispatch anywhere dynamically
-toastStreak("7-Day Streak!", {
-  description: "Keep up the momentum today",
-});`,
-  headless: `import { toast } from "@cookified/toastify";
-
-toast.custom((id) => (
-  <div className="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-neutral-700 bg-neutral-900 px-4 text-xs font-medium text-white shadow-xl">
-    <div className="flex items-center gap-2">
-      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-600 font-bold text-[10px]">
-        ★
-      </span>
-      <span>Custom Headless JSX Notification</span>
-    </div>
-    <button
-      onClick={() => toast.dismiss(id)}
-      className="cursor-pointer rounded px-2 py-0.5 text-neutral-400 hover:text-white"
-    >
-      Close
-    </button>
-  </div>
-));`,
-};
 
 export function Playground({
   selectedVariant,
@@ -239,25 +167,14 @@ export function Playground({
   activeCount,
   onFireToast,
 }: PlaygroundProps) {
-  const variantItems: { id: ToastVariant; label: string }[] = [
-    { id: "action", label: "Action" },
-    { id: "promise", label: "Promise" },
-    { id: "success", label: "Success" },
-    { id: "custom-icon", label: "External Icon" },
-    { id: "tailwind", label: "Tailwind Classes" },
-    { id: "variant", label: "Dynamic Variant" },
-    { id: "headless", label: "Custom JSX" },
-  ];
-
   return (
     <div className="space-y-4">
-      {/* Playground Header with Custom Sleek Dropdown Selectors */}
+      {/* Header with Dropdown Selectors */}
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <h2 className="text-sm font-medium tracking-tight text-neutral-950 sm:text-base dark:text-white">
           Playground
         </h2>
 
-        {/* Custom Sleek Dropdown Controls */}
         <div className="flex items-center gap-2">
           <CustomDropdown
             value={position}
@@ -275,17 +192,19 @@ export function Playground({
         </div>
       </div>
 
-      {/* Dead-Centered Interactive Preview Canvas */}
+      {/* Interactive Preview Canvas */}
       <div className="canvas-grid relative flex h-[350px] w-full flex-col items-center justify-center rounded-2xl border border-neutral-200/90 bg-white p-6 shadow-xs transition-all hover:border-neutral-300 dark:border-neutral-800/90 dark:bg-[#111113] dark:hover:border-neutral-700">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          {/* Bigger, Darker Contrast Bell Trigger Button */}
           <button
             type="button"
             onClick={() => onFireToast(selectedVariant)}
             className="group relative flex h-20 w-20 cursor-pointer items-center justify-center rounded-2xl border border-neutral-300 bg-neutral-900 text-white shadow-xl transition-all hover:scale-105 active:scale-95 dark:border-neutral-700 dark:bg-[#18181b] dark:text-white dark:hover:bg-[#222226]"
             aria-label="Trigger toast notification"
           >
-            <Bell size={28} className="transition-transform group-hover:rotate-12" />
+            <Bell
+              size={28}
+              className="transition-transform group-hover:rotate-12"
+            />
             {activeCount > 0 && (
               <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-semibold text-neutral-950 shadow-md dark:bg-white dark:text-neutral-950">
                 {activeCount}
@@ -295,14 +214,18 @@ export function Playground({
 
           <div className="space-y-1">
             <div className="text-sm font-medium text-neutral-900 dark:text-white">
-              Click bell to fire <strong className="capitalize font-semibold text-neutral-950 dark:text-white">{selectedVariant}</strong> toast
+              Click bell to fire{" "}
+              <strong className="capitalize font-semibold text-neutral-950 dark:text-white">
+                {selectedVariant}
+              </strong>{" "}
+              toast
             </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Hover over notifications to preview smooth card expansion
             </div>
           </div>
 
-          {/* Bigger, Darker Contrast Variant Selection Chips */}
+          {/* Variant Selection Chips */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
             {variantItems.map((v) => {
               const isSelected = selectedVariant === v.id;
@@ -330,7 +253,7 @@ export function Playground({
 
       {/* Syntax-Highlighted Dynamic Code Viewer */}
       <CodeBlock
-        code={codeSnippets[selectedVariant]}
+        code={playgroundCodeSnippets[selectedVariant]}
         filename={`${selectedVariant}Toast.tsx`}
       />
     </div>

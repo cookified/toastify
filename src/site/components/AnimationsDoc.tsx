@@ -2,6 +2,7 @@ import { Code2, Layers, MoveRight, Play, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast, type AnimationPreset } from "../../toastify";
+import { presetDetails } from "../data/animation-presets";
 import { CodeBlock } from "./CodeBlock";
 
 type AnimationsDocProps = {
@@ -9,155 +10,20 @@ type AnimationsDocProps = {
   onChangeAnimation?: (preset: AnimationPreset) => void;
 };
 
-type PresetDetail = {
-  id: AnimationPreset | "custom";
-  name: string;
-  summary: string;
-  stiffness: number;
-  damping: number;
-  exitDuration: string;
-  filename: string;
-  codeSnippet: string;
-};
-
-const presetDetails: Record<AnimationPreset | "custom", PresetDetail> = {
-  stack: {
-    id: "stack",
-    name: "Folder Stack",
-    summary: "Cards compress with spring mass and scale reduction. Hovering expands the stack effortlessly.",
-    stiffness: 220,
-    damping: 26,
-    exitDuration: "240ms",
-    filename: "FolderStackExample.tsx",
-    codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
-
-// Mount toaster with custom spring physics & auto-dismiss timing:
-<Toaster
-  animation="stack"
-  position="bottom-right"
-  duration={3500} // Auto-dismiss delay in ms (or false to stay indefinitely)
-  springConfig={{
-    stiffness: 220, // Spring tension: higher = snappier entrance
-    damping: 26,    // Friction resistance: lower = springier
-    mass: 1.0,      // Inertial mass during card fan-out
-  }}
-/>
-
-// Trigger notification (with optional per-toast duration override):
-toast("Folder Stack", {
-  description: "Cards compress with spring mass. Hover to fan open.",
-  duration: 4000, // Custom duration for this toast (or false to keep pinned)
-});`,
-  },
-  slide: {
-    id: "slide",
-    name: "Slide Preset",
-    summary: "Lateral edge entrance with velocity damping and interactive swipe-to-dismiss gesture.",
-    stiffness: 320,
-    damping: 28,
-    exitDuration: "220ms",
-    filename: "SlideExample.tsx",
-    codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
-
-// Mount toaster with Slide preset & velocity dynamics:
-<Toaster
-  animation="slide"
-  position="bottom-right"
-  duration={3500} // Auto-dismiss interval (exit transition: 220ms)
-  springConfig={{
-    stiffness: 320, // Slide entry velocity
-    damping: 28,    // Slide deceleration settling
-  }}
-/>
-
-// Trigger notification with per-toast duration:
-toast("Slide Preset", {
-  description: "Directional entrance with swipe gesture and unstacked layout.",
-  duration: 3000, // Modify duration per-toast
-});`,
-  },
-  fade: {
-    id: "fade",
-    name: "Fade Preset",
-    summary: "In-place gentle dissolve with subtle blur-to-focus and micro scale transitions.",
-    stiffness: 280,
-    damping: 26,
-    exitDuration: "220ms",
-    filename: "FadeExample.tsx",
-    codeSnippet: `import { Toaster, toast } from "@cookified/toastify";
-
-// Mount toaster with Fade preset & dissolve timing:
-<Toaster
-  animation="fade"
-  position="bottom-right"
-  duration={3000} // Auto-dismiss interval (exit transition: 220ms easeOut)
-  springConfig={{
-    stiffness: 280, // In-place blur & scale transition speed
-    damping: 26,
-  }}
-/>
-
-// Trigger notification:
-toast("Fade Preset", {
-  description: "In-place gentle dissolve with soft blur transition.",
-});`,
-  },
-  custom: {
-    id: "custom",
-    name: "Custom Component",
-    summary: "Drop any custom Motion component straight into <Toaster animation={CustomComponent} />.",
-    stiffness: 350,
-    damping: 22,
-    exitDuration: "Configurable",
-    filename: "CustomScaleAnimation.tsx",
-    codeSnippet: `import { motion } from "motion/react";
-import type { ToastAnimationProps } from "@cookified/toastify";
-
-// Define custom Motion wrapper with tailored entrance & exit timings:
-export function CustomScaleAnimation({
-  children,
-  index,
-  isDismissing,
-}: ToastAnimationProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.85, y: 20 }}
-      animate={{
-        opacity: isDismissing ? 0 : 1,
-        scale: isDismissing ? 0.85 : 1 - index * 0.05,
-        y: isDismissing ? 30 : index * 8,
-      }}
-      // Modify entrance transition & spring physics:
-      transition={{
-        type: "spring",
-        stiffness: 350, // Entrance velocity
-        damping: 22,    // Bounce settling
-      }}
-      // Modify exit transition duration & easing curve:
-      exit={{
-        opacity: 0,
-        scale: 0.85,
-        transition: {
-          duration: 0.25, // Exit duration: 250ms
-          ease: [0.16, 1, 0.3, 1], // Smooth deceleration curve
-        },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// Pass directly to Toaster with custom auto-dismiss duration:
-<Toaster animation={CustomScaleAnimation} duration={4000} />`,
-  },
-};
+const navigationTabs = [
+  { id: "stack" as const, label: "Folder Stack", icon: Layers },
+  { id: "slide" as const, label: "Slide", icon: MoveRight },
+  { id: "fade" as const, label: "Fade", icon: Sparkles },
+  { id: "custom" as const, label: "Custom Component", icon: Code2 },
+];
 
 export function AnimationsDoc({
   activeAnimation = "stack",
   onChangeAnimation,
 }: AnimationsDocProps) {
-  const [selectedTab, setSelectedTab] = useState<AnimationPreset | "custom">(activeAnimation);
+  const [selectedTab, setSelectedTab] = useState<AnimationPreset | "custom">(
+    activeAnimation,
+  );
   const [isVisualizerHovered, setIsVisualizerHovered] = useState(false);
 
   const current = presetDetails[selectedTab];
@@ -180,7 +46,8 @@ export function AnimationsDoc({
       });
     } else if (selectedTab === "slide") {
       toast("Slide Preset", {
-        description: "Directional entrance with swipe gesture and unstacked layout.",
+        description:
+          "Directional entrance with swipe gesture and unstacked layout.",
       });
     } else if (selectedTab === "fade") {
       toast("Fade Preset", {
@@ -200,23 +67,16 @@ export function AnimationsDoc({
           Pluggable Animation System
         </h2>
         <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-          Every animation is an isolated Motion component. Select a built-in preset or supply your own custom animation.
+          Every animation is an isolated Motion component. Select a built-in
+          preset or supply your own custom animation.
         </p>
       </div>
 
-      {/* Design-Cracked Interactive Animation Studio */}
       <div className="overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800/90 dark:bg-[#101013]">
         {/* Top Segmented Navigation Dock */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200/80 bg-neutral-50/70 p-3 sm:px-4 dark:border-neutral-800/80 dark:bg-[#141418]/80">
           <div className="flex flex-wrap items-center gap-1 rounded-xl border border-neutral-200 bg-neutral-200/50 p-1 dark:border-neutral-800 dark:bg-neutral-900/80">
-            {(
-              [
-                { id: "stack", label: "Folder Stack", icon: Layers },
-                { id: "slide", label: "Slide", icon: MoveRight },
-                { id: "fade", label: "Fade", icon: Sparkles },
-                { id: "custom", label: "Custom Component", icon: Code2 },
-              ] as const
-            ).map((item) => {
+            {navigationTabs.map((item) => {
               const Icon = item.icon;
               const isCurrent = selectedTab === item.id;
 
@@ -235,7 +95,11 @@ export function AnimationsDoc({
                     <motion.div
                       layoutId="active-preset-studio-pill"
                       className="absolute inset-0 rounded-lg bg-white shadow-sm dark:bg-[#202024]"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 450,
+                        damping: 32,
+                      }}
                     />
                   )}
                   <span className="relative z-10">
@@ -268,7 +132,7 @@ export function AnimationsDoc({
             </p>
           </div>
 
-          {/* Live Miniature Physics Stage */}
+          {/* Miniature Physics Stage */}
           <div
             onMouseEnter={() => setIsVisualizerHovered(true)}
             onMouseLeave={() => setIsVisualizerHovered(false)}
@@ -348,23 +212,10 @@ export function AnimationsDoc({
               <motion.div
                 animate={
                   selectedTab === "stack"
-                    ? {
-                        y: 0,
-                        scale: 1,
-                        opacity: 1,
-                      }
+                    ? { y: 0, scale: 1, opacity: 1 }
                     : selectedTab === "slide"
-                      ? {
-                          x: 0,
-                          y: 0,
-                          scale: 1,
-                          opacity: 1,
-                        }
-                      : {
-                          y: 0,
-                          scale: 1,
-                          opacity: 1,
-                        }
+                      ? { x: 0, y: 0, scale: 1, opacity: 1 }
+                      : { y: 0, scale: 1, opacity: 1 }
                 }
                 transition={{ type: "spring", stiffness: 350, damping: 24 }}
                 className="absolute inset-0 flex items-center justify-between rounded-lg border border-neutral-300 bg-white p-3 shadow-md dark:border-neutral-600 dark:bg-[#222228]"
@@ -382,18 +233,33 @@ export function AnimationsDoc({
             </div>
           </div>
 
-          {/* Physics Metrics Readout */}
+          {/* Physics Metrics */}
           <div className="flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200/80 pt-3 text-xs text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
             <div className="flex items-center gap-4 font-mono text-xs">
-              <span>Stiffness: <strong className="text-neutral-900 dark:text-white">{current.stiffness}</strong></span>
-              <span>Damping: <strong className="text-neutral-900 dark:text-white">{current.damping}</strong></span>
-              <span>Exit Duration: <strong className="text-neutral-900 dark:text-white">{current.exitDuration}</strong></span>
+              <span>
+                Stiffness:{" "}
+                <strong className="text-neutral-900 dark:text-white">
+                  {current.stiffness}
+                </strong>
+              </span>
+              <span>
+                Damping:{" "}
+                <strong className="text-neutral-900 dark:text-white">
+                  {current.damping}
+                </strong>
+              </span>
+              <span>
+                Exit Duration:{" "}
+                <strong className="text-neutral-900 dark:text-white">
+                  {current.exitDuration}
+                </strong>
+              </span>
             </div>
             <span className="text-xs">Click canvas to test in toaster</span>
           </div>
         </div>
 
-        {/* Usage Code: Syntax-Highlighted & Zero-Truncation CodeBlock */}
+        {/* Code Block */}
         <div className="border-t border-neutral-200/80 dark:border-neutral-800/80">
           <CodeBlock code={current.codeSnippet} filename={current.filename} />
         </div>

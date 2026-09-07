@@ -7,10 +7,7 @@ type LandingPageProps = {
   onFireToast: (variant: string) => void;
 };
 
-export function LandingPage({
-  onNavigateDocs,
-  onFireToast,
-}: LandingPageProps) {
+export function LandingPage({ onNavigateDocs, onFireToast }: LandingPageProps) {
   const [copied, setCopied] = useState(false);
   const installCmd = "npm i @cookified/toastify motion";
 
@@ -40,17 +37,28 @@ export function LandingPage({
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 280, damping: 24, delay: 0.06 }}
+          transition={{
+            type: "spring",
+            stiffness: 280,
+            damping: 24,
+            delay: 0.06,
+          }}
           className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-[460px] mx-auto leading-relaxed"
         >
-          Stack transitions, pluggable Motion presets, and effortless customization.
+          Stack transitions, pluggable Motion presets, and effortless
+          customization.
         </motion.p>
 
         {/* Action Buttons: Render Toast & Documentation */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 280, damping: 24, delay: 0.12 }}
+          transition={{
+            type: "spring",
+            stiffness: 280,
+            damping: 24,
+            delay: 0.12,
+          }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2"
         >
           <motion.button
@@ -59,7 +67,10 @@ export function LandingPage({
             onClick={() => onFireToast("action")}
             className="group flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
           >
-            <Bell size={15} className="transition-transform group-hover:rotate-12" />
+            <Bell
+              size={15}
+              className="transition-transform group-hover:rotate-12"
+            />
             <span>Render Toast</span>
           </motion.button>
 
@@ -77,7 +88,12 @@ export function LandingPage({
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 280, damping: 24, delay: 0.18 }}
+          transition={{
+            type: "spring",
+            stiffness: 280,
+            damping: 24,
+            delay: 0.18,
+          }}
           className="pt-1 flex justify-center"
         >
           <div className="inline-flex items-center gap-2.5 rounded-lg border border-neutral-200/80 bg-neutral-100/70 px-3.5 py-1.5 font-mono text-xs text-neutral-700 dark:border-neutral-800/80 dark:bg-[#131316] dark:text-neutral-300">
@@ -89,7 +105,11 @@ export function LandingPage({
               className="cursor-pointer text-neutral-400 hover:text-neutral-950 dark:hover:text-white transition-colors"
               aria-label="Copy install command"
             >
-              {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
+              {copied ? (
+                <Check size={13} className="text-emerald-500" />
+              ) : (
+                <Copy size={13} />
+              )}
             </button>
           </div>
         </motion.div>

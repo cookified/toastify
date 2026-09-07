@@ -32,7 +32,9 @@ describe("<Toaster /> and <Toast /> component", () => {
       toast("Deploy complete");
     });
 
-    const closeBtn = screen.getByRole("button", { name: "Dismiss notification" });
+    const closeBtn = screen.getByRole("button", {
+      name: "Dismiss notification",
+    });
     expect(closeBtn).toBeDefined();
 
     act(() => {
@@ -49,7 +51,9 @@ describe("<Toaster /> and <Toast /> component", () => {
       toast("Test Notification Enter");
     });
 
-    const closeBtn = screen.getByRole("button", { name: "Dismiss notification" });
+    const closeBtn = screen.getByRole("button", {
+      name: "Dismiss notification",
+    });
     act(() => {
       fireEvent.keyDown(closeBtn, { key: "Enter" });
     });
@@ -63,7 +67,9 @@ describe("<Toaster /> and <Toast /> component", () => {
       toast("Test Notification Space");
     });
 
-    const closeBtn = screen.getByRole("button", { name: "Dismiss notification" });
+    const closeBtn = screen.getByRole("button", {
+      name: "Dismiss notification",
+    });
     act(() => {
       fireEvent.keyDown(closeBtn, { key: " " });
     });
@@ -85,7 +91,9 @@ describe("<Toaster /> and <Toast /> component", () => {
   });
 
   it("respects dismissOnEscape=false to disable Escape key dismissal", () => {
-    render(<Toaster position="bottom-right" dismissOnEscape={false} unstyled />);
+    render(
+      <Toaster position="bottom-right" dismissOnEscape={false} unstyled />,
+    );
 
     act(() => {
       toast("Persistent on Escape");
@@ -111,7 +119,9 @@ describe("<Toaster /> and <Toast /> component", () => {
     expect(statusArticle?.getAttribute("role")).toBe("status");
     expect(statusArticle?.getAttribute("aria-live")).toBe("polite");
 
-    const alertArticle = screen.getByText("Critical failure").closest("article");
+    const alertArticle = screen
+      .getByText("Critical failure")
+      .closest("article");
     expect(alertArticle).not.toBeNull();
     expect(alertArticle?.getAttribute("role")).toBe("alert");
     expect(alertArticle?.getAttribute("aria-live")).toBe("assertive");
@@ -173,12 +183,18 @@ describe("<Toaster /> and <Toast /> component", () => {
       });
     });
 
-    const toastElement = screen.getByText("Custom Colored Toast").closest(".toastify-toast");
+    const toastElement = screen
+      .getByText("Custom Colored Toast")
+      .closest(".toastify-toast");
     expect(toastElement).not.toBeNull();
     expect(toastElement?.className).toContain("global-custom-class");
     expect(toastElement?.className).toContain("per-toast-class");
-    expect(toastElement?.getAttribute("style")).toContain("background-color: rgb(30, 30, 46)");
-    expect(toastElement?.getAttribute("style")).toContain("color: rgb(205, 214, 244)");
+    expect(toastElement?.getAttribute("style")).toContain(
+      "background-color: rgb(30, 30, 46)",
+    );
+    expect(toastElement?.getAttribute("style")).toContain(
+      "color: rgb(205, 214, 244)",
+    );
   });
 
   it("renders with dark, light, and system themes", () => {
@@ -231,7 +247,12 @@ describe("<Toaster /> and <Toast /> component", () => {
     act(() => {
       toast("AI Model Synthesized", {
         icon: (
-          <svg data-testid="custom-svg-icon" width="14" height="14" viewBox="0 0 24 24">
+          <svg
+            data-testid="custom-svg-icon"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+          >
             <circle cx="12" cy="12" r="10" />
           </svg>
         ),
@@ -248,11 +269,14 @@ describe("<Toaster /> and <Toast /> component", () => {
 
     act(() => {
       toast("Tailwind Styled Toast", {
-        className: "bg-emerald-950 text-emerald-100 border-emerald-800 shadow-2xl",
+        className:
+          "bg-emerald-950 text-emerald-100 border-emerald-800 shadow-2xl",
       });
     });
 
-    const toastElement = screen.getByText("Tailwind Styled Toast").closest(".toastify-toast");
+    const toastElement = screen
+      .getByText("Tailwind Styled Toast")
+      .closest(".toastify-toast");
     expect(toastElement).not.toBeNull();
     expect(toastElement?.className).toContain("bg-emerald-950");
     expect(toastElement?.className).toContain("text-emerald-100");
@@ -283,7 +307,9 @@ describe("<Toaster /> and <Toast /> component", () => {
     expect(screen.getByText("Consistency is key")).toBeDefined();
     expect(screen.getByTestId("streak-icon")).toBeDefined();
 
-    const toastElement = screen.getByText("7-Day Streak!").closest(".toastify-toast");
+    const toastElement = screen
+      .getByText("7-Day Streak!")
+      .closest(".toastify-toast");
     expect(toastElement?.className).toContain("border-orange-500/30");
   });
 
@@ -309,7 +335,10 @@ describe("<Toaster /> and <Toast /> component", () => {
       index: number;
     }) {
       return (
-        <div data-testid={`custom-animation-stage-${index}`} className="custom-motion-wrapper">
+        <div
+          data-testid={`custom-animation-stage-${index}`}
+          className="custom-motion-wrapper"
+        >
           {children}
         </div>
       );
@@ -339,8 +368,12 @@ describe("<Toaster /> and <Toast /> component", () => {
 
     expect(toasterRef.current).not.toBeNull();
     expect(toasterRef.current?.id).toBe("app-toaster");
-    expect(toasterRef.current?.getAttribute("data-testid")).toBe("global-toaster");
-    expect(toasterRef.current?.getAttribute("aria-label")).toBe("System Notifications");
+    expect(toasterRef.current?.getAttribute("data-testid")).toBe(
+      "global-toaster",
+    );
+    expect(toasterRef.current?.getAttribute("aria-label")).toBe(
+      "System Notifications",
+    );
   });
 
   it("forwards ref and passes native HTML attributes to <Toast />", () => {
@@ -365,15 +398,23 @@ describe("<Toaster /> and <Toast /> component", () => {
 
     expect(toastRef.current).not.toBeNull();
     expect(toastRef.current?.id).toBe("custom-toast-element");
-    expect(toastRef.current?.getAttribute("data-testid")).toBe("custom-toast-card");
+    expect(toastRef.current?.getAttribute("data-testid")).toBe(
+      "custom-toast-card",
+    );
     expect(toastRef.current?.getAttribute("data-variant")).toBe("custom-v");
   });
 
   it("cn() helper cleanly merges classes and filters falsy values", () => {
     const isHidden = false;
-    expect(cn("base-class", isHidden ? "hidden" : undefined, null, undefined, "active-class")).toBe(
-      "base-class active-class",
-    );
+    expect(
+      cn(
+        "base-class",
+        isHidden ? "hidden" : undefined,
+        null,
+        undefined,
+        "active-class",
+      ),
+    ).toBe("base-class active-class");
     expect(cn()).toBe("");
   });
 });

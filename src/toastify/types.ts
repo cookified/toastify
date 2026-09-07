@@ -2,13 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 /** Toast variant types supported by the system */
 export type ToastType =
-  | "neutral"
-  | "success"
-  | "error"
-  | "warning"
-  | "info"
-  | "loading"
-  | "custom";
+  "neutral" | "success" | "error" | "warning" | "info" | "loading" | "custom";
 
 /** Tactile action button configuration */
 export type ToastAction = {

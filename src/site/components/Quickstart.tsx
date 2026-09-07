@@ -46,7 +46,9 @@ export default function App() {
 export function Quickstart() {
   const [pm, setPm] = useState<PackageManager>("pnpm");
   const [copied, setCopied] = useState(false);
-  const [activeFrameworkTab, setActiveFrameworkTab] = useState<"nextjs" | "react">("nextjs");
+  const [activeFrameworkTab, setActiveFrameworkTab] = useState<
+    "nextjs" | "react"
+  >("nextjs");
 
   const handleCopy = async () => {
     try {
@@ -67,7 +69,8 @@ export function Quickstart() {
           </h2>
         </div>
         <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-          Add the toaster to your root layout and trigger notifications from anywhere.
+          Add the toaster to your root layout and trigger notifications from
+          anywhere.
         </p>
       </div>
 
@@ -155,8 +158,14 @@ export function Quickstart() {
         </div>
 
         <CodeBlock
-          code={activeFrameworkTab === "nextjs" ? nextjsSetupSnippet : reactSetupSnippet}
-          filename={activeFrameworkTab === "nextjs" ? "app/layout.tsx" : "src/App.tsx"}
+          code={
+            activeFrameworkTab === "nextjs"
+              ? nextjsSetupSnippet
+              : reactSetupSnippet
+          }
+          filename={
+            activeFrameworkTab === "nextjs" ? "app/layout.tsx" : "src/App.tsx"
+          }
         />
       </div>
 
@@ -186,7 +195,8 @@ toast("Profile updated", {
           4. Create custom states (optional):
         </div>
         <p className="text-xs text-neutral-600 dark:text-neutral-400">
-          Define reusable notification states once with your own icons, styling, or duration:
+          Define reusable notification states once with your own icons, styling,
+          or duration:
         </p>
         <CodeBlock
           code={`import { toast } from "@cookified/toastify";
@@ -213,7 +223,11 @@ toastAi("Model synthesized", {
           5. Themes &amp; color customization:
         </div>
         <p className="text-xs text-neutral-600 dark:text-neutral-400">
-          Switch themes via the <code className="font-mono text-neutral-800 dark:text-neutral-200">theme</code> prop or style toast cards globally and per-toast:
+          Switch themes via the{" "}
+          <code className="font-mono text-neutral-800 dark:text-neutral-200">
+            theme
+          </code>{" "}
+          prop or style toast cards globally and per-toast:
         </p>
         <CodeBlock
           code={`// 1. Theme switching on Toaster

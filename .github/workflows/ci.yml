@@ -30,8 +30,11 @@ jobs:
       - name: Run linter
         run: npm run lint
 
+      - name: Build library
+        run: npm run build:lib
+
       - name: Run test suite
         run: npm test
 
-      - name: Build library and documentation
-        run: npm run build
+      - name: Build documentation
+        run: npm run build:site

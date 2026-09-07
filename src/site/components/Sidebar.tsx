@@ -103,7 +103,11 @@ export function Sidebar({
                       initial={{ opacity: 0, x: -3, scaleY: 0.4 }}
                       animate={{ opacity: 1, x: 0, scaleY: 1 }}
                       exit={{ opacity: 0, x: 3, scaleY: 0.4 }}
-                      transition={{ type: "spring", stiffness: 380, damping: 26 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 26,
+                      }}
                       className="absolute right-0 h-4 w-1 rounded-l-full rounded-r-md bg-neutral-900 shadow-[0_0_8px_rgba(0,0,0,0.25)] dark:bg-white dark:shadow-[0_0_8px_rgba(255,255,255,0.4)]"
                     />
                   )}

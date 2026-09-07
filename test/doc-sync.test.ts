@@ -21,11 +21,11 @@ describe("Documentation & code synchronization", () => {
 
     // Match README table defaults
     expect(readme).toContain('`"bottom-right"`');
-    expect(readme).toContain('`3500`');
-    expect(readme).toContain('`5`');
+    expect(readme).toContain("`3500`");
+    expect(readme).toContain("`5`");
     expect(readme).toContain('`"system"`');
-    expect(readme).toContain('`true`');
-    expect(readme).toContain('`14`');
+    expect(readme).toContain("`true`");
+    expect(readme).toContain("`14`");
     expect(readme).toContain('`"24px"`');
   });
 });

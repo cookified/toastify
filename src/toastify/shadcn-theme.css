@@ -14,7 +14,9 @@
   --toastify-btn-close-color: hsl(var(--muted-foreground, 240 3.8% 46.1%));
 }
 
-.dark, [data-theme="dark"], .toastify-toaster.dark {
+.dark,
+[data-theme="dark"],
+.toastify-toaster.dark {
   --toastify-bg: hsl(var(--card, 240 10% 3.9%));
   --toastify-color: hsl(var(--card-foreground, 0 0% 98%));
   --toastify-title-color: hsl(var(--card-foreground, 0 0% 98%));

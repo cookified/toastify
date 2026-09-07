@@ -16,13 +16,18 @@ let toasts: ToastData[] = [];
 const listeners = new Set<Listener>();
 
 function generateId(): string {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
     return crypto.randomUUID();
   }
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-function sanitizeDuration(duration: number | false | undefined): number | false | undefined {
+function sanitizeDuration(
+  duration: number | false | undefined,
+): number | false | undefined {
   if (duration === false) return false;
   if (typeof duration === "number") {
     return Number.isFinite(duration) && duration >= 0 ? duration : 3500;
@@ -75,11 +80,7 @@ function update(
   emit();
 }
 
-function create(
-  type: ToastType,
-  title: ReactNode,
-  options: ToastOptions = {},
-) {
+function create(type: ToastType, title: ReactNode, options: ToastOptions = {}) {
   const id = options.id ?? generateId();
   const duration = sanitizeDuration(options.autoClose ?? options.duration);
 
@@ -234,10 +235,7 @@ export const toast = Object.assign(toastFn, {
     return create("loading", title, { ...options, duration: false });
   },
 
-  custom(
-    renderer: (id: string) => ReactNode,
-    options: ToastOptions = {},
-  ) {
+  custom(renderer: (id: string) => ReactNode, options: ToastOptions = {}) {
     const id = options.id ?? generateId();
     const duration = sanitizeDuration(options.autoClose ?? options.duration);
 

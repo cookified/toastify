@@ -18,7 +18,9 @@
   width: 356px;
   max-width: calc(100vw - 32px);
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -101,7 +103,8 @@
   --toastify-title-color: #171717;
   --toastify-desc-color: #737373;
   --toastify-border: rgba(229, 231, 235, 0.9);
-  --toastify-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --toastify-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
   --toastify-badge-bg: #171717;
   --toastify-badge-color: #ffffff;
   --toastify-btn-cancel-color: #525252;
@@ -122,7 +125,8 @@
   --toastify-title-color: #f5f5f5;
   --toastify-desc-color: #a3a3a3;
   --toastify-border: rgba(38, 38, 38, 0.9);
-  --toastify-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
+  --toastify-shadow:
+    0 4px 14px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
   --toastify-badge-bg: #ffffff;
   --toastify-badge-color: #0a0a0a;
   --toastify-btn-cancel-color: #a3a3a3;
@@ -142,7 +146,8 @@
     --toastify-title-color: #f5f5f5;
     --toastify-desc-color: #a3a3a3;
     --toastify-border: rgba(38, 38, 38, 0.9);
-    --toastify-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
+    --toastify-shadow:
+      0 4px 14px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
     --toastify-badge-bg: #ffffff;
     --toastify-badge-color: #0a0a0a;
     --toastify-btn-cancel-color: #a3a3a3;
@@ -168,10 +173,11 @@
   border-radius: 8px;
   padding: 0 14px;
   box-sizing: border-box;
-  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--toastify-bg, #ffffff);
   border: 1px solid var(--toastify-border, rgba(229, 231, 235, 0.9));
   color: var(--toastify-color, #111827);
@@ -247,11 +253,17 @@
   font-weight: 500;
   color: var(--toastify-btn-cancel-color, inherit);
   opacity: 0.8;
-  transition: background-color 0.15s, color 0.15s, opacity 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    opacity 0.15s;
 }
 
 :where(.toastify-btn-cancel):hover {
-  background-color: var(--toastify-btn-cancel-hover-bg, rgba(125, 125, 125, 0.15));
+  background-color: var(
+    --toastify-btn-cancel-hover-bg,
+    rgba(125, 125, 125, 0.15)
+  );
   color: var(--toastify-btn-cancel-hover-color, inherit);
   opacity: 1;
 }
@@ -265,8 +277,12 @@
   font-weight: 500;
   background-color: var(--toastify-btn-action-bg, #171717);
   color: var(--toastify-btn-action-color, #ffffff);
-  transition: background-color 0.15s, box-shadow 0.15s;
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.15s,
+    box-shadow 0.15s;
+  box-shadow:
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 :where(.toastify-btn-action):hover {
@@ -291,7 +307,9 @@
   padding: 0;
   color: var(--toastify-btn-close-color, inherit);
   opacity: 0.6;
-  transition: opacity 0.15s, color 0.15s;
+  transition:
+    opacity 0.15s,
+    color 0.15s;
 }
 
 :where(.toastify-btn-close):hover {
@@ -305,4 +323,3 @@
   outline: 2px solid var(--toastify-color, #111827);
   outline-offset: 2px;
 }
-

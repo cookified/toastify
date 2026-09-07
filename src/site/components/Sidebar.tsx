@@ -6,16 +6,10 @@ import { MotionNavItem } from "./MotionNavItem";
 import { siteNavLinks } from "../navigation";
 
 type SidebarProps = {
-  mobileMenuOpen: boolean;
-  onCloseMobileMenu: () => void;
   onTriggerToast: (variant: ToastVariant) => void;
 };
 
-export function Sidebar({
-  mobileMenuOpen,
-  onCloseMobileMenu,
-  onTriggerToast,
-}: SidebarProps) {
+export function Sidebar({ onTriggerToast }: SidebarProps) {
   const [hoveredTrigger, setHoveredTrigger] = useState<string | null>(null);
 
   const triggerButtons = [
@@ -27,38 +21,23 @@ export function Sidebar({
   ];
 
   return (
-    <>
-      {/* Mobile Backdrop Overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity lg:hidden"
-          onClick={onCloseMobileMenu}
-          aria-hidden="true"
-        />
-      )}
-
-      <aside
-        className={`fixed top-14 bottom-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col justify-between border-r border-neutral-200/80 bg-white p-4 pb-8 transition-transform duration-200 ease-out dark:border-neutral-800/80 dark:bg-[#09090b] lg:sticky lg:top-14 lg:bottom-auto lg:z-30 lg:flex lg:h-[calc(100vh-3.5rem)] lg:w-60 lg:translate-x-0 lg:bg-transparent lg:py-6 lg:pl-2 lg:pr-4 hover:border-neutral-300 lg:dark:bg-transparent dark:hover:border-neutral-700/80 ${
-          mobileMenuOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex-1 space-y-6 overflow-y-auto pr-2 text-sm">
-          {/* Navigation Section */}
-          <div>
-            <div className="px-2.5 text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">
-              Documentation
-            </div>
-            <nav className="mt-2 space-y-0.5">
-              {siteNavLinks.map((item) => (
-                <MotionNavItem
-                  key={item.href}
-                  href={item.href}
-                  label={item.label}
-                  onClick={onCloseMobileMenu}
-                />
-              ))}
-            </nav>
+    <aside className="hidden lg:flex lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)] lg:w-60 lg:flex-col lg:justify-between lg:py-6 lg:pl-2 lg:pr-4 hover:border-neutral-300 dark:hover:border-neutral-700/80 shrink-0">
+      <div className="flex-1 space-y-6 overflow-y-auto pr-2 text-sm">
+        {/* Navigation Section */}
+        <div>
+          <div className="px-2.5 text-sm font-semibold tracking-tight text-neutral-950 dark:text-white">
+            Documentation
           </div>
+          <nav className="mt-2 space-y-0.5">
+            {siteNavLinks.map((item) => (
+              <MotionNavItem
+                key={item.href}
+                href={item.href}
+                label={item.label}
+              />
+            ))}
+          </nav>
+        </div>
 
           {/* Quick Examples */}
           <div>
@@ -130,6 +109,5 @@ export function Sidebar({
           </a>
         </div>
       </aside>
-    </>
   );
 }

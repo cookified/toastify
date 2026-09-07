@@ -69,37 +69,24 @@ export function Header({
         }`}
       />
 
-      <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 lg:px-6">
-        {/* Left: Brand Identity & Mobile Hamburger */}
-        <div className="flex items-center gap-3">
-          {currentPage === "docs" && (
-            <button
-              type="button"
-              onClick={onToggleMobileMenu}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-neutral-200 text-neutral-600 hover:bg-neutral-100 lg:hidden dark:border-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-900"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
-            </button>
-          )}
+      <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-3.5 sm:px-4 lg:px-6">
+        {/* Left: Brand Identity - Rock-solid & Stable on all viewports */}
+        <button
+          type="button"
+          onClick={() => onNavigate("home")}
+          className="group flex cursor-pointer items-center gap-2.5 transition-opacity hover:opacity-90 shrink-0"
+        >
+          <CloverLogo
+            size={22}
+            className="transition-transform duration-300 group-hover:scale-105 group-hover:rotate-6"
+          />
+          <span className="text-[16px] font-semibold tracking-tight text-neutral-950 dark:text-white">
+            Toastify
+          </span>
+        </button>
 
-          <button
-            type="button"
-            onClick={() => onNavigate("home")}
-            className="group flex cursor-pointer items-center gap-2.5 transition-opacity hover:opacity-90"
-          >
-            <CloverLogo
-              size={22}
-              className="transition-transform duration-300 group-hover:scale-105 group-hover:rotate-6"
-            />
-            <span className="text-[16px] font-semibold tracking-tight text-neutral-950 dark:text-white">
-              Toastify
-            </span>
-          </button>
-        </div>
-
-        {/* Center: Navigation Page Switcher (Home vs Docs) */}
-        <nav className="flex items-center gap-1 rounded-xl border border-neutral-200/90 bg-neutral-100/90 p-1 text-xs font-medium dark:border-neutral-800 dark:bg-[#141418]">
+        {/* Center: Navigation Page Switcher (Desktop: md+ only) */}
+        <nav className="hidden md:flex items-center gap-1 rounded-xl border border-neutral-200/90 bg-neutral-100/90 p-1 text-xs font-medium dark:border-neutral-800 dark:bg-[#141418]">
           <button
             type="button"
             onClick={() => onNavigate("home")}
@@ -135,20 +122,18 @@ export function Header({
                 transition={{ type: "spring", stiffness: 450, damping: 30 }}
               />
             )}
-            <span className="relative z-10">
-              <span className="sm:hidden">Docs</span>
-              <span className="hidden sm:inline">Documentation</span>
-            </span>
+            <span className="relative z-10">Documentation</span>
           </button>
         </nav>
 
-        {/* Right: GitHub & Theme Toggle */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        {/* Right: GitHub, Theme Toggle & Mobile Menu Toggle */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           <a
             href="https://github.com/cookified/toastify"
             target="_blank"
             rel="noreferrer"
-            className="group relative inline-flex items-center gap-1.5 rounded-lg border border-neutral-200/90 bg-white/90 px-2.5 py-1.5 text-xs font-medium text-neutral-700 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-emerald-500/30 hover:bg-neutral-50 hover:shadow-[0_0_16px_rgba(16,185,129,0.12)] active:scale-95 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-emerald-500/40 dark:hover:bg-neutral-800 dark:hover:shadow-[0_0_20px_rgba(16,185,129,0.18)]"
+            className="group relative inline-flex h-8 items-center gap-1.5 rounded-lg border border-neutral-200/90 bg-white/90 px-2 sm:px-2.5 text-xs font-medium text-neutral-700 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-emerald-500/30 hover:bg-neutral-50 hover:shadow-[0_0_16px_rgba(16,185,129,0.12)] active:scale-95 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-emerald-500/40 dark:hover:bg-neutral-800 dark:hover:shadow-[0_0_20px_rgba(16,185,129,0.18)]"
+            aria-label="GitHub repository"
           >
             <GithubIcon size={14} />
             <span className="hidden sm:inline">GitHub</span>
@@ -170,6 +155,27 @@ export function Header({
                 className="flex items-center justify-center"
               >
                 {isDark ? <Sun size={15} /> : <Moon size={15} />}
+              </motion.div>
+            </AnimatePresence>
+          </button>
+
+          {/* Dedicated Mobile Menu Toggle */}
+          <button
+            type="button"
+            onClick={onToggleMobileMenu}
+            className="group relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-neutral-200 bg-white/90 text-neutral-700 shadow-2xs backdrop-blur-md transition-all duration-200 hover:bg-neutral-100 active:scale-95 md:hidden dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={mobileMenuOpen ? "close" : "menu"}
+                initial={{ opacity: 0, rotate: -30, scale: 0.8 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 30, scale: 0.8 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center justify-center"
+              >
+                {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
               </motion.div>
             </AnimatePresence>
           </button>

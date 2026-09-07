@@ -5,7 +5,6 @@ import { AnimationsDoc } from "./site/components/AnimationsDoc";
 import { ApiReference } from "./site/components/ApiReference";
 import { Header } from "./site/components/Header";
 import { LandingPage } from "./site/components/LandingPage";
-import { MobileDrawer } from "./site/components/MobileDrawer";
 import { Playground, type ToastVariant } from "./site/components/Playground";
 import { Quickstart } from "./site/components/Quickstart";
 import { Sidebar } from "./site/components/Sidebar";
@@ -182,23 +181,28 @@ export function App() {
           onNavigate={handleNavigate}
         />
 
-        {/* Mobile Navigation Drawer */}
-        <MobileDrawer
-          isOpen={mobileMenuOpen}
-          onClose={() => setMobileMenuOpen(false)}
-          currentPage={currentPage}
-          onNavigate={handleNavigate}
-          onTriggerToast={triggerDemoToast}
-        />
-
         {/* View 1: Main Landing Page */}
         {currentPage === "home" ? (
-          <LandingPage onNavigateDocs={() => handleNavigate("docs")} />
+          <>
+            <LandingPage onNavigateDocs={() => handleNavigate("docs")} />
+            <Sidebar
+              mobileMenuOpen={mobileMenuOpen}
+              onCloseMobileMenu={() => setMobileMenuOpen(false)}
+              onTriggerToast={triggerDemoToast}
+              onNavigate={handleNavigate}
+              className="lg:hidden"
+            />
+          </>
         ) : (
           /* View 2: 3-Column Documentation Workspace */
           <div className="mx-auto flex max-w-[1440px] px-0 lg:px-4">
-            {/* Column 1: Left Sidebar (Desktop Only) */}
-            <Sidebar onTriggerToast={triggerDemoToast} />
+            {/* Column 1: Left Sidebar */}
+            <Sidebar
+              mobileMenuOpen={mobileMenuOpen}
+              onCloseMobileMenu={() => setMobileMenuOpen(false)}
+              onTriggerToast={triggerDemoToast}
+              onNavigate={handleNavigate}
+            />
 
             {/* Column 2: Main Documentation Content */}
             <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 max-w-[800px] mx-auto space-y-12">

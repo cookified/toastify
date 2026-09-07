@@ -163,7 +163,7 @@ export function Header({
           <button
             type="button"
             onClick={onToggleMobileMenu}
-            className="group relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-neutral-200 bg-white/90 text-neutral-700 shadow-2xs backdrop-blur-md transition-all duration-200 hover:bg-neutral-100 active:scale-95 md:hidden dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="group relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-neutral-200 bg-white/90 text-neutral-700 shadow-2xs backdrop-blur-md transition-all duration-200 hover:bg-neutral-100 active:scale-95 lg:hidden dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:bg-neutral-800"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           >
             <AnimatePresence mode="wait" initial={false}>

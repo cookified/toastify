@@ -52,7 +52,7 @@
     "build": "npm run build:lib && npm run build:site",
     "prepublishOnly": "rm -rf lib && npm run build:lib && npm test",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
     "preview": "vite preview"
   },

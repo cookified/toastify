@@ -38,7 +38,9 @@ export function App() {
   const [activeToastsCount, setActiveToastsCount] = useState(0);
   const [themeRipple, setThemeRipple] = useState<{ x: number; y: number; isDark: boolean } | null>(null);
 
-  useEffect(() => document.documentElement.classList.toggle("dark", isDark), [isDark]);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+  }, [isDark]);
   useEffect(() => toastStore.subscribe((toasts) => setActiveToastsCount(toasts.length)), []);
 
   const handleToggleTheme = (event?: React.MouseEvent<HTMLButtonElement>) => {
@@ -145,9 +147,7 @@ export function App() {
               {/* Overview Section */}
               <motion.section
                 id="overview"
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={sectionTransition}
+                {...sectionMotion}
                 className="space-y-2"
               >
                 <h1 className="text-2xl font-medium tracking-tight text-neutral-950 sm:text-3xl dark:text-white">

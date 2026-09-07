@@ -21,10 +21,16 @@ export function AnimationsDoc({
   activeAnimation = "stack",
   onChangeAnimation,
 }: AnimationsDocProps) {
+  const [prevAnimation, setPrevAnimation] = useState(activeAnimation);
   const [selectedTab, setSelectedTab] = useState<AnimationPreset | "custom">(
     activeAnimation,
   );
   const [isVisualizerHovered, setIsVisualizerHovered] = useState(false);
+
+  if (activeAnimation !== prevAnimation) {
+    setPrevAnimation(activeAnimation);
+    setSelectedTab(activeAnimation);
+  }
 
   const current = presetDetails[selectedTab];
 
@@ -40,24 +46,9 @@ export function AnimationsDoc({
       onChangeAnimation(selectedTab);
     }
 
-    if (selectedTab === "stack") {
-      toast("Folder Stack", {
-        description: "Cards compress with spring mass. Hover to fan open.",
-      });
-    } else if (selectedTab === "slide") {
-      toast("Slide Preset", {
-        description:
-          "Directional entrance with swipe gesture and unstacked layout.",
-      });
-    } else if (selectedTab === "fade") {
-      toast("Fade Preset", {
-        description: "In-place gentle dissolve with soft blur transition.",
-      });
-    } else {
-      toast("Custom Component", {
-        description: "Fired with custom pluggable motion stage.",
-      });
-    }
+    toast(current.name, {
+      description: current.summary,
+    });
   };
 
   return (

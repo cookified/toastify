@@ -1,7 +1,9 @@
 import { toast } from "../../toastify";
 import type { ToastVariant } from "../components/Playground";
 
-export function triggerDemoToast(variant: ToastVariant) {
+export type DemoToastVariant = ToastVariant | "error" | "neutral";
+
+export function triggerDemoToast(variant: DemoToastVariant) {
   switch (variant) {
     case "action":
       toast("Message deleted", {

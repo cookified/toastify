@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 type PropDefinition = {
   name: string;
   type: string;
@@ -233,7 +235,7 @@ function CardTable({
   children,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800/90 dark:bg-[#121215]">

@@ -1,13 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { MotionNavItem } from "./MotionNavItem";
-
-const tocLinks = [
-  { href: "#overview", label: "Overview" },
-  { href: "#playground", label: "Playground" },
-  { href: "#quickstart", label: "Quickstart & Setup" },
-  { href: "#animations", label: "Animation System" },
-  { href: "#api", label: "API Reference" },
-];
+import { siteNavLinks } from "../data/navigation";
 
 export function TableOfContents() {
   return (
@@ -19,7 +12,7 @@ export function TableOfContents() {
             On this page
           </div>
           <nav className="mt-2 space-y-0.5">
-            {tocLinks.map((item) => (
+            {siteNavLinks.map((item) => (
               <MotionNavItem
                 key={item.href}
                 href={item.href}

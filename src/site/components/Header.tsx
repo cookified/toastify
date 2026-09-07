@@ -1,5 +1,6 @@
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
+import type { MouseEvent } from "react";
 
 function GithubIcon({ size = 14 }: { size?: number }) {
   return (
@@ -21,7 +22,7 @@ function GithubIcon({ size = 14 }: { size?: number }) {
 
 type HeaderProps = {
   isDark: boolean;
-  onToggleTheme: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+  onToggleTheme: (event?: MouseEvent<HTMLButtonElement>) => void;
   mobileMenuOpen: boolean;
   onToggleMobileMenu: () => void;
   currentPage: "home" | "docs";

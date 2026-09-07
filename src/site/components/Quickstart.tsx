@@ -63,11 +63,9 @@ export function Quickstart() {
   return (
     <div className="space-y-6">
       <div>
-        <div>
-          <h2 className="text-xl font-medium tracking-tight text-neutral-950 dark:text-white">
-            Quickstart &amp; Setup
-          </h2>
-        </div>
+        <h2 className="text-xl font-medium tracking-tight text-neutral-950 dark:text-white">
+          Quickstart &amp; Setup
+        </h2>
         <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
           Add the toaster to your root layout and trigger notifications from
           anywhere.

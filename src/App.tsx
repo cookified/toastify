@@ -39,7 +39,7 @@ export function App() {
     return "home";
   });
 
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
   const [animation, setAnimation] = useState<AnimationPreset>("stack");
@@ -133,6 +133,7 @@ export function App() {
           <LandingPage
             onNavigateDocs={() => handleNavigate("docs")}
             onFireToast={triggerDemoToast}
+            selectedVariant={selectedVariant}
           />
         ) : (
           /* View 2: 3-Column Documentation Workspace */

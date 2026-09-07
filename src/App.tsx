@@ -9,7 +9,7 @@ import { Playground, type ToastVariant } from "./site/components/Playground";
 import { Quickstart } from "./site/components/Quickstart";
 import { Sidebar } from "./site/components/Sidebar";
 import { TableOfContents } from "./site/components/TableOfContents";
-import { triggerDemoToast } from "./site/data/demo-toasts";
+import { triggerDemoToast } from "./site/demo-toasts";
 import {
   Toaster,
   toastStore,
@@ -130,11 +130,7 @@ export function App() {
 
         {/* View 1: Main Landing Page */}
         {currentPage === "home" ? (
-          <LandingPage
-            onNavigateDocs={() => handleNavigate("docs")}
-            onFireToast={triggerDemoToast}
-            selectedVariant={selectedVariant}
-          />
+          <LandingPage onNavigateDocs={() => handleNavigate("docs")} />
         ) : (
           /* View 2: 3-Column Documentation Workspace */
           <div className="mx-auto flex max-w-[1440px] px-0 lg:px-4">
@@ -266,7 +262,7 @@ export function App() {
 
         {/* Runtime Toaster */}
         <Toaster
-          position={position}
+          position={currentPage === "home" ? "bottom-center" : position}
           animation={animation}
           theme={isDark ? "dark" : "light"}
           duration={3500}

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import type { ToastVariant } from "./Playground";
 import { MotionNavItem } from "./MotionNavItem";
-import { siteNavLinks } from "../data/navigation";
+import { siteNavLinks } from "../navigation";
 
 type SidebarProps = {
   mobileMenuOpen: boolean;

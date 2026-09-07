@@ -1,5 +1,5 @@
-import { toast } from "../../toastify";
-import type { ToastVariant } from "../components/Playground";
+import { toast } from "../toastify";
+import type { ToastVariant } from "./components/Playground";
 
 export type DemoToastVariant = ToastVariant | "error" | "neutral";
 

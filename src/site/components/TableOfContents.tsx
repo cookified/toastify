@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { MotionNavItem } from "./MotionNavItem";
-import { siteNavLinks } from "../data/navigation";
+import { siteNavLinks } from "../navigation";
 
 export function TableOfContents() {
   return (

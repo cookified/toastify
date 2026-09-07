@@ -1,15 +1,13 @@
 import { ArrowRight, Bell, Check, Copy, ExternalLink } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import type { ToastVariant } from "./Playground";
+import { toast } from "../../toastify";
 
 type LandingPageProps = {
   onNavigateDocs: () => void;
-  onFireToast: (variant: ToastVariant) => void;
-  selectedVariant: ToastVariant;
 };
 
-export function LandingPage({ onNavigateDocs, onFireToast, selectedVariant }: LandingPageProps) {
+export function LandingPage({ onNavigateDocs }: LandingPageProps) {
   const [copied, setCopied] = useState(false);
   const installCmd = "npm i @cookified/toastify motion";
 
@@ -66,7 +64,11 @@ export function LandingPage({ onNavigateDocs, onFireToast, selectedVariant }: La
           <motion.button
             type="button"
             whileTap={{ scale: 0.96 }}
-            onClick={() => onFireToast(selectedVariant)}
+            onClick={() =>
+              toast("Welcome to Toastify", {
+                description: "A delightful toast component for React.",
+              })
+            }
             className="group flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
           >
             <Bell

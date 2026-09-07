@@ -26,10 +26,14 @@ const sectionMotion = {
   transition: { type: "spring" as const, stiffness: 180, damping: 24 },
 };
 
+const getInitialPage = (): "home" | "docs" => {
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.replace("#", "").toLowerCase();
+  return path.startsWith("/docs") || DOCS_SECTIONS.includes(hash) ? "docs" : "home";
+};
+
 export function App() {
-  const [currentPage, setCurrentPage] = useState<"home" | "docs">(() =>
-    DOCS_SECTIONS.includes(window.location.hash.replace("#", "")) ? "docs" : "home",
-  );
+  const [currentPage, setCurrentPage] = useState<"home" | "docs">(getInitialPage);
   const [isDark, setIsDark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
@@ -70,30 +74,53 @@ export function App() {
   };
 
   useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (DOCS_SECTIONS.includes(hash)) {
+    const syncRoute = () => {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.replace("#", "").toLowerCase();
+      if (path.startsWith("/docs") || DOCS_SECTIONS.includes(hash)) {
         setCurrentPage("docs");
-        if (hash !== "docs") setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 80);
-      } else if (hash === "home" || !hash) {
+        if (hash && hash !== "docs") {
+          setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 80);
+        }
+      } else {
         setCurrentPage("home");
       }
     };
-    window.addEventListener("hashchange", handleHash);
-    return () => window.removeEventListener("hashchange", handleHash);
+
+    window.addEventListener("popstate", syncRoute);
+    window.addEventListener("hashchange", syncRoute);
+    return () => {
+      window.removeEventListener("popstate", syncRoute);
+      window.removeEventListener("hashchange", syncRoute);
+    };
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash && hash !== "docs" && hash !== "home") {
+      setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 120);
+    }
   }, []);
 
   const handleNavigate = (page: "home" | "docs", sectionId?: string) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
     if (page === "home") {
-      window.location.hash = "#home";
+      window.history.pushState(null, "", "/");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      const targetId = sectionId ? sectionId.replace("#", "") : "docs";
-      window.location.hash = `#${targetId}`;
-      if (targetId !== "docs") {
-        setTimeout(() => (document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" }) ?? window.scrollTo({ top: 0, behavior: "smooth" })), 80);
+      const targetId = sectionId ? sectionId.replace("#", "") : "";
+      const targetUrl = targetId && targetId !== "docs" ? `/docs#${targetId}` : "/docs";
+      window.history.pushState(null, "", targetUrl);
+      if (targetId && targetId !== "docs") {
+        setTimeout(() => {
+          const el = document.getElementById(targetId);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }, 80);
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
